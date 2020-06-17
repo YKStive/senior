@@ -1,0 +1,69 @@
+/**
+ * 补零
+ * @param str
+ * @param strLength
+ * @return
+ */
+def leftPad(String str, int strLength) {
+    int strLen = str.length()
+    while (strLen < strLength) {
+        str = "0" + str
+        strLen = str.length()
+    }
+
+    return str
+}
+
+ext {
+    libVersion = "1.3.27.5-SNAPSHOT"
+    contentVersion = "1.2.12"
+    //应用版本号
+    appVersion = "1.0.0"
+    appPatchVersion = 0
+    vs = appVersion.split("[.]")
+    appVersionCode = Integer.parseInt(vs[0] + leftPad(vs[1], 2) + leftPad(vs[2], 3) + String.valueOf(appPatchVersion))
+
+    /**
+     * 基础信息管理
+     */
+    android = [
+            compileSdkVersion: 29,
+            buildToolsVersion: "28.0.3",
+            applicationId    : "com.youloft.senior",
+            minSdkVersion    : 23,
+            targetSdkVersion : 29,
+            versionCode      : appVersionCode,
+            versionName      : appVersion
+    ]
+
+    /**
+     * 签名管理
+     */
+    signingConfigs = [
+            release: {
+                storeFile file('codesign.keystore')
+                storePassword 'killers8Y'
+                keyAlias 'owen'
+                keyPassword 'killers8Y'
+                v2SigningEnabled false
+            }
+    ]
+
+    /**
+     * 依赖版本管理
+     */
+    dependencies = [
+
+    ]
+
+    /**
+     * 生成安装包文件名
+     */
+    packageNames = [
+            "normal"       : '老年人',
+
+
+    ]
+
+
+}
