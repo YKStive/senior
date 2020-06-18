@@ -37,6 +37,7 @@ dependencies {
     implementation rootProject.ext.dependencies['easyPermission']
     implementation rootProject.ext.dependencies['shape']
     implementation rootProject.ext.dependencies['walle']
+    implementation rootProject.ext.dependencies['wnl-utils']
 
     implementation project(path: ':core')
     implementation project(path: ':net')

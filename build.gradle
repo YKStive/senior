@@ -4,8 +4,6 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven { url 'https://maven.aliyun.com/repository/google' }//google镜像站
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.0.0"
@@ -17,6 +15,8 @@ allprojects {
     repositories {
         google()
         jcenter()
+        //wnl maven地址
+        maven { url "http://192.168.1.66:8082/repository/wnlrepos/" }
     }
 }
 
