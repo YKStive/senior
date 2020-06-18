@@ -28,10 +28,8 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     implementation rootProject.ext.dependencies['constraintlayout']
-
-
-    implementation rootProject.ext.dependencies['life-extension']
-    implementation rootProject.ext.dependencies['liveDate']
+    implementation rootProject.ext.dependencies['liveData']
+    implementation rootProject.ext.dependencies['lifeScrope']
     implementation rootProject.ext.dependencies['glide']
     implementation rootProject.ext.dependencies['imageCompress']
     implementation rootProject.ext.dependencies['easyPermission']
@@ -39,6 +37,7 @@ dependencies {
     implementation rootProject.ext.dependencies['walle']
     implementation rootProject.ext.dependencies['wnl-utils']
     implementation rootProject.ext.dependencies['preference']
+    implementation rootProject.ext.dependencies['koin-viewmodel']
 
     implementation project(path: ':core')
     implementation project(path: ':net')
