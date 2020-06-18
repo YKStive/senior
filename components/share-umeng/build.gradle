@@ -1,0 +1,91 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+
+
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    sourceSets {
+        def dependsJarList = new ArrayList<String>()
+        listRes("share_android_6.9.3", dependsJarList)
+        println(dependsJarList)
+        for (depJar in dependsJarList) {
+            main.res.srcDirs depJar
+        }
+    }
+
+
+}
+
+def listRes(dir, fileset) {
+    def list = file(dir).listFiles()
+    for (item in list) {
+        if (item.isDirectory()) {
+            if (item.absolutePath.endsWith("res")) {
+                fileset.add(item.absolutePath)
+                continue
+            }
+            listRes(item.absolutePath, fileset)
+        }
+    }
+}
+
+def listJarFile(dir, fileset) {
+    def list = file(dir).listFiles()
+    for (item in list) {
+        if (item.isDirectory()) {
+            listJarFile(item.absolutePath, fileset)
+            continue
+        }
+        if (item.absolutePath.endsWith(".jar")) {
+            fileset.add(item.absolutePath)
+        }
+    }
+}
+
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    compileOnly project(':components:share')
+    compileOnly project(':core:util')
+
+    compileOnly rootProject.ext.dependencies['appcompat']
+    compileOnly rootProject.ext.dependencies['fastjson']
+    api 'com.umeng.umsdk:utdid:1.5.2'
+    api 'com.umeng.umsdk:common:2.2.2'
+    def dependsJarList = new ArrayList<String>()
+    listJarFile("share_android_6.9.3", dependsJarList)
+    for (depJar in dependsJarList) {
+        println(depJar)
+        api files(depJar)
+    }
+}
+apply plugin: 'maven'
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+artifacts {
+    archives sourcesJar
+}

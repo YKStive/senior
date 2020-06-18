@@ -1,3 +1,8 @@
+include ':components:share'
+include ':ui:webview'
+include ':components:share-umeng'
+include ':core:util'
+include ':core:i18'
 include ':net'
 include ':core'
 include ':app'
