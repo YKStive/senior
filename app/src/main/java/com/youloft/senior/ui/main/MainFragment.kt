@@ -16,6 +16,7 @@ class MainFragment : BaseVMFragment<MainViewModel>() {
         return MainViewModel()
     }
 
+
     override fun initView() {
     }
 

@@ -11,6 +11,7 @@ import com.youloft.senior.R
 class MainActivity : BaseActivity() {
     override fun getLayoutResId(): Int {
         return R.layout.activity_main
+
     }
 
     override fun initView() {
