@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 /**
  * @author you
  * @create 2020/6/18
- * @desc activity基类，mvvm
+ * @desc activity基类
  */
 abstract class BaseActivity : AppCompatActivity() {
 
