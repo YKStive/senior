@@ -1,4 +1,4 @@
-package com.youloft.senior.ui
+package com.youloft.senior.ui.main
 
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
