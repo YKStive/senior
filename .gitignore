@@ -1,7 +1,8 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Your template template
 /build
 *.iml
 .idea/
-.idea/vcs.xml
 .gradle
 build
 local.properties
@@ -9,3 +10,4 @@ local.properties
 */.DS_Store
 freeline
 freeline*.*
+output*

@@ -1,2 +1,4 @@
+include ':net'
+include ':core'
 include ':app'
 rootProject.name = "senior"

@@ -12,18 +12,33 @@ android {
         versionName rootProject.ext.android.versionName
     }
 
+
     buildTypes {
-        release {
+
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+
+    implementation rootProject.ext.dependencies['constraintlayout']
+
+
+    implementation rootProject.ext.dependencies['life-extension']
+    implementation rootProject.ext.dependencies['liveDate']
+    implementation rootProject.ext.dependencies['glide']
+    implementation rootProject.ext.dependencies['imageCompress']
+    implementation rootProject.ext.dependencies['easyPermission']
+    implementation rootProject.ext.dependencies['shape']
+    implementation rootProject.ext.dependencies['walle']
+
+    implementation project(path: ':core')
+    implementation project(path: ':net')
 
 }

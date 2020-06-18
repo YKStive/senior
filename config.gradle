@@ -52,15 +52,29 @@ ext {
     /**
      * 依赖版本管理
      */
+    def lifecycle_version = "2.2.0"
+    def arch_version = "2.1.0"
     dependencies = [
-
+            "appcompat"         : "androidx.appcompat:appcompat:1.1.0",
+            "constraintlayout"  : "androidx.constraintlayout:constraintlayout:1.1.3",
+            "core-ktx"          : "androidx.core:core-ktx:1.3.0",
+            "imageCompress"     : "top.zibin:Luban:1.1.8",
+            "easyPermission"    : "pub.devrel:easypermissions:3.0.0",
+            "shape"             : "com.noober.background:core:1.6.3",
+            "walle"             : "com.meituan.android.walle:library:1.1.6",
+            "kotlinx-coroutines": "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.2",
+            "kotlin-stdlib"     : "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+            "life-extension"    : "androidx.lifecycle:lifecycle-extensions:$lifecycle_version",
+            "viewModel"         : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version",
+            "liveDate"          : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version",
+            "glide"             : "com.github.bumptech.glide:glide:4.10.0",
     ]
 
     /**
      * 生成安装包文件名
      */
     packageNames = [
-            "normal"       : '老年人',
+            "normal": '老年人',
 
 
     ]
