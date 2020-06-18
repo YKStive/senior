@@ -1,6 +1,8 @@
 package com.youloft.senior.ui.main
 
+import androidx.lifecycle.Observer
 import com.youloft.core.base.BaseVMFragment
+import com.youloft.senior.R
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 /**
@@ -10,7 +12,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
  */
 class MainFragment : BaseVMFragment<MainViewModel>() {
     override fun getLayoutResId(): Int {
-        return 0
+        return R.layout.fragment_main
     }
 
     override fun initVM(): MainViewModel = getViewModel()
@@ -24,7 +26,9 @@ class MainFragment : BaseVMFragment<MainViewModel>() {
     }
 
     override fun startObserve() {
+        mViewModel.data.observe(this, Observer {
 
+        })
     }
 
 }

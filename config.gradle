@@ -75,6 +75,7 @@ ext {
             "wnl-share-umeng"   : "com.wnl.common:share-umeng:$wnl_version",
             "koin-viewmodel"    : "org.koin:koin-androidx-viewmodel:2.0.1",
             "multitype"         : "com.drakeet.multitype:multitype:4.2.0",
+            "andPermission"     : "com.yanzhenjie:permission:2.0.3",
 
     ]
 

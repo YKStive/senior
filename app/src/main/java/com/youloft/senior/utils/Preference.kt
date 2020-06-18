@@ -54,7 +54,7 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
             is Int -> getInt(name, default)
             is Boolean -> getBoolean(name, default)
             is Float -> getFloat(name, default)
-            else -> getString(name, serialize(default))?.let { deSerialization(it) }
+            else ->  deSerialization(name)
         }!!
         return res as T
     }
