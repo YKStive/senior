@@ -2,7 +2,7 @@ package com.youloft.senior.utils
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager;
 import com.youloft.senior.base.App
 import java.io.*
 import kotlin.properties.ReadWriteProperty
