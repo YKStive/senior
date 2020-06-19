@@ -38,6 +38,7 @@
 
         <receiver
             android:name="com.youloft.calendar.MeizuMessageReceiver"
+            tools:node="remove"
             android:enabled="false" />
         <receiver android:name=".MeizuMessageReceiver">
             <intent-filter>
