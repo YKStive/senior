@@ -77,6 +77,9 @@ ext {
             "multitype"         : "com.drakeet.multitype:multitype:4.2.0",
             "andPermission"     : "com.yanzhenjie:permission:2.0.3",
             "videoPlayer"     : "com.shuyu:GSYVideoPlayer:5.0.1",
+            "glidebum"     : "com.github.bumptech.glide:compiler:4.10.0",
+            "glideOkhttp"     : "com.github.bumptech.glide:okhttp3-integration:4.10.0",
+            "bigImage"     : "com.github.SherlockGougou:BigImageViewPager:androidx-6.0.1",
 
     ]
 
