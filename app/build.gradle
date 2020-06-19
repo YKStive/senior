@@ -45,8 +45,12 @@ dependencies {
     implementation rootProject.ext.dependencies['wnl-share']
     implementation rootProject.ext.dependencies['wnl-share-umeng']
     implementation rootProject.ext.dependencies['andPermission']
+    implementation rootProject.ext.dependencies['rxjava']
+    implementation rootProject.ext.dependencies['rxandroid']
 
     implementation project(path: ':core')
     implementation project(path: ':net')
+
+    implementation "com.wnl.common:push-umeng:$libVersion"
 
 }

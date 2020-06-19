@@ -77,7 +77,8 @@ ext {
             "multitype"         : "com.drakeet.multitype:multitype:4.2.0",
             "andPermission"     : "com.yanzhenjie:permission:2.0.3",
             "videoPlayer"     : "com.shuyu:GSYVideoPlayer:5.0.1",
-
+            "rxjava"           : 'io.reactivex:rxjava:1.3.8',
+            "rxandroid"        : 'io.reactivex:rxandroid:1.2.1',
     ]
 
     /**

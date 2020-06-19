@@ -19,8 +19,11 @@ allprojects {
         jcenter()
         //wnl maven地址
         maven { url "http://192.168.1.66:8082/repository/wnlrepos/" }
-
-
+        if ("assembleForRelease" != System.getProperty("build.type")) {//如果不是发行版本则新加一个Debug的库方便调试
+            maven { url "http://192.168.1.66:8082/repository/testrepo/" }
+        }
+        maven { url 'https://dl.bintray.com/umsdk/release' }
+        maven { url "http://developer.huawei.com/repo/" }
     }
 }
 
