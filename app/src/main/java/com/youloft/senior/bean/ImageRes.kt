@@ -6,7 +6,9 @@ import kotlinx.android.parcel.Parcelize
 /**
  * @author you
  * @create 2020/6/18
- * @desc gif每帧数据
+ * @desc 图片bean
  */
 @Parcelize
-data class ImageRes(var path: String) : Parcelable
+data class ImageRes(var path: String) : Parcelable {
+    var isSelected = false
+}

@@ -1,8 +1,5 @@
 package com.youloft.senior.utils.gifmaker;
 
-//	 ==============================================================================
-//	 Adapted from Jef Poskanzer's Java port by way of J. M. G. Elliott.
-//	 K Weiner 12/00
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -21,26 +18,11 @@ class LZWEncoder {
 
     private int curPixel;
 
-    // GIFCOMPR.C - GIF Image compression routines
-    //
-    // Lempel-Ziv compression based on 'compress'. GIF modifications by
-    // David Rowley (mgardi@watdcsu.waterloo.edu)
-
-    // General DEFINEs
 
     static final int BITS = 12;
 
     static final int HSIZE = 5003; // 80% occupancy
 
-    // GIF Image compression - modified 'compress'
-    //
-    // Based on: compress.c - File compression ala IEEE Computer, June 1984.
-    //
-    // By Authors: Spencer W. Thomas (decvax!harpo!utah-cs!utah-gr!thomas)
-    // Jim McKie (decvax!mcvax!jim)
-    // Steve Davies (decvax!vax135!petsd!peora!srd)
-    // Ken Turkowski (decvax!decwrl!turtlevax!ken)
-    // James A. Woods (decvax!ihnp4!ames!jaw)
     // Joe Orost (decvax!vax135!petsd!joe)
 
     int n_bits; // number of bits/code

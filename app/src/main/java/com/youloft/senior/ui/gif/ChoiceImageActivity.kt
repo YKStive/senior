@@ -19,15 +19,9 @@ import kotlinx.android.synthetic.main.activity_choice_image.*
 class ChoiceImageActivity : BaseActivity() {
 
     private val TAG = "ChoiceImageActivity"
-    private var mItems = mutableListOf<ImageRes>()
+    private var mItems = ArrayList<ImageRes>()
     private var mAdapter = MultiTypeAdapter(mItems)
-
-//    private val mStateView by lazy {
-//        NiceStateView.builder()
-//            .registerLoading(NiceSampleLoadingView())
-//            .wrapContent(rv_images)
-//    }
-
+    private lateinit var mBinder: ChoiceImageItemBinder
 
     override fun getLayoutResId(): Int {
         return R.layout.activity_choice_image
@@ -38,15 +32,14 @@ class ChoiceImageActivity : BaseActivity() {
             finish()
         }
 
-        mAdapter.register(
-            ImageRes::class,
-            ChoiceImageItemBinder(onItemClick = { position, item ->
-                val data = Intent()
-                data.putExtra("image_item", item)
-                setResult(Activity.RESULT_OK, data)
-                finish()
-            })
-        )
+        btn_confirm.setOnClickListener {
+            finishWithResult((mItems.filter {
+                it.isSelected
+            }) as ArrayList<ImageRes>)
+
+        }
+
+
         rv_images.run {
             layoutManager = GridLayoutManager(applicationContext, 4)
             adapter = mAdapter
@@ -55,6 +48,24 @@ class ChoiceImageActivity : BaseActivity() {
 
     override fun initData() {
         reqPermissions()
+        mBinder =
+            ChoiceImageItemBinder(isSingle, onItemClick = { position, item ->
+                finishWithResult(item)
+            })
+
+        mAdapter.run {
+            register(
+                ImageRes::class,
+                mBinder
+            )
+        }
+    }
+
+    private fun finishWithResult(item: ArrayList<ImageRes>) {
+        val data = Intent()
+        data.putParcelableArrayListExtra(KEY_RESULT, item)
+        setResult(Activity.RESULT_OK, data)
+        finish()
     }
 
 
@@ -75,11 +86,9 @@ class ChoiceImageActivity : BaseActivity() {
     }
 
     private fun getImages() {
-//        mStateView.showLoading()
         mItems.clear()
         val resolver = contentResolver
         val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-
         val projection = arrayOf(
             MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
             MediaStore.Images.Media.DATA,
@@ -98,36 +107,32 @@ class ChoiceImageActivity : BaseActivity() {
             where,
             whereArgs,
             MediaStore.Images.Media.DATE_MODIFIED + " desc "
-        )
-            ?: return
-//        var name: String?
+        ) ?: return
         var path: String?
-        var bucketName: String?
 
         while (cursor.moveToNext()) {
-//            name = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME))
             path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
-            bucketName =
-                cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME))
-
             if (path.isNullOrEmpty()) continue
 
             mItems.add(ImageRes(path))
         }
         cursor.close()
 
-//        mStateView.showContent()
         mAdapter.notifyDataSetChanged()
     }
 
     companion object {
+        var isSingle: Boolean = true
+        private const val KEY_RESULT: String = "images"
         fun start(
             context: FragmentActivity,
-            onResult: (bean: ImageRes) -> Unit
+            isSingle: Boolean = true,
+            onResult: (bean: ArrayList<ImageRes>) -> Unit
         ) {
+            this.isSingle = isSingle
             JumpResult(context).startForResult(ChoiceImageActivity::class.java) { requestCode, data ->
                 data?.apply {
-                    val imageRes = data.getParcelableExtra<ImageRes>("image_item")
+                    val imageRes = data.getParcelableArrayListExtra<ImageRes>(KEY_RESULT)
                     imageRes?.apply {
                         onResult.invoke(imageRes)
                     }

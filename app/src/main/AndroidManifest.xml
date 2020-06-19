@@ -9,12 +9,21 @@
 
     <application
         android:allowBackup="true"
+        android:name=".base.App"
         android:label="@string/app_name"
-        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        tools:replace="android:allowBackup">
-
+        tools:replace="android:allowBackup"
+        android:requestLegacyExternalStorage="true"
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5b581241b27b0a497c00003a" />
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="621594bd4985f96707e1213e41e3b27a" /> <!-- 黄历详情 -->
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="wnl_master" />
         <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,6 +34,7 @@
 
         <activity android:name=".ui.gif.ChoiceImageActivity" />
         <activity android:name=".ui.gif.GifActivity" />
+        <activity android:name=".ui.detail.VideoDetailActivity" />
 
         <receiver
             android:name="com.youloft.calendar.MeizuMessageReceiver"

@@ -22,7 +22,7 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
     }
 
     private val prefs: SharedPreferences by lazy {
-        PreferenceManager.getDefaultSharedPreferences(App.context)
+        PreferenceManager.getDefaultSharedPreferences(App.instance())
     }
 
 
@@ -54,7 +54,7 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
             is Int -> getInt(name, default)
             is Boolean -> getBoolean(name, default)
             is Float -> getFloat(name, default)
-            else ->  deSerialization(name)
+            else -> deSerialization(name)
         }!!
         return res as T
     }

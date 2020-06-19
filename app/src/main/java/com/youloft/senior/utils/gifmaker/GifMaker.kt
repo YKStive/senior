@@ -2,6 +2,7 @@ package com.youloft.senior.utils.gifmaker
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import com.bumptech.glide.gifdecoder.GifDecoder
@@ -11,11 +12,13 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 
 /**
  * @author you
  * @create 2020/6/18
- * @desc
+ * @desc gif生成器
  */
 class GifMaker {
 
@@ -23,7 +26,7 @@ class GifMaker {
      * 获取gifLoader
      * @param resource GifDrawable gif资源
      */
-    fun getGifDecoder(resource: GifDrawable): GifDecoder? {
+    private fun getGifDecoder(resource: GifDrawable): GifDecoder? {
         var decoder: GifDecoder? = null
         val state = resource.constantState
         if (state != null) {
@@ -54,34 +57,35 @@ class GifMaker {
 
         GlobalScope.launch(Dispatchers.IO) {
             val gifDecoder = getGifDecoder(template)
-
             gifDecoder?.apply {
-                val os = ByteArrayOutputStream()
-                val encoder = AnimatedGifEncoder()
-                encoder.start(os)
-                encoder.setRepeat(0)
+                val frames = mutableListOf<ResFrame>()
                 for (i in 0..template.frameCount) {
                     val nextFrame = nextFrame
                     nextFrame?.let {
+
                         val resourceDrawable = BitmapDrawable(context.resources, resource)
                         val templateFrameDrawable = BitmapDrawable(context.resources, it)
+
+                        resourceDrawable.setBounds(0, 0, 200, 200)
+                        templateFrameDrawable.setBounds(0, 0, 200, 200)
+
                         val bitmap: Bitmap = Bitmap.createBitmap(
-                            resourceDrawable.intrinsicWidth,
-                            resourceDrawable.intrinsicHeight,
+                            200,
+                            200,
                             Bitmap.Config.RGB_565
                         )
                         val canvas = Canvas(bitmap)
+
                         resourceDrawable.draw(canvas)
                         templateFrameDrawable.draw(canvas)
 
-                        //绘制了模板和资源新图片插入到gif生成器
-                        encoder.setDelay(getDelay(i))
-                        encoder.addFrame(bitmap)
+                        val path = IOTool.saveBitmap2Box(context, bitmap, "pic_$i")
+                        frames.add(ResFrame(getDelay(i), path))
                     }
+                    advance()
                 }
 
-                encoder.finish()
-                val newGifPath = IOTool.saveStreamToSDCard("newGif", os)
+                val newGifPath = genGifByFramesWithGPU(context, frames)
                 withContext(Dispatchers.Main) {
                     onSuccess.invoke(newGifPath)
                 }
@@ -89,5 +93,20 @@ class GifMaker {
         }
     }
 
+    private fun genGifByFramesWithGPU(context: Context, frames: List<ResFrame>): String {
+        val path = IOTool.provideRandomPath("test")
+        val os = FileOutputStream(File(path))
+        val animatedGIFWriter = AnimatedGIFWriter()
+        animatedGIFWriter.prepareForWrite(os, -1, -1)
+        for (value in frames) {
+            val bitmap = BitmapFactory.decodeFile(value.path)
+            animatedGIFWriter.writeFrame(os, bitmap, value.delay)
+        }
+        animatedGIFWriter.finishWrite(os)
+        IOTool.notifySystemGallery(context, path)
+        return path
+    }
+
+    data class ResFrame(var delay: Int, var path: String)
 
 }
