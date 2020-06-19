@@ -18,9 +18,6 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initView() {
-        btn_gif.setOnClickListener {
-            GifActivity.start(this)
-        }
     }
 
     override fun initData() {

@@ -3,6 +3,7 @@ package com.youloft.senior.ui.gif
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -30,9 +31,9 @@ class GifActivity : BaseActivity() {
 
     override fun initView() {
         btn_resource.setOnClickListener {
-            ChoiceImageActivity.start(this) {
-                Glide.with(this).load(it.path).into(iv_resource)
-                resource = BitmapFactory.decodeFile(it.path)
+            ChoiceImageActivity.start(this, false) {
+                Glide.with(this).load(it[0].path).into(iv_resource)
+                resource = BitmapFactory.decodeFile(it[0].path)
             }
         }
 
@@ -55,6 +56,7 @@ class GifActivity : BaseActivity() {
             composite.setText("合成中...")
             gifMaker.makeNeGif(applicationContext, temp, resource) {
                 composite.setText("合成成功")
+                Log.d("GifActivity", it)
                 Glide.with(this).load(it).into(iv_target)
             }
         }

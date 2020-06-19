@@ -11,7 +11,8 @@ import com.youloft.senior.widgt.ItemViewHolder
 import kotlinx.android.synthetic.main.item_choice_image.view.*
 
 class ChoiceImageItemBinder(
-    var onItemClick: (position: Int, item: ImageRes) -> Unit
+    var isSingle: Boolean = true,
+    var onItemClick: (position: Int, result: ArrayList<ImageRes>) -> Unit
 ) : ItemViewBinder<ImageRes, RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(
         inflater: LayoutInflater,
@@ -23,8 +24,12 @@ class ChoiceImageItemBinder(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ImageRes) {
         holder.itemView.run {
             setOnClickListener {
-                cb_checked.isChecked = true
-                onItemClick.invoke(holder.adapterPosition, item)
+                if (isSingle) {
+                    onItemClick.invoke(holder.adapterPosition, arrayListOf(item))
+                } else {
+                    cb_checked.isChecked = !cb_checked.isChecked
+                    item.isSelected = cb_checked.isChecked
+                }
             }
 
             Glide.with(context)
@@ -32,4 +37,5 @@ class ChoiceImageItemBinder(
                 .into(iv_clover)
         }
     }
+
 }

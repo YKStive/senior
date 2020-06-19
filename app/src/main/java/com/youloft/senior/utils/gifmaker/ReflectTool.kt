@@ -6,7 +6,7 @@ import java.lang.reflect.Field
 /**
  * @author you
  * @create 2020/6/18
- * @desc
+ * @desc 反射获取类的私有属性
  */
 internal object ReflectTool {
     fun getAnyByReflect(`object`: Any?, fieldName: String): Any? {
