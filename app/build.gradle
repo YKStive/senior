@@ -45,6 +45,9 @@ dependencies {
     implementation rootProject.ext.dependencies['wnl-share']
     implementation rootProject.ext.dependencies['wnl-share-umeng']
     implementation rootProject.ext.dependencies['andPermission']
+    implementation rootProject.ext.dependencies['glidebum']
+    implementation rootProject.ext.dependencies['bigImage']
+    annotationProcessor rootProject.ext.dependencies['glideOkhttp']
 
     implementation project(path: ':core')
     implementation project(path: ':net')
