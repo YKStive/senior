@@ -76,6 +76,7 @@ ext {
             "koin-viewmodel"    : "org.koin:koin-androidx-viewmodel:2.0.1",
             "multitype"         : "com.drakeet.multitype:multitype:4.2.0",
             "andPermission"     : "com.yanzhenjie:permission:2.0.3",
+            "videoPlayer"     : "com.shuyu:GSYVideoPlayer:5.0.1",
 
     ]
 
