@@ -3,6 +3,7 @@ package com.youloft.senior.base
 import android.app.Application
 import com.umeng.commonsdk.UMConfigure
 import com.umeng.socialize.PlatformConfig
+import com.youloft.senior.push.PushWrapper
 import kotlin.properties.Delegates
 
 /**
@@ -23,7 +24,7 @@ class App : Application() {
             "wx5f3a0d4653cd3485",
             "af16a3c2d7b39dd4e8022e04ca1baa3f"
         )
-
+        PushWrapper.init(this)
     }
 
     companion object {
