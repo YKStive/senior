@@ -52,7 +52,7 @@
                 <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
                 <action android:name="com.meizu.c2dm.intent.RECEIVE" />
 
-                <category android:name="com.youloft.calendar" />
+                <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>
 
