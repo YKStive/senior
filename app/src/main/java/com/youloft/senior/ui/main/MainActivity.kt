@@ -2,6 +2,8 @@ package com.youloft.senior.ui.main
 
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
+import com.youloft.senior.ui.gif.GifActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
 /**
  * @author you
@@ -16,7 +18,9 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initView() {
-
+        btn_gif.setOnClickListener {
+            GifActivity.start(this)
+        }
     }
 
     override fun initData() {

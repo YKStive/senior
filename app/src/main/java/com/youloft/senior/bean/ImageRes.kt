@@ -9,4 +9,4 @@ import kotlinx.android.parcel.Parcelize
  * @desc gif每帧数据
  */
 @Parcelize
-data class ResFrame(var delay: Int?, var path: String) : Parcelable
+data class ImageRes(var path: String) : Parcelable

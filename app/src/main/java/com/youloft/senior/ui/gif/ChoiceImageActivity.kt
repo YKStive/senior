@@ -3,21 +3,23 @@ package com.youloft.senior.ui.gif
 import android.app.Activity
 import android.content.Intent
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
-import com.yanzhenjie.permission.runtime.Permission.READ_EXTERNAL_STORAGE
 import com.youloft.core.base.BaseActivity
+import com.youloft.core.jump.JumpResult
 import com.youloft.senior.R
-import com.youloft.senior.bean.ResFrame
+import com.youloft.senior.bean.ImageRes
 import com.youloft.senior.itembinder.ChoiceImageItemBinder
 import kotlinx.android.synthetic.main.activity_choice_image.*
 
 class ChoiceImageActivity : BaseActivity() {
 
-    private var mItems = mutableListOf<ResFrame>()
+    private val TAG = "ChoiceImageActivity"
+    private var mItems = mutableListOf<ImageRes>()
     private var mAdapter = MultiTypeAdapter(mItems)
 
 //    private val mStateView by lazy {
@@ -37,7 +39,7 @@ class ChoiceImageActivity : BaseActivity() {
         }
 
         mAdapter.register(
-            ResFrame::class,
+            ImageRes::class,
             ChoiceImageItemBinder(onItemClick = { position, item ->
                 val data = Intent()
                 data.putExtra("image_item", item)
@@ -67,7 +69,7 @@ class ChoiceImageActivity : BaseActivity() {
                 getImages()
             }
             .onDenied {
-//                toast("please authorize sd card permissions")
+                Log.d(TAG, "please authorize sd card permissions")
             }
             .start()
     }
@@ -110,7 +112,7 @@ class ChoiceImageActivity : BaseActivity() {
 
             if (path.isNullOrEmpty()) continue
 
-            mItems.add(ResFrame(null, path))
+            mItems.add(ImageRes(path))
         }
         cursor.close()
 
@@ -121,8 +123,16 @@ class ChoiceImageActivity : BaseActivity() {
     companion object {
         fun start(
             context: FragmentActivity,
-            onResult: (bean: ResFrame) -> Unit
+            onResult: (bean: ImageRes) -> Unit
         ) {
+            JumpResult(context).startForResult(ChoiceImageActivity::class.java) { requestCode, data ->
+                data?.apply {
+                    val imageRes = data.getParcelableExtra<ImageRes>("image_item")
+                    imageRes?.apply {
+                        onResult.invoke(imageRes)
+                    }
+                }
+            }
         }
     }
 }
