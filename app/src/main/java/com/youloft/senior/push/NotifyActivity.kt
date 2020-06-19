@@ -6,6 +6,7 @@ import com.umeng.message.entity.UMessage
 import org.json.JSONObject
 
 /**
+ * 接收系统厂商点击操作
  * @author xll
  * @date 2020/6/17 12:53
  */

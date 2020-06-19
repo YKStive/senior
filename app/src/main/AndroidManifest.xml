@@ -56,6 +56,10 @@
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".push.NotifyActivity"
+            android:exported="true"
+            android:launchMode="singleTask" />
     </application>
 
 
