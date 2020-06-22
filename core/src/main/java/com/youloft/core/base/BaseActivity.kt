@@ -1,6 +1,8 @@
 package com.youloft.core.base
 
+import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 /**
@@ -16,6 +18,10 @@ abstract class BaseActivity : AppCompatActivity() {
         initView()
         initData()
     }
+
+//     fun showShortToast(content: String) {
+//        Toast.makeText(this, content, Toast.LENGTH_SHORT).show()
+//    }
 
     abstract fun getLayoutResId(): Int
     abstract fun initView()

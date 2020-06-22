@@ -5,8 +5,6 @@ import android.widget.Toast
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.socialize.SOC_MEDIA
-import com.youloft.socialize.Socialize
-import com.youloft.socialize.share.AbstractShareAction
 import com.youloft.socialize.share.ShareImage
 import com.youloft.socialize.share.ShareWeb
 import com.youloft.socialize.share.UmengShareActionImpl

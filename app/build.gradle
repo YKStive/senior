@@ -51,11 +51,16 @@ dependencies {
     implementation rootProject.ext.dependencies['rxandroid']
     implementation rootProject.ext.dependencies['glidebum']
     implementation rootProject.ext.dependencies['bigImage']
+    implementation rootProject.ext.dependencies['tablayout']
 //    implementation rootProject.ext.dependencies['extensions']
     annotationProcessor rootProject.ext.dependencies['glideOkhttp']
     implementation rootProject.ext.dependencies['gson']
     implementation "com.wnl.common:webview:$libVersion"
     implementation rootProject.ext.dependencies['fastjson']
+    annotationProcessor rootProject.ext.dependencies['refreshKernel']
+    annotationProcessor rootProject.ext.dependencies['refreshHeaderClassic']
+    annotationProcessor rootProject.ext.dependencies['refreshFooterClassic']
+
     api(name: 'msa_mdid_1.0.13', ext: 'aar')
     implementation project(path: ':core')
     implementation project(path: ':net')

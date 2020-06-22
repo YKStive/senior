@@ -6,13 +6,54 @@
     android:layout_height="match_parent"
     android:background="#FFEAEAEA">
 
-    <Button
+    <TextView
+        android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="我的"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        android:text="丢撒的大大"
+        android:textColor="#ff333333"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <FrameLayout
+        android:id="@+id/fl_setting"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_height="wrap_content"
+        android:padding="11dp"
+        android:background="@drawable/bg_setting"
+        app:layout_constraintBottom_toBottomOf="@id/tv_name"
+        app:layout_constraintStart_toEndOf="@id/tv_name"
+        app:layout_constraintTop_toTopOf="@id/tv_name" >
+        <ImageView
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:src="@drawable/icon_favorite"/>
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/image_head"
+        app:layout_constraintTop_toBottomOf="@id/tv_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="25dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        />
+    <TextView
+        app:layout_constraintTop_toBottomOf="@id/tv_name"
+        app:layout_constraintStart_toStartOf="@id/tv_name"
+        app:layout_constraintTop_toTopOf="@id/image_head"
+        app:layout_constraintBottom_toBottomOf="@id/image_head"
+        android:layout_marginTop="26dp"
+        android:id="@+id/tv_browse_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5467"
+        android:textColor="#ff333333"
+        android:textSize="28sp"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
