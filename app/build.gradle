@@ -60,6 +60,7 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies['refreshKernel']
     annotationProcessor rootProject.ext.dependencies['refreshHeaderClassic']
     annotationProcessor rootProject.ext.dependencies['refreshFooterClassic']
+    api(name: 'open_ad_sdk_3.0.0.1', ext: 'aar')
 
     api(name: 'msa_mdid_1.0.13', ext: 'aar')
     implementation project(path: ':core')

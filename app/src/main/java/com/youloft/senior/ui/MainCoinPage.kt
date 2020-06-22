@@ -10,12 +10,16 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
+import com.alibaba.fastjson.JSONObject
 import com.youloft.net.bean.MissionResult
 import com.youloft.senior.R
 import com.youloft.senior.coin.CoinManager
+import com.youloft.senior.coin.RewardListener
+import com.youloft.senior.coin.TTRewardManager
 import com.youloft.senior.coin.TaskManager
 import com.youloft.senior.tuia.TuiaUtil
 import com.youloft.senior.tuia.TuiaWebActivity
+import com.youloft.util.ToastMaster
 import com.youloft.util.UiUtil
 import kotlinx.android.synthetic.main.main_coin_page_layout.view.*
 import kotlinx.android.synthetic.main.main_coin_page_sign_item_layout.view.*
@@ -266,6 +270,27 @@ internal class MainCoinPage(
                 //如果么有登录，跳转登录界面
                 if (bean!!.isRewardTask) {
                     //激励视频任务
+                    if (bean!!.subItems == null || bean!!.subItems.isEmpty()) {
+                        return@setOnClickListener
+                    }
+                    TTRewardManager.requestReword(
+                        ctx as Activity,
+                        bean!!.subItems[0].posId,
+                        object : RewardListener() {
+                            override fun onRewardResult(
+                                isSuccess: Boolean,
+                                reward: Boolean,
+                                args: JSONObject?
+                            ) {
+                                if (isSuccess && reward) {
+                                    TaskManager.instance.completeTask(bean!!.subItems[0].code)
+                                } else if (!isSuccess) {
+                                    ToastMaster.showShortToast(ctx, "这个任务看起来好像是迷路了,请稍候再试")
+                                }
+                            }
+                        },
+                        null
+                    )
                     return@setOnClickListener
                 }
                 if (bean!!.isActivity) {

@@ -107,7 +107,7 @@ class CoinManager private constructor() {
         //加载tuia数据
         if (tuiaData == null) {
             for (i in 0 until tasks.size) {
-                if (tasks[i].isRewardTask) {
+                if (tasks[i].isTuiaTask) {
                     loadTuiaData()
                     break
                 }
