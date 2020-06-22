@@ -6,7 +6,6 @@
     android:layout_height="match_parent">
 
 
-
     <FrameLayout
         android:id="@+id/fl_container_main"
         android:layout_width="match_parent"
@@ -71,7 +70,8 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.youloft.senior.ui.MainCoinPage
+        android:id="@+id/main_coin_page"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

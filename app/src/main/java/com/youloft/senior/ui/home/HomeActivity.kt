@@ -1,5 +1,6 @@
 package com.youloft.senior.ui.home
 
+import android.view.View
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.ui.gif.GifActivity
@@ -35,7 +36,7 @@ class HomeActivity : BaseActivity() {
                     .hide(mainFragment)
                     .show(homeFragment)
                     .commit()
-
+                main_coin_page.visibility = View.VISIBLE
                 isSelected = true
                 btn_main.isSelected = false
             }
@@ -50,6 +51,7 @@ class HomeActivity : BaseActivity() {
                     .show(mainFragment)
                     .commit()
                 isSelected = true
+                main_coin_page.visibility= View.GONE
                 btn_home.isSelected = false
             }
 
