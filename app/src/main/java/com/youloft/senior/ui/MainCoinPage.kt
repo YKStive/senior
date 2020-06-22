@@ -1,6 +1,7 @@
 package com.youloft.senior.ui
 
 import android.animation.ValueAnimator
+import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -13,7 +14,8 @@ import com.youloft.net.bean.MissionResult
 import com.youloft.senior.R
 import com.youloft.senior.coin.CoinManager
 import com.youloft.senior.coin.TaskManager
-import com.youloft.senior.web.WebHelper
+import com.youloft.senior.tuia.TuiaUtil
+import com.youloft.senior.tuia.TuiaWebActivity
 import com.youloft.util.UiUtil
 import kotlinx.android.synthetic.main.main_coin_page_layout.view.*
 import kotlinx.android.synthetic.main.main_coin_page_sign_item_layout.view.*
@@ -249,11 +251,16 @@ internal class MainCoinPage(
                     //已经完成了
                     return@setOnClickListener
                 }
-                if(true){
-                    WebHelper.create(itemView.context)
-                        .showWeb("https://www.baidu.com", "", true, true)
-                        .put("parentFrom", "MissionActivity")
-                        .show()
+                if (bean!!.isTuiaTask) {
+                    if (bean!!.tuiaData == null) {
+                        return@setOnClickListener
+                    }
+                    TuiaUtil.reportUrl(bean!!.tuiaData.getString("reportClickUrl"))
+                    TuiaWebActivity.start(
+                        itemView.context as Activity?,
+                        TuiaUtil.getActivityUrl(bean!!.tuiaData.getString("activityUrl"))
+                    )
+                    CoinManager.instance.reloadTuia()
                     return@setOnClickListener
                 }
                 //如果么有登录，跳转登录界面
@@ -307,6 +314,19 @@ internal class MainCoinPage(
             itemView.item_title.text = bean.content
             if (bean.subItems == null || bean.subItems.isEmpty()) {
                 return
+            }
+            if (bean.isTuiaTask) {
+                if (CoinManager.instance.tuiaData == null) {
+                    itemView.visibility = View.GONE
+                } else {
+                    itemView.visibility = View.VISIBLE
+                    val report: Boolean =
+                        CoinManager.instance.tuiaData!!.getBooleanValue("is_report_value")
+                    if (!report) {
+                        CoinManager.instance.tuiaData!!["is_report_value"] = true
+                        TuiaUtil.reportUrl(CoinManager.instance.tuiaData!!.getString("reportExposureUrl"))
+                    }
+                }
             }
             itemView.item_content.text = bean.subItems[0].content
             itemView.item_coin.text = "+${bean.subItems[0].coin}"

@@ -2,10 +2,12 @@ package com.youloft.senior.coin
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.alibaba.fastjson.JSONObject
 import com.youloft.net.ApiHelper.api
 import com.youloft.net.bean.MissionResult
 import com.youloft.net.bean.MissionResult.DataBean
 import com.youloft.net.bean.MissionResult.DataBean.MissionsBean
+import com.youloft.senior.tuia.TuiaUtil
 import rx.Observable
 import rx.Subscriber
 import rx.Subscription
@@ -32,6 +34,8 @@ class CoinManager private constructor() {
      * 顶部签名信息
      */
     var signInfo: DataBean? = null
+
+    var tuiaData: JSONObject? = null
 
     /**
      * 任务列表
@@ -100,8 +104,45 @@ class CoinManager private constructor() {
                 }
             }
         }
+        //加载tuia数据
+        if (tuiaData == null) {
+            for (i in 0 until tasks.size) {
+                if (tasks[i].isRewardTask) {
+                    loadTuiaData()
+                    break
+                }
+            }
+        }
         //通知任务数据改变
         dataChangeLiveData.postValue(true)
+    }
+
+    public fun reloadTuia() {
+        tuiaData = null
+        loadTuiaData()
+    }
+
+    private fun loadTuiaData() {
+        TuiaUtil.requestTuiaAd("332032")
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnError { throwable -> }
+            .onErrorResumeNext(Observable.empty())
+            .onErrorResumeNext(Observable.empty())
+            .subscribe { jsonObject ->
+                if (jsonObject?.getJSONObject("data") != null) {
+                    tuiaData = jsonObject.getJSONObject("data")
+                    if (tuiaData != null && !tuiaData!!.containsKey("activityUrl") || !tuiaData!!.containsKey(
+                            "imageUrl"
+                        )
+                    ) {
+                        tuiaData = null
+                        return@subscribe
+                    }
+                    //通知任务数据改变
+                    dataChangeLiveData.postValue(true)
+                }
+            }
     }
 
     companion object {
