@@ -1,5 +1,6 @@
 package com.youloft.senior.ui.detail
 
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.youloft.core.base.BaseVMFragment
 
@@ -14,11 +15,12 @@ import com.youloft.core.base.BaseVMFragment
  * @UpdateRemark:   更新说明：
  * @Version:        1.0
  */
-class ItemCommentFragment : BaseVMFragment<ItemCommnetViewModel>() {
+class ItemCommentFragment : BaseVMFragment() {
+
+    private val mViewModel by viewModels<ItemCommnetViewModel>()
+
     override fun getLayoutResId(): Int = 0
 
-    override fun initVM(): ItemCommnetViewModel =
-        ViewModelProvider(this).get(ItemCommnetViewModel::class.java)
 
     override fun initView() {
     }

@@ -3,6 +3,20 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
     </style>
+
+    <style name="line_horizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">#FFEAEAEA</item>
+    </style>
+
+    <style name="line_vertical">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">#FFEAEAEA</item>
+
+    </style>
+
     <style name="ActionBar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">44dp</item>

@@ -13,28 +13,27 @@ import com.youloft.senior.R
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.Post
 import com.youloft.senior.utils.isByUser
-import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.home_post_bottom_share.view.*
-import kotlinx.android.synthetic.main.item_multi_image.view.*
+import kotlinx.android.synthetic.main.item_post_remote.view.*
 
 /**
  * @author you
  * @create 2020/6/22
  * @desc 信息流多图item
  */
-open class MultiImageViewBinder(
+open class RemotePostViewBinder(
     private val goPersonPage: (userId: String) -> Unit,
     val onItemClick: (postId: String, openComment: Boolean) -> Unit,
     val onShare: (postId: String) -> Unit,
     val onPraise: (postId: String) -> Unit
 ) :
-    ItemViewBinder<Post, MultiImageViewBinder.ViewHolder>() {
+    ItemViewBinder<Post, RemotePostViewBinder.ViewHolder>() {
     override fun onCreateViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup
     ): ViewHolder {
         val root: ConstraintLayout =
-            inflater.inflate(R.layout.item_multi_image, parent, false) as ConstraintLayout
+            inflater.inflate(R.layout.item_post_remote, parent, false) as ConstraintLayout
         return ViewHolder(root)
     }
 

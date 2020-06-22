@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
 
     <FrameLayout
@@ -37,7 +37,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="今天你还没有签到哦，马上签到得金币！" />
 
-
         <androidx.constraintlayout.helper.widget.Flow
             android:id="@+id/flow"
             android:layout_width="0dp"
@@ -49,7 +48,7 @@
             app:flow_wrapMode="aligned"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_content" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/iv1"

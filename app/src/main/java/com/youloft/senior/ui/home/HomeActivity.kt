@@ -1,6 +1,8 @@
 package com.youloft.senior.ui.home
 
 import android.view.View
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.ui.gif.GifActivity
@@ -51,7 +53,7 @@ class HomeActivity : BaseActivity() {
                     .show(mainFragment)
                     .commit()
                 isSelected = true
-                main_coin_page.visibility= View.GONE
+                main_coin_page.visibility = View.GONE
                 btn_home.isSelected = false
             }
 

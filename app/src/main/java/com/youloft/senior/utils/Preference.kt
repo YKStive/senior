@@ -21,6 +21,8 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
         const val IS_LOGIN = "is_login"
         const val USER_GSON = "user_gson"
         const val USER_ID = "user_id"
+        const val IS_PUNCH = "is_punch"
+        const val LAST_PUBLISH_ALBUM_TIME = "last_publish_album_time"
     }
 
     private val prefs: SharedPreferences by lazy {

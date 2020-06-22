@@ -8,14 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
  * @create 2020/6/18
  * @desc mvvm activity 基类
  */
-abstract class BaseVMActivity<VM : BaseViewModel> :
+abstract class BaseVMActivity :
     AppCompatActivity() {
 
-    lateinit var mViewModel: VM
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mViewModel = initVM()
 
         startObserve()
         setContentView(getLayoutResId())
@@ -24,7 +22,6 @@ abstract class BaseVMActivity<VM : BaseViewModel> :
     }
 
     open fun getLayoutResId(): Int = 0
-    abstract fun initVM(): VM
     abstract fun initView()
     abstract fun initData()
     abstract fun startObserve()

@@ -1,6 +1,6 @@
 package com.youloft.senior.ui.home
 
-import androidx.fragment.app.activityViewModels
+import android.widget.Button
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,17 +9,24 @@ import com.youloft.core.base.BaseVMFragment
 import com.youloft.senior.R
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.Post
-import com.youloft.senior.itembinder.MultiImageViewBinder
+import com.youloft.senior.bean.PostType
+import com.youloft.senior.itembinder.InviteViewBinder
+import com.youloft.senior.itembinder.LocalAlbumViewBinder
+import com.youloft.senior.itembinder.RemotePostViewBinder
+import com.youloft.senior.itembinder.PunchViewBinder
+import com.youloft.senior.utils.dp2px
 import com.youloft.senior.utils.logD
+import com.youloft.senior.widgt.RecycleViewDivider
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
  * @author you
  * @create 2020/6/18
- * @desc 信息流界面
+ * @desc 信息流界面p'r
  */
-class HomeFragment : BaseVMFragment<HomeViewModel>() {
+class HomeFragment : BaseVMFragment() {
 
+    private val mViewModel by viewModels<HomeViewModel>()
     private val mAdapter: MultiTypeAdapter = MultiTypeAdapter()
 
     override fun getLayoutResId(): Int {
@@ -28,7 +35,7 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
 
     override fun initView() {
         mAdapter.register(Post::class).to(
-            MultiImageViewBinder({ userId ->
+            RemotePostViewBinder({ userId ->
                 "个人界面".logD()
             }, { postId, openComment ->
                 if (openComment) {
@@ -40,17 +47,43 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
                 "分享".logD()
             }, { postId ->
                 "点赞".logD()
-            })
-        ).withKotlinClassLinker { position, item ->
+            }),
+
+            LocalAlbumViewBinder({
+                "去发表页面".logD()
+            }, {
+                "立即分享".logD()
+            }),
+
+            PunchViewBinder { btnPunch ->
+                "立即签到".logD()
+                btnPunch.isSelected = true
+            },
+
+            InviteViewBinder { _: Button ->
+                "邀请好友".logD()
+            }
+        ).withKotlinClassLinker { _, item ->
             when (item.postType) {
-                0 -> MultiImageViewBinder::class
-                else -> MultiImageViewBinder::class
+                PostType.IMAGE_TEXT.type -> RemotePostViewBinder::class
+                PostType.LOCAL_ALBUM.type -> LocalAlbumViewBinder::class
+                PostType.INVITE.type -> InviteViewBinder::class
+                PostType.PUNCH.type -> PunchViewBinder::class
+                else -> RemotePostViewBinder::class
             }
         }
 
         rv_post.run {
             layoutManager = LinearLayoutManager(App.instance())
             adapter = mAdapter
+            addItemDecoration(
+                RecycleViewDivider(
+                    App.instance(),
+                    LinearLayoutManager.HORIZONTAL,
+                    15.dp2px,
+                    resources.getColor(R.color.app_home_bg)
+                )
+            )
         }
     }
 
@@ -65,8 +98,5 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
         })
     }
 
-    override fun initVM(): HomeViewModel {
-        return HomeViewModel()
-    }
 
 }
