@@ -1,9 +1,11 @@
 package com.youloft.net
 
+import com.youloft.net.raw.RawCallAdapterFactory
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
@@ -36,6 +38,8 @@ abstract class BaseRetrofitClient {
     fun <S> getService(serviceClass: Class<S>, baseUrl: String): S {
         return Retrofit.Builder()
             .client(client)
+            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+            .addCallAdapterFactory(RawCallAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(baseUrl)
             .build().create(serviceClass)

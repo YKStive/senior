@@ -87,7 +87,7 @@ ext {
             "rxandroid"         : 'io.reactivex:rxandroid:1.2.1',
             "stehoOkhttp"       : "com.facebook.stetho:stetho-okhttp3:1.5.0",
             "steho"             : "com.facebook.stetho:stetho:1.5.0",
-
+            "gson"             : 'com.google.code.gson:gson:2.8.5',
     ]
 
     /**
