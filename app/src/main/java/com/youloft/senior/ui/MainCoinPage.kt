@@ -1,9 +1,11 @@
 package com.youloft.senior.ui
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -11,6 +13,7 @@ import com.youloft.net.bean.MissionResult
 import com.youloft.senior.R
 import com.youloft.senior.coin.CoinManager
 import com.youloft.senior.coin.TaskManager
+import com.youloft.util.UiUtil
 import kotlinx.android.synthetic.main.main_coin_page_layout.view.*
 import kotlinx.android.synthetic.main.main_coin_page_sign_item_layout.view.*
 import kotlinx.android.synthetic.main.main_coin_page_task_item_layout.view.*
@@ -32,6 +35,61 @@ internal class MainCoinPage(
         CoinManager.instance.asDataChange().observe(context as FragmentActivity, Observer {
             refreshUI()
         })
+        more.setOnClickListener {
+            openOrCloseMore()
+        }
+    }
+
+    var animationing: Boolean = false
+
+    private fun openOrCloseMore() {
+        if (animationing) {
+            //动画中，忽略
+            return
+        }
+        animationing = true
+        if (content_group.visibility == View.VISIBLE) {
+            //关闭
+            isClickable = false
+            val height = content_group.height
+            val animation: ValueAnimator = ValueAnimator.ofInt(height)
+            animation.duration = 300
+            animation.addUpdateListener {
+                if (it.animatedValue as Int >= height) {
+                    animationing = false
+                    content_group.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                    content_group.visibility = View.GONE
+                    return@addUpdateListener
+                }
+                content_group.layoutParams.height = height - (it.animatedValue as Int)
+                content_group.requestLayout()
+            }
+            animation.start()
+        } else {
+            //打开
+            isClickable = true
+            content_group.getChildAt(0)
+                .measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+            var height = content_group.getChildAt(0).measuredHeight
+            val maxHeight = getHeight() - top_group.height - UiUtil.dp2Px(context, 10f)
+            if (height > maxHeight) {
+                height = maxHeight
+            }
+            val animation: ValueAnimator = ValueAnimator.ofInt(height)
+            animation.duration = 300
+            content_group.visibility = View.VISIBLE
+            content_group.layoutParams.height = 0
+            animation.addUpdateListener {
+                if (it.animatedValue as Int >= height) {
+                    animationing = false
+                    content_group.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                    return@addUpdateListener
+                }
+                content_group.layoutParams.height = it.animatedValue as Int
+                content_group.requestLayout()
+            }
+            animation.start()
+        }
     }
 
     private fun refreshUI() {
@@ -186,10 +244,11 @@ internal class MainCoinPage(
 
         fun bindItem(bean: MissionResult.DataBean.MissionsBean) {
             itemView.item_title.text = bean.content
-            itemView.item_content.text = bean.subContent
-            if (bean.subItems != null && bean.subItems.isNotEmpty()) {
-                itemView.item_coin.text = "+${bean.subItems[0].coin}"
+            if (bean.subItems == null || bean.subItems.isEmpty()) {
+                return
             }
+            itemView.item_content.text = bean.subItems[0].content
+            itemView.item_coin.text = "+${bean.subItems[0].coin}"
             itemView.item_button.text = if (bean.hasDone()) "已完成" else bean.button
             itemView.item_button.setOnClickListener {
                 if (bean.hasDone()) {

@@ -52,10 +52,14 @@ internal class TaskManager {
             .subscribe { result: JsonObject? -> parseResult(result) }
     }
 
-    private fun parseResult(data: JsonObject?) {
-        if (data == null) {
+    private fun parseResult(result: JsonObject?) {
+        if (result == null) {
             return
         }
+        if (!result.has("data")) {
+            return
+        }
+        val data: JsonObject = result.getAsJsonObject("data") ?: return
         if (!data.has("coin") || data.get("coin").asInt <= 0) {
             if (data.has("msg") && !TextUtils.isEmpty(data.get("msg").asString)) {
                 ToastMaster.showShortToast(
