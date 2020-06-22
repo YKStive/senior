@@ -5,62 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.youloft.senior.widgt.RoundImageView
-        android:id="@+id/iv_avatar"
-        android:layout_width="38dp"
-        android:layout_height="38dp"
-        android:src="@drawable/test"
+
+    <FrameLayout
+        android:id="@+id/fl_header_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
-        android:textColor="#FF555555"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
-        app:layout_constraintStart_toEndOf="@id/iv_avatar"
-        app:layout_constraintTop_toTopOf="@id/iv_avatar"
-        tools:text="啦啦啦啦啦" />
-
-
-    <TextView
-        android:id="@+id/tv_view_amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
-        android:textColor="#FF999999"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/iv_avatar"
-        tools:text="@string/viewed_amount" />
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
+        android:background="#ffffff"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_view_amount">
+        app:layout_constraintTop_toBottomOf="@id/fl_header_container">
 
         <TextView
             android:id="@+id/tv_content"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:gravity="start"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
             android:textColor="#FF333333"
             android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/viewed_amount" />
+            tools:text="今天你还没有签到哦，马上签到得金币！" />
 
 
         <androidx.constraintlayout.helper.widget.Flow
@@ -129,7 +104,7 @@
             android:layout_marginTop="18dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/flow" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

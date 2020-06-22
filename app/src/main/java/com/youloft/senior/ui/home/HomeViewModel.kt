@@ -1,8 +1,11 @@
 package com.youloft.senior.ui.home
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.youloft.core.base.BaseViewModel
-import com.youloft.senior.utils.Preference
+import com.youloft.senior.bean.Post
+import kotlinx.coroutines.launch
 
 /**
  * @author you
@@ -10,9 +13,15 @@ import com.youloft.senior.utils.Preference
  * @desc
  */
 class HomeViewModel : BaseViewModel() {
-    val data: MutableLiveData<String> = MutableLiveData()
+    private val _data: MutableLiveData<MutableList<Post>> = MutableLiveData()
+    val data: LiveData<MutableList<Post>>
+        get() = _data
 
     fun getData() {
-        data.value = "hello"
+        viewModelScope.launch {
+            val mutableListOf = mutableListOf<Post>()
+            mutableListOf.add(Post.testData)
+            _data.value = mutableListOf
+        }
     }
 }

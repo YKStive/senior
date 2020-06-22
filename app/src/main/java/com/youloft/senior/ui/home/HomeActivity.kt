@@ -22,20 +22,24 @@ class HomeActivity : BaseActivity() {
         val homeFragment = HomeFragment()
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.fl_container_main, mainFragment)
             .add(R.id.fl_container_home, homeFragment)
+            .add(R.id.fl_container_main, mainFragment)
             .commit()
 
 
+
         btn_home.apply {
+            isSelected = true
             setOnClickListener {
                 supportFragmentManager.beginTransaction()
                     .hide(mainFragment)
                     .show(homeFragment)
                     .commit()
+
+                isSelected = true
+                btn_main.isSelected = false
             }
-            isSelected = true
-            btn_main.isSelected = false
+
         }
 
 
@@ -45,9 +49,10 @@ class HomeActivity : BaseActivity() {
                     .hide(homeFragment)
                     .show(mainFragment)
                     .commit()
+                isSelected = true
+                btn_home.isSelected = false
             }
-            isSelected = true
-            btn_home.isSelected = false
+
         }
 
         btn_function.setOnClickListener {

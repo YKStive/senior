@@ -8,6 +8,7 @@ import com.youloft.senior.Repository
 import com.youloft.socialize.SOC_MEDIA
 import com.youloft.socialize.Socialize
 import com.youloft.socialize.auth.AuthListener
+import com.youloft.util.ToastMaster.showShortToast
 import kotlinx.android.synthetic.main.activity_login.*
 
 
@@ -69,11 +70,9 @@ class LoginActivity : BaseActivity() {
                 }
 
                 override fun onCancel(platform: SOC_MEDIA?, action: Int) {
-                    showShortToast("授权取消")
                 }
 
                 override fun onError(platform: SOC_MEDIA?, action: Int, t: Throwable?) {
-                    showShortToast("授权异常")
                 }
 
                 override fun onStart(platform: SOC_MEDIA?) {

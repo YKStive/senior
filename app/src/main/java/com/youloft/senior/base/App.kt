@@ -15,10 +15,11 @@ import kotlin.properties.Delegates
  * @desc
  */
 class App : Application() {
-     var userId: String by Preference(Preference.USER_ID, "1")
+    var userId: String by Preference(Preference.USER_ID, "123")
     override fun onCreate() {
         super.onCreate()
-        //初始化友盟分享
+        instance = this
+
         //初始化友盟分享
         UMConfigure.init(this, "kasjdlkjslakj", "", UMConfigure.DEVICE_TYPE_PHONE, "")
         UMConfigure.setLogEnabled(true)
@@ -32,10 +33,7 @@ class App : Application() {
     }
 
     companion object {
-
         private var instance: App by Delegates.notNull()
-
-
         fun instance() = instance
     }
 

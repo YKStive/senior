@@ -11,7 +11,14 @@ data class Post(
     val template: String,
     val templateId: Int,
     val textContent: String,
-    val timestamps: Int,
     val userId: String,
     val viewed: Int
-)
+) {
+
+    companion object {
+        val testData: Post = Post(
+            "", "1992-11-25", "999", listOf("1", "2"), "别名", 0, 20,
+            "魔板内容", 898, "电视里的繁华盛开的粉红色跨境电啊就会受到老师", "123", 3000
+        )
+    }
+}
