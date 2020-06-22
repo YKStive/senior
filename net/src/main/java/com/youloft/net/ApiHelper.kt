@@ -1,5 +1,7 @@
 package com.youloft.net
 
+import android.content.Context
+import com.facebook.stetho.Stetho
 import okhttp3.OkHttpClient
 
 /**
@@ -11,9 +13,12 @@ import okhttp3.OkHttpClient
  */
 object ApiHelper : BaseRetrofitClient() {
 
-    val api by lazy { getService(Api::class.java, Api.BASE_URL) }
+    val api by lazy {
+        getService(Api::class.java, Api.BASE_URL) }
+    fun initSteho(context: Context){
+        Stetho.initializeWithDefaults(context);
+    }
 
     override fun handleBuilder(builder: OkHttpClient.Builder) {
-
     }
 }

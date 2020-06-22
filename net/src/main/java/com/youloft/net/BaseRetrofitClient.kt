@@ -1,5 +1,6 @@
 package com.youloft.net
 
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -19,7 +20,7 @@ abstract class BaseRetrofitClient {
 
     private val client: OkHttpClient
         get() {
-            val builder = OkHttpClient.Builder()
+            val builder = OkHttpClient.Builder().addNetworkInterceptor(StethoInterceptor())
             val logging = HttpLoggingInterceptor()
             logging.level = HttpLoggingInterceptor.Level.BASIC
             builder.addInterceptor(logging)

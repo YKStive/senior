@@ -3,6 +3,8 @@ package com.youloft.senior.base
 import android.app.Application
 import com.umeng.commonsdk.UMConfigure
 import com.umeng.socialize.PlatformConfig
+import com.youloft.net.Api
+import com.youloft.net.ApiHelper
 import com.youloft.senior.push.PushWrapper
 import com.youloft.senior.utils.Preference
 import kotlin.properties.Delegates
@@ -25,6 +27,8 @@ class App : Application() {
             "af16a3c2d7b39dd4e8022e04ca1baa3f"
         )
         PushWrapper.init(this)
+        ApiHelper.initSteho(this)
+
     }
 
     companion object {
