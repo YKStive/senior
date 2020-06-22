@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 /**
  * @author you
  * @create 2020/6/18
- * @desc 信息流界面
+ * @desc 信息流界面p'r
  */
 class HomeFragment : BaseVMFragment() {
 
