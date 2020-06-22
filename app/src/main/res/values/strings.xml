@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">最美社区</string>
+    <string name="square">广场</string>
+    <string name="main">我的</string>
+    <string name="viewed_amount">%s次浏览</string>
+    <string name="share">分享</string>
+    <string name="comment">评论</string>
 </resources>

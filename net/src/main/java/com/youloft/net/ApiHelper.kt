@@ -9,7 +9,7 @@ import okhttp3.OkHttpClient
  * 参考 有其他api interface 需要另外配置
  * 调用方式:ApiHelper.api.xxx()
  */
-class ApiHelper : BaseRetrofitClient() {
+object ApiHelper : BaseRetrofitClient() {
 
     val api by lazy { getService(Api::class.java, Api.BASE_URL) }
 

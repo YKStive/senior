@@ -4,6 +4,7 @@ import android.app.Application
 import com.umeng.commonsdk.UMConfigure
 import com.umeng.socialize.PlatformConfig
 import com.youloft.senior.push.PushWrapper
+import com.youloft.senior.utils.Preference
 import kotlin.properties.Delegates
 
 /**
@@ -12,8 +13,7 @@ import kotlin.properties.Delegates
  * @desc
  */
 class App : Application() {
-
-    val context by lazy { this }
+     var userId: String by Preference(Preference.USER_ID, "1")
     override fun onCreate() {
         super.onCreate()
         //初始化友盟分享
@@ -28,7 +28,10 @@ class App : Application() {
     }
 
     companion object {
+
         private var instance: App by Delegates.notNull()
+
+
         fun instance() = instance
     }
 

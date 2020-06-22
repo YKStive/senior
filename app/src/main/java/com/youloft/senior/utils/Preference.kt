@@ -11,7 +11,8 @@ import kotlin.reflect.KProperty
 /**
  * @author you
  * @create 2020/6/18
- * @desc
+ * @desc 属性代理，需要存入sp的属性，使用方法：val xx by Preference(key,default)，即调用了sp.get()
+ * 属性赋值时，自动调用sp.set()
  */
 
 class Preference<T>(val name: String, private val default: T) : ReadWriteProperty<Any?, T> {
@@ -19,6 +20,7 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
     companion object {
         const val IS_LOGIN = "is_login"
         const val USER_GSON = "user_gson"
+        const val USER_ID = "user_id"
     }
 
     private val prefs: SharedPreferences by lazy {
@@ -131,6 +133,7 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
     fun contains(key: String): Boolean {
         return prefs.contains(key)
     }
+
 
     /**
      * 返回所有的键值对

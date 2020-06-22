@@ -1,15 +1,15 @@
-package com.youloft.senior.ui.main
+package com.youloft.senior.ui.home
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.youloft.core.base.BaseViewModel
+import com.youloft.senior.utils.Preference
 
 /**
  * @author you
  * @create 2020/6/18
  * @desc
  */
-class MainViewModel : BaseViewModel() {
+class HomeViewModel : BaseViewModel() {
     val data: MutableLiveData<String> = MutableLiveData()
 
     fun getData() {

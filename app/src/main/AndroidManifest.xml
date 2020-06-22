@@ -24,7 +24,9 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="wnl_master" />
-        <activity android:name=".ui.main.MainActivity">
+
+
+        <activity android:name=".ui.home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

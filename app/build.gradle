@@ -24,6 +24,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 
 }
 
@@ -40,7 +43,6 @@ dependencies {
     implementation rootProject.ext.dependencies['walle']
     implementation rootProject.ext.dependencies['wnl-utils']
     implementation rootProject.ext.dependencies['preference']
-    implementation rootProject.ext.dependencies['koin-viewmodel']
     implementation rootProject.ext.dependencies['multitype']
     implementation rootProject.ext.dependencies['wnl-share']
     implementation rootProject.ext.dependencies['wnl-share-umeng']

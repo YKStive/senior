@@ -56,57 +56,46 @@ class GifMaker {
     ) {
 
         GlobalScope.launch(Dispatchers.IO) {
+            val taskTime = TaskTime()
             val gifDecoder = getGifDecoder(template)
             gifDecoder?.apply {
-                val frames = mutableListOf<ResFrame>()
+                val path = IOTool.provideRandomPath("test")
+                val os = FileOutputStream(File(path))
+                val animatedGIFWriter = AnimatedGIFWriter()
+                animatedGIFWriter.prepareForWrite(os, -1, -1)
+
+                val bitmap: Bitmap = Bitmap.createBitmap(
+                    200,
+                    200,
+                    Bitmap.Config.RGB_565
+                )
+                val canvas = Canvas(bitmap)
                 for (i in 0..template.frameCount) {
                     val nextFrame = nextFrame
                     nextFrame?.let {
-
                         val resourceDrawable = BitmapDrawable(context.resources, resource)
                         val templateFrameDrawable = BitmapDrawable(context.resources, it)
 
                         resourceDrawable.setBounds(0, 0, 200, 200)
                         templateFrameDrawable.setBounds(0, 0, 200, 200)
 
-                        val bitmap: Bitmap = Bitmap.createBitmap(
-                            200,
-                            200,
-                            Bitmap.Config.RGB_565
-                        )
-                        val canvas = Canvas(bitmap)
-
                         resourceDrawable.draw(canvas)
                         templateFrameDrawable.draw(canvas)
 
-                        val path = IOTool.saveBitmap2Box(context, bitmap, "pic_$i")
-                        frames.add(ResFrame(getDelay(i), path))
+                        animatedGIFWriter.writeFrame(os, bitmap, getDelay(i))
                     }
                     advance()
                 }
 
-                val newGifPath = genGifByFramesWithGPU(context, frames)
+                animatedGIFWriter.finishWrite(os)
+                taskTime.release("makeNeGif---${template.frameCount}")
+                IOTool.notifySystemGallery(context, path)
                 withContext(Dispatchers.Main) {
-                    onSuccess.invoke(newGifPath)
+                    onSuccess.invoke(path)
                 }
             }
         }
     }
 
-    private fun genGifByFramesWithGPU(context: Context, frames: List<ResFrame>): String {
-        val path = IOTool.provideRandomPath("test")
-        val os = FileOutputStream(File(path))
-        val animatedGIFWriter = AnimatedGIFWriter()
-        animatedGIFWriter.prepareForWrite(os, -1, -1)
-        for (value in frames) {
-            val bitmap = BitmapFactory.decodeFile(value.path)
-            animatedGIFWriter.writeFrame(os, bitmap, value.delay)
-        }
-        animatedGIFWriter.finishWrite(os)
-        IOTool.notifySystemGallery(context, path)
-        return path
-    }
-
-    data class ResFrame(var delay: Int, var path: String)
 
 }

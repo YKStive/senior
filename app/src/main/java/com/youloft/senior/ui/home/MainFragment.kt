@@ -1,21 +1,23 @@
-package com.youloft.senior.ui.main
+package com.youloft.senior.ui.home
 
 import androidx.lifecycle.Observer
 import com.youloft.core.base.BaseVMFragment
+import com.youloft.net.ApiHelper
 import com.youloft.senior.R
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 /**
  * @author you
  * @create 2020/6/18
- * @desc 信息流界面
+ * @desc 我的
  */
-class MainFragment : BaseVMFragment<MainViewModel>() {
+class MainFragment : BaseVMFragment<HomeViewModel>() {
     override fun getLayoutResId(): Int {
         return R.layout.fragment_main
     }
 
-    override fun initVM(): MainViewModel = getViewModel()
+    override fun initVM(): HomeViewModel {
+        return HomeViewModel()
+    }
 
 
     override fun initView() {
@@ -23,6 +25,7 @@ class MainFragment : BaseVMFragment<MainViewModel>() {
     }
 
     override fun initData() {
+
     }
 
     override fun startObserve() {
