@@ -10,13 +10,9 @@ import com.youloft.senior.R
  * @create 2020/6/18
  * @desc 我的
  */
-class MainFragment : BaseVMFragment<HomeViewModel>() {
+class MainFragment : BaseVMFragment() {
     override fun getLayoutResId(): Int {
         return R.layout.fragment_main
-    }
-
-    override fun initVM(): HomeViewModel {
-        return HomeViewModel()
     }
 
 
@@ -29,9 +25,7 @@ class MainFragment : BaseVMFragment<HomeViewModel>() {
     }
 
     override fun startObserve() {
-        mViewModel.data.observe(this, Observer {
 
-        })
     }
 
 }

@@ -14,10 +14,7 @@ import androidx.lifecycle.ViewModelLazy
  * @create 2020/6/18
  * @desc mmvm fragment 基类
  */
-abstract class BaseVMFragment<VM : BaseViewModel> : Fragment() {
-
-    protected lateinit var mViewModel: VM
-
+abstract class BaseVMFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +25,6 @@ abstract class BaseVMFragment<VM : BaseViewModel> : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        mViewModel = initVM()
         initView()
         initData()
         startObserve()
@@ -36,7 +32,6 @@ abstract class BaseVMFragment<VM : BaseViewModel> : Fragment() {
     }
 
     abstract fun getLayoutResId(): Int
-    abstract fun initVM(): VM
     abstract fun initView()
     abstract fun initData()
     abstract fun startObserve()

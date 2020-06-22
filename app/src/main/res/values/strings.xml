@@ -3,6 +3,17 @@
     <string name="square">广场</string>
     <string name="main">我的</string>
     <string name="viewed_amount">%s次浏览</string>
+    <string name="invite_amount">%s人在邀请</string>
+    <string name="punch_amount">%s人已完成</string>
     <string name="share">分享</string>
     <string name="comment">评论</string>
+    <string name="local_album_content">手机里发现很多好看的照片，点这里分享给大家，马上赚金币提现！</string>
+    <string name="local_album_notice">注：以上照片重新自动上传到平台</string>
+    <string name="share_now">立即分享</string>
+    <string name="punch_content">今天你还没有签到哦，马上签到得%s金币！</string>
+    <string name="invite_content">邀请别人使用这个APP，马上可以得到%s金币奖励！随时提现〜</string>
+    <string name="punch_now">立即签到</string>
+    <string name="punch_every_day_money">每天签到赚金币</string>
+    <string name="invite_friend_money">邀请好友赚金币</string>
+    <string name="invite_now">立即邀请</string>
 </resources>
