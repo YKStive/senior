@@ -10,8 +10,6 @@ import com.youloft.socialize.Socialize
 import com.youloft.socialize.auth.AuthListener
 import com.youloft.util.ToastMaster.showShortToast
 import kotlinx.android.synthetic.main.activity_login.*
-
-
 /**
  *
  * @Description:     登陆
@@ -73,6 +71,7 @@ class LoginActivity : BaseActivity() {
                 }
 
                 override fun onError(platform: SOC_MEDIA?, action: Int, t: Throwable?) {
+                    ("授权异常")
                 }
 
                 override fun onStart(platform: SOC_MEDIA?) {
@@ -90,7 +89,7 @@ class LoginActivity : BaseActivity() {
                 val projectTree = it.getOrNull()
                 if (projectTree != null) {
                     projectTree.data
-//                    showToast("登录成功")
+                    showShortToast(this@LoginActivity,"%s","登录成功")
                 } else {
 //                    showToast("账号密码不匹配！")
                 }

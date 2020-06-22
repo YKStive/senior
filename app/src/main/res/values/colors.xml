@@ -2,4 +2,7 @@
 <resources>
     <color name="app_btn_text_checked">#FFFF3F4A</color>
     <color name="app_btn_text_unchecked">#FF777777</color>
+    <color name="white">#FFFFFF</color>
+    <color name="background">#FFFFFF</color>
+    <color name="line_color">#EAEAEA</color>
 </resources>
