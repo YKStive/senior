@@ -269,6 +269,51 @@ public class MissionResult implements IJsonObject {
             }
 
             /**
+             * imagetext_xx 图文
+             * photo_xx 影集
+             * emoj_xx 表情
+             * zan_photo_xx 看xxx
+             * zan_emoj_xx
+             * zan_imagetext_xx
+             * activity_xx 活动
+             */
+            public boolean isImageText() {
+                return !TextUtils.isEmpty(code) && code.startsWith("imagetext_");
+            }
+
+            public boolean isPhoto() {
+                return !TextUtils.isEmpty(code) && code.startsWith("photo_");
+            }
+
+            public boolean isEmoj() {
+                return !TextUtils.isEmpty(code) && code.startsWith("emoj_");
+            }
+
+            public boolean isZanImageText() {
+                return !TextUtils.isEmpty(code) && code.startsWith("zan_imagetext_");
+            }
+
+            public boolean isZanPhoto() {
+                return !TextUtils.isEmpty(code) && code.startsWith("zan_photo_");
+            }
+
+            public boolean isZanEmoj() {
+                return !TextUtils.isEmpty(code) && code.startsWith("zan_emoj_");
+            }
+
+            public boolean isActivity() {
+                return !TextUtils.isEmpty(code) && code.startsWith("activity_");
+            }
+
+            public boolean isInvite() {
+                return !TextUtils.isEmpty(code) && code.equalsIgnoreCase("xs_001");
+            }
+
+            public boolean isWriteCode() {
+                return !TextUtils.isEmpty(code) && code.equalsIgnoreCase("xs_004");
+            }
+
+            /**
              * 是否是 RewardTask
              *
              * @return
@@ -281,7 +326,7 @@ public class MissionResult implements IJsonObject {
                 return !TextUtils.isEmpty(code) && code.startsWith("download_") && subItems != null && !subItems.isEmpty();
             }
 
-            public boolean isTuiaTask(){
+            public boolean isTuiaTask() {
                 return !TextUtils.isEmpty(code) && code.endsWith("_tuia") && subItems != null && !subItems.isEmpty();
             }
 

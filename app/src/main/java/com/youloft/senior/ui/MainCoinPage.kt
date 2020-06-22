@@ -13,6 +13,7 @@ import com.youloft.net.bean.MissionResult
 import com.youloft.senior.R
 import com.youloft.senior.coin.CoinManager
 import com.youloft.senior.coin.TaskManager
+import com.youloft.senior.web.WebHelper
 import com.youloft.util.UiUtil
 import kotlinx.android.synthetic.main.main_coin_page_layout.view.*
 import kotlinx.android.synthetic.main.main_coin_page_sign_item_layout.view.*
@@ -71,7 +72,7 @@ internal class MainCoinPage(
             content_group.getChildAt(0)
                 .measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
             var height = content_group.getChildAt(0).measuredHeight
-            val maxHeight = getHeight() - top_group.height - UiUtil.dp2Px(context, 10f)
+            val maxHeight = getHeight() - top_group.height - UiUtil.dp2Px(context, 20f)
             if (height > maxHeight) {
                 height = maxHeight
             }
@@ -242,7 +243,67 @@ internal class MainCoinPage(
         val itemView: View =
             LayoutInflater.from(ctx).inflate(R.layout.main_coin_page_task_item_layout, null, false)
 
+        init {
+            itemView.item_button.setOnClickListener {
+                if (bean == null || bean!!.hasDone()) {
+                    //已经完成了
+                    return@setOnClickListener
+                }
+                if(true){
+                    WebHelper.create(itemView.context)
+                        .showWeb("https://www.baidu.com", "", true, true)
+                        .put("parentFrom", "MissionActivity")
+                        .show()
+                    return@setOnClickListener
+                }
+                //如果么有登录，跳转登录界面
+                if (bean!!.isRewardTask) {
+                    //激励视频任务
+                    return@setOnClickListener
+                }
+                if (bean!!.isActivity) {
+                    //活动任务
+                    return@setOnClickListener
+                }
+                if (bean!!.isEmoj) {
+                    //创建表情任务
+                    return@setOnClickListener
+                }
+                if (bean!!.isImageText) {
+                    //创建图文任务
+                    return@setOnClickListener
+                }
+                if (bean!!.isPhoto) {
+                    //创建相册的任务
+                    return@setOnClickListener
+                }
+                if (bean!!.isZanEmoj) {
+                    //赞表情的任务
+                    return@setOnClickListener
+                }
+                if (bean!!.isZanImageText) {
+                    //赞图文的任务
+                    return@setOnClickListener
+                }
+                if (bean!!.isZanPhoto) {
+                    //赞相册的任务
+                    return@setOnClickListener
+                }
+                if (bean!!.isInvite) {
+                    //邀请好友
+                    return@setOnClickListener
+                }
+                if (bean!!.isWriteCode) {
+                    //填写邀请码
+                    return@setOnClickListener
+                }
+            }
+        }
+
+        var bean: MissionResult.DataBean.MissionsBean? = null
+
         fun bindItem(bean: MissionResult.DataBean.MissionsBean) {
+            this.bean = bean
             itemView.item_title.text = bean.content
             if (bean.subItems == null || bean.subItems.isEmpty()) {
                 return
@@ -250,17 +311,6 @@ internal class MainCoinPage(
             itemView.item_content.text = bean.subItems[0].content
             itemView.item_coin.text = "+${bean.subItems[0].coin}"
             itemView.item_button.text = if (bean.hasDone()) "已完成" else bean.button
-            itemView.item_button.setOnClickListener {
-                if (bean.hasDone()) {
-                    //已经完成了
-                    return@setOnClickListener
-                }
-                if (bean.isRewardTask) {
-                    //激励视频任务
-                    return@setOnClickListener
-                }
-
-            }
         }
 
     }

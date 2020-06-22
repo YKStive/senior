@@ -88,6 +88,7 @@ ext {
             "stehoOkhttp"       : "com.facebook.stetho:stetho-okhttp3:1.5.0",
             "steho"             : "com.facebook.stetho:stetho:1.5.0",
             "gson"             : 'com.google.code.gson:gson:2.8.5',
+            "fastjson"         : 'com.alibaba:fastjson:1.1.71.android',
     ]
 
     /**

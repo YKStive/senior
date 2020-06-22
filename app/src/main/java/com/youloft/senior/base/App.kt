@@ -3,10 +3,11 @@ package com.youloft.senior.base
 import android.app.Application
 import com.umeng.commonsdk.UMConfigure
 import com.umeng.socialize.PlatformConfig
-import com.youloft.net.Api
 import com.youloft.net.ApiHelper
 import com.youloft.senior.push.PushWrapper
 import com.youloft.senior.utils.Preference
+import com.youloft.senior.web.WebComponentHandle
+import com.youloft.webview.ProtocolDispatcher
 import kotlin.properties.Delegates
 
 /**
@@ -29,7 +30,7 @@ class App : Application() {
         )
         PushWrapper.init(this)
         ApiHelper.initSteho(this)
-
+        ProtocolDispatcher.registerProtocolHandle("protocol", WebComponentHandle::class.java)
     }
 
     companion object {

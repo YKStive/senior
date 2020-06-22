@@ -1,0 +1,117 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#d03f3f">
+
+    <RelativeLayout
+        android:id="@+id/bar_tool_group"
+        style="@style/ActionBar"
+        android:layout_width="match_parent">
+
+        <ImageView
+            android:id="@+id/actionbar_back"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:scaleType="center"
+            android:src="@drawable/theme_nav_back_icon" />
+
+
+        <ImageView
+            android:id="@+id/actionbar_close"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/actionbar_back"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:src="@drawable/close_icon"
+            android:visibility="invisible" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true">
+
+
+            <ImageView
+                android:id="@+id/collect"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="11.5dp"
+                android:src="@drawable/web_collect_selector_day_normal"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/item_image"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:src="@drawable/navbar_share_icon_normal" />
+
+
+            <TextView
+                android:id="@+id/item_text"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="15dp"
+                android:gravity="center"
+                android:minEms="2"
+                android:textColor="#fff"
+                android:textSize="17dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/select_click_id"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:minWidth="100dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/actionbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:maxEms="8"
+                android:singleLine="true"
+                android:textColor="#fff"
+                android:textSize="17dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/select_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/nav_more_arrow_icon"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/today"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/actionbar_back"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:src="@drawable/nav_today_icon"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/lady_today"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:src="@drawable/nav_today_icon"
+            android:visibility="invisible" />
+    </RelativeLayout>
+</FrameLayout>

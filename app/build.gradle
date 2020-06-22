@@ -54,7 +54,8 @@ dependencies {
 //    implementation rootProject.ext.dependencies['extensions']
     annotationProcessor rootProject.ext.dependencies['glideOkhttp']
     implementation rootProject.ext.dependencies['gson']
-
+    implementation "com.wnl.common:webview:$libVersion"
+    implementation rootProject.ext.dependencies['fastjson']
     implementation project(path: ':core')
     implementation project(path: ':net')
 

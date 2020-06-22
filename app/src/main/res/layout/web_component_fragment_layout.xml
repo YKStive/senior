@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_web_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/notch_compat_layer"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FF000000"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffff">
+
+        <com.youloft.webview.WebComponent
+            android:id="@+id/web_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/fk"
+            android:scrollbarStyle="insideOverlay"
+            android:scrollbars="none" />
+
+        <FrameLayout
+            android:id="@+id/web_custom_layer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+
+        <FrameLayout
+            android:id="@+id/web_component_retry_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f6f6f6"
+            android:clickable="true"
+            android:paddingBottom="50dp"
+            android:visibility="invisible">
+
+            <include layout="@layout/web_loading_fail" />
+        </FrameLayout>
+
+        <ProgressBar
+            android:id="@+id/web_component_loading_layer"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:progressDrawable="@drawable/loading_bg"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</LinearLayout>
+

@@ -120,161 +120,175 @@
                 android:id="@+id/content_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="20dp"
                 android:scrollbars="none"
                 android:visibility="gone">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
 
-                    <FrameLayout
+                    <View
                         android:layout_width="match_parent"
-                        android:layout_height="139dp"
-                        android:layout_marginHorizontal="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="22dp"
-                        android:background="@drawable/top_today_coin_bg"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="22dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="25dp"
-                            android:text="金币余额"
-                            android:textColor="#995b2020"
-                            android:textSize="19dp" />
-
-                        <TextView
-                            android:id="@+id/my_coin_value"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginBottom="5dp"
-                            android:text="5465"
-                            android:textColor="#ff5b2020"
-                            android:textSize="42dp" />
-
-                        <TextView
-                            android:id="@+id/my_cash_value"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:layout_marginLeft="22dp"
-                            android:background="@drawable/coin_tixian_bg"
-                            android:paddingLeft="12dp"
-                            android:paddingTop="3dp"
-                            android:paddingRight="12dp"
-                            android:paddingBottom="3dp"
-                            android:text="约10.24元"
-                            android:textColor="#ffffffff"
-                            android:textSize="17dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:layout_marginRight="30dp"
-                            android:drawableRight="@drawable/coin_more_icon"
-                            android:drawablePadding="2dp"
-                            android:text="金币明细"
-                            android:textColor="#cc5b2020"
-                            android:textSize="18dp" />
-
-                        <TextView
-                            android:id="@+id/submit"
-                            android:layout_width="93dp"
-                            android:layout_height="36dp"
-                            android:layout_gravity="right|bottom"
-                            android:layout_marginRight="25dp"
-                            android:background="@drawable/coin_tixian_bg"
-                            android:gravity="center"
-                            android:text="提现"
-                            android:textColor="#ffffffff"
-                            android:textSize="19dp" />
-                    </FrameLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="35dp">
-
-                        <TextView
-                            android:id="@+id/continued_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp"
-                            android:text="连续签到7天"
-                            android:textColor="#ff333333"
-                            android:textSize="24sp"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/continued_double"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:background="@drawable/coin_tixian_bg"
-                            android:paddingLeft="8dp"
-                            android:paddingTop="2dp"
-                            android:paddingRight="8dp"
-                            android:paddingBottom="2dp"
-                            android:text="奖励翻倍"
-                            android:textColor="#ffffffff"
-                            android:textSize="17sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/continued_title"
-                            app:layout_constraintLeft_toRightOf="@+id/continued_title"
-                            app:layout_constraintTop_toTopOf="@+id/continued_title" />
-
-                        <HorizontalScrollView
-                            android:id="@+id/sign_detail"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:scrollbars="none"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/continued_title">
-
-                            <LinearLayout
-                                android:id="@+id/sign_group"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal" />
-                        </HorizontalScrollView>
-
-                        <TextView
-                            android:id="@+id/sign_button"
-                            android:layout_width="0dp"
-                            android:layout_height="48dp"
-                            android:layout_marginLeft="37dp"
-                            android:layout_marginTop="21dp"
-                            android:layout_marginRight="37dp"
-                            android:background="@drawable/top_sign_bg"
-                            android:gravity="center"
-                            android:shadowColor="#ffe0232d"
-                            android:shadowDx="0"
-                            android:shadowDy="1"
-                            android:shadowRadius="3"
-                            android:text="立即签到"
-                            android:textColor="#ffffffff"
-                            android:textSize="20dp"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/sign_detail" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:layout_height="83dp"
+                        android:layout_alignTop="@+id/bottom_layout"
+                        android:layout_alignBottom="@+id/bottom_layout"
+                        android:layout_marginTop="56dp"
+                        android:background="#ffff" />
 
                     <LinearLayout
-                        android:id="@+id/task_layout"
+                        android:id="@+id/bottom_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="37dp"
-                        android:orientation="vertical" />
-                </LinearLayout>
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="139dp"
+                            android:layout_marginHorizontal="15dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="22dp"
+                            android:background="@drawable/top_today_coin_bg"
+                            android:paddingTop="20dp"
+                            android:paddingBottom="22dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="25dp"
+                                android:text="金币余额"
+                                android:textColor="#995b2020"
+                                android:textSize="19dp" />
+
+                            <TextView
+                                android:id="@+id/my_coin_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="25dp"
+                                android:layout_marginBottom="5dp"
+                                android:text="5465"
+                                android:textColor="#ff5b2020"
+                                android:textSize="42dp" />
+
+                            <TextView
+                                android:id="@+id/my_cash_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:layout_marginLeft="22dp"
+                                android:background="@drawable/coin_tixian_bg"
+                                android:paddingLeft="12dp"
+                                android:paddingTop="3dp"
+                                android:paddingRight="12dp"
+                                android:paddingBottom="3dp"
+                                android:text="约10.24元"
+                                android:textColor="#ffffffff"
+                                android:textSize="17dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:layout_marginRight="30dp"
+                                android:drawableRight="@drawable/coin_more_icon"
+                                android:drawablePadding="2dp"
+                                android:text="金币明细"
+                                android:textColor="#cc5b2020"
+                                android:textSize="18dp" />
+
+                            <TextView
+                                android:id="@+id/submit"
+                                android:layout_width="93dp"
+                                android:layout_height="36dp"
+                                android:layout_gravity="right|bottom"
+                                android:layout_marginRight="25dp"
+                                android:background="@drawable/coin_tixian_bg"
+                                android:gravity="center"
+                                android:text="提现"
+                                android:textColor="#ffffffff"
+                                android:textSize="19dp" />
+                        </FrameLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="35dp">
+
+                            <TextView
+                                android:id="@+id/continued_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:text="连续签到7天"
+                                android:textColor="#ff333333"
+                                android:textSize="24sp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/continued_double"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/coin_tixian_bg"
+                                android:paddingLeft="8dp"
+                                android:paddingTop="2dp"
+                                android:paddingRight="8dp"
+                                android:paddingBottom="2dp"
+                                android:text="奖励翻倍"
+                                android:textColor="#ffffffff"
+                                android:textSize="17sp"
+                                app:layout_constraintBottom_toBottomOf="@+id/continued_title"
+                                app:layout_constraintLeft_toRightOf="@+id/continued_title"
+                                app:layout_constraintTop_toTopOf="@+id/continued_title" />
+
+                            <HorizontalScrollView
+                                android:id="@+id/sign_detail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp"
+                                android:scrollbars="none"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/continued_title">
+
+                                <LinearLayout
+                                    android:id="@+id/sign_group"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal" />
+                            </HorizontalScrollView>
+
+                            <TextView
+                                android:id="@+id/sign_button"
+                                android:layout_width="0dp"
+                                android:layout_height="48dp"
+                                android:layout_marginLeft="37dp"
+                                android:layout_marginTop="21dp"
+                                android:layout_marginRight="37dp"
+                                android:background="@drawable/top_sign_bg"
+                                android:gravity="center"
+                                android:shadowColor="#ffe0232d"
+                                android:shadowDx="0"
+                                android:shadowDy="1"
+                                android:shadowRadius="3"
+                                android:text="立即签到"
+                                android:textColor="#ffffffff"
+                                android:textSize="20dp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/sign_detail" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <LinearLayout
+                            android:id="@+id/task_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="37dp"
+                            android:orientation="vertical" />
+                    </LinearLayout>
+                </RelativeLayout>
             </ScrollView>
 
             <TextView
