@@ -49,6 +49,7 @@ dependencies {
     implementation rootProject.ext.dependencies['rxandroid']
     implementation rootProject.ext.dependencies['glidebum']
     implementation rootProject.ext.dependencies['bigImage']
+//    implementation rootProject.ext.dependencies['extensions']
     annotationProcessor rootProject.ext.dependencies['glideOkhttp']
 
     implementation project(path: ':core')
