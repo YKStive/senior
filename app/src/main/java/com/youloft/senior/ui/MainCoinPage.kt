@@ -235,9 +235,13 @@ internal class MainCoinPage(
                 state = 1;
                 itemView.isSelected = true
             } else if (position >= con) {
-                //为签到的天
+                //未签到的天
                 state = 2
                 itemView.isSelected = false
+            }else{
+                //已签到
+                state = 0
+                itemView.isSelected = true
             }
         }
     }
