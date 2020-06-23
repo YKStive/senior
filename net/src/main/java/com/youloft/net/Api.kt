@@ -5,6 +5,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 import com.google.gson.JsonObject
+import com.youloft.net.bean.ItemDetailBean
 import com.youloft.net.bean.MissionResult
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -34,4 +35,7 @@ interface Api {
     @POST("/api/user/login")
     @FormUrlEncoded
     fun login(@FieldMap params: Map<String, String>): Call<LoginBean>
+
+    @GET("/api/post/comment")
+    fun getCommentList(@QueryMap params: Map<String, String>): Call<ItemDetailBean>
 }

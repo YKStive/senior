@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
  * @UpdateRemark:   更新说明：
  * @Version:        1.0
  */
-class ItemCommnetViewModel : BaseViewModel() {
+class FavoriteViewModel : BaseViewModel() {
     private val comment: MutableLiveData<MutableList<CommenttData>> = MutableLiveData()
     val _data: MutableLiveData<MutableList<CommenttData>>
         get() = comment
