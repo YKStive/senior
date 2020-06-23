@@ -63,6 +63,7 @@
             android:exported="true"
             android:launchMode="singleTask" />
         <activity android:name=".web.WebActivity" />
+        <activity android:name=".coin.CoinDetailActivity" />
     </application>
 
 

@@ -44,6 +44,9 @@ internal class MainCoinPage(
         more.setOnClickListener {
             openOrCloseMore()
         }
+        coin_more.setOnClickListener {
+            context.startActivity(Intent(context, CoinDetailActivity::class.java))
+        }
     }
 
     var animationing: Boolean = false
