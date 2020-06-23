@@ -65,10 +65,13 @@ class HomeFragment : BaseVMFragment() {
             }
         ).withKotlinClassLinker { _, item ->
             when (item.postType) {
-                PostType.IMAGE_TEXT.type -> RemotePostViewBinder::class
-                PostType.LOCAL_ALBUM.type -> LocalAlbumViewBinder::class
-                PostType.INVITE.type -> InviteViewBinder::class
-                PostType.PUNCH.type -> PunchViewBinder::class
+                PostType.IMAGE_TEXT -> RemotePostViewBinder::class
+                PostType.GIF -> RemotePostViewBinder::class
+                PostType.ALBUM -> RemotePostViewBinder::class
+                PostType.VIDEO -> RemotePostViewBinder::class
+                PostType.LOCAL_ALBUM -> LocalAlbumViewBinder::class
+                PostType.INVITE -> InviteViewBinder::class
+                PostType.PUNCH -> PunchViewBinder::class
                 else -> RemotePostViewBinder::class
             }
         }
