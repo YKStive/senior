@@ -17,6 +17,7 @@ import com.youloft.senior.R
  */
 class FavoriteAdapter( data: MutableList<Any>?) :
     BaseQuickAdapter<Any, BaseViewHolder>(R.layout.item_favorite, data) {
+
     override fun convert(holder: BaseViewHolder, item: Any) {
     }
 }
