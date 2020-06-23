@@ -72,7 +72,7 @@ internal class TaskManager {
         context: Context,
         doubleMode: DoubleBean? = null,
         otherinfo: String? = null, extData: String? = null, success: (() -> Unit)? = null
-        , failed: (() -> Unit)? = null
+        , failed: (() -> Unit)? = null, jlspOrderId: String? = null
     ) {
         Observable
             .unsafeCreate { subscriber: Subscriber<in JsonObject?> ->
@@ -81,7 +81,14 @@ internal class TaskManager {
                     val sn: String =
                         MD5.encode("Youloft_Android" + time + "D0513B7CEF494E82AEAFDFF7B2183ECF")
                     val result =
-                        ApiHelper.api.completeTask(code, time.toString(), sn, otherinfo, extData)
+                        ApiHelper.api.completeTask(
+                            code,
+                            time.toString(),
+                            sn,
+                            otherinfo,
+                            extData,
+                            jlspOrderId
+                        )
                     subscriber.onNext(result)
                 } catch (e: Exception) {
                     subscriber.onError(e)
@@ -124,7 +131,6 @@ internal class TaskManager {
             failed?.invoke()
             return
         }
-        recordLastCompletedTime(code)
         val data: JsonObject = result.getAsJsonObject("data") ?: return
         if (!data.has("coin") || data.get("coin").asInt <= 0) {
             failed?.invoke()
@@ -141,33 +147,68 @@ internal class TaskManager {
         }
         success?.invoke()
         recordLastCompletedTime(code)
-        handleDoubleMode(ctx, doubleMode)
+        handleDoubleMode(ctx, doubleMode, result)
         //成功，刷新数据
         CoinManager.instance.loadData()
 
     }
 
-    fun handleDoubleMode(ctx: Context, doubleMode: DoubleBean?) {
-        if (doubleMode == null || !TextUtils.isEmpty(doubleMode.doubleCode)) {
+    fun handleDoubleMode(ctx: Context, doubleMode: DoubleBean?, result: JsonObject) {
+        val data: JsonObject = result.getAsJsonObject("data") ?: return
+        if (doubleMode == null || TextUtils.isEmpty(doubleMode.doubleCode)) {
+            //没有双倍
+            //弹普通获取弹窗
+            CoinTipsDialog(ctx, "恭喜获得", "测试", data.get("coin").asInt, null, null).show()
             return
         }
         if (!TextUtils.isEmpty(
                 doubleMode.posid
             )
         ) {
+            if (doubleMode.cash) {
+                //三倍后的结果
+                CoinTipsDialog(ctx, "恭喜获得", "可立即提现至微信", data.get("coin").asInt, "0.3", "立即提现")
+                    .setButtonListener {
+                        //跳转至提现
+                    }.show()
+                saveComplete(doubleMode.doubleCode!!, true)
+                return
+            }
             //双倍任务完成后保存值
+            CoinTipsDialog(ctx, "获得翻倍奖励", "测试", data.get("coin").asInt, null, null)
+                .setButtonListener {
+
+                }.show()
             saveComplete(doubleMode.doubleCode!!, true)
             return
         }
-        //去完成双倍任务
-        //应该先弹出对话框
-        completeDoubleTask(ctx, doubleMode)
+        if (result.has("isCoinDouble") && result.get("isCoinDouble").asBoolean) {
+            //翻两倍
+            CoinTipsDialog(ctx, "恭喜获得", "测试", data.get("coin").asInt, null, "翻倍奖励")
+                .setButtonListener {
+                    completeDoubleTask(ctx, doubleMode)
+                }.show()
+            return
+        }
+        if (result.has("isCoinThree") && result.get("isCoinThree").asBoolean) {
+            //翻三倍
+            CoinTipsDialog(ctx, "恭喜获得", "可立即提现至微信", data.get("coin").asInt, "0.1", "cash-double")
+                .setButtonListener {
+                    doubleMode.cash = true
+                    completeDoubleTask(ctx, doubleMode)
+                }.show()
+            return
+        }
     }
 
     /**
      * 去完成视频双倍，并提交双倍到服务器
      */
     fun completeDoubleTask(ctx: Context, doubleMode: DoubleBean) {
+        val uuid = UUID.randomUUID().toString()
+        val extra = JSONObject()
+        extra["uuid"] = uuid
+        extra["code"] = doubleMode.doubleCode
         TTRewardManager.requestReword(
             ctx as Activity,
             doubleMode.posid,
@@ -181,6 +222,7 @@ internal class TaskManager {
                         //双倍提交任务
                         val doubleBean1 = DoubleBean()
                         doubleBean1.doubleCode = doubleMode.doubleCode
+                        doubleBean1.cash = doubleMode.cash
                         completeTask(
                             doubleMode.doubleCode!!,
                             ctx, doubleBean1
@@ -190,7 +232,7 @@ internal class TaskManager {
                     }
                 }
             },
-            null
+            extra
         )
     }
 

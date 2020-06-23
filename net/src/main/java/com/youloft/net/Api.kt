@@ -29,7 +29,8 @@ interface Api {
         @Query("time") time: String?,
         @Query("sn") sn: String?,
         @Query("otherinfo") otherinfo: String? = null,
-        @Query("extData") extData: String? = null
+        @Query("extData") extData: String? = null,
+        @Query("JlspOrderId") jlspOrderId: String? = null
     ): JsonObject?
 
     @GET(BASE_URL + "Api/User/GetCoinDetail")

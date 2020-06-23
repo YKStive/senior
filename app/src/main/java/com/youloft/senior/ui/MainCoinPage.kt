@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.main_coin_page_task_item_layout.view.*
 import kotlinx.android.synthetic.main.main_coin_page_task_item_layout.view.item_coin
 import java.math.BigDecimal
 import java.text.DecimalFormat
+import java.util.*
 
 /**
  * @author xll
@@ -266,8 +267,23 @@ internal class MainCoinPage(
 
         init {
             itemView.item_button.setOnClickListener {
-                if (bean == null || bean!!.hasDone()) {
-                    //已经完成了
+                if (bean == null) {
+                    return@setOnClickListener
+                }
+                if (bean!!.hasDone()) {
+                    //已经完成了,判断是否有双倍，且没完成的情况
+                    if (bean!!.subItems != null && bean!!.subItems.isNotEmpty() && !TextUtils.isEmpty(
+                            bean!!.subItems[0].doubleCode
+                        )
+                    ) {
+                        //有双倍
+                        if (!TaskManager.instance.isComplete(bean!!.subItems[0].doubleCode)) {
+                            val mode = TaskManager.instance.createDouble(bean!!)
+                            if (mode != null) {
+                                TaskManager.instance.completeDoubleTask(itemView.context, mode)
+                            }
+                        }
+                    }
                     return@setOnClickListener
                 }
                 if (bean!!.isTuiaTask) {
@@ -293,6 +309,10 @@ internal class MainCoinPage(
                         //倒计时还没有结束
                         return@setOnClickListener
                     }
+                    val uuid = UUID.randomUUID().toString()
+                    val extra = JSONObject()
+                    extra["uuid"] = uuid
+                    extra["code"] = bean!!.subItems[0].code
                     TTRewardManager.requestReword(
                         ctx as Activity,
                         bean!!.subItems[0].posId,
@@ -312,7 +332,7 @@ internal class MainCoinPage(
                                 }
                             }
                         },
-                        null
+                        extra
                     )
                     return@setOnClickListener
                 }
@@ -387,6 +407,14 @@ internal class MainCoinPage(
                     itemView.item_button,
                     TaskManager.instance.getRemainTimeFor(bean)
                 )
+            }
+            if (bean.hasDone()) {
+                if (!TextUtils.isEmpty(bean.subItems[0].doubleCode)) {
+                    //有双倍
+                    if (!TaskManager.instance.isComplete(bean.subItems[0].doubleCode)) {
+                        itemView.item_button.text = "立即播放"
+                    }
+                }
             }
         }
 
