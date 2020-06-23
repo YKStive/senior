@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/mission_invite_dialog_bg"
+        android:clickable="true">
+
+        <ImageView
+            android:id="@+id/top_img"
+            android:layout_width="match_parent"
+            android:layout_height="109dp"
+            android:background="@drawable/v472_dialog_invite_pic" />
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingTop="15dp"
+            android:paddingRight="15dp"
+            android:src="@drawable/general_dialog_close_icon" />
+
+        <EditText
+            android:id="@+id/invite_edit"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@+id/top_img"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/mission_invite_edit_bg"
+            android:gravity="center_vertical"
+            android:hint="输入邀请码"
+            android:paddingLeft="11dp"
+            android:textColor="#ff333333"
+            android:textColorHint="#ff999999"
+            android:textSize="17sp" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="0.75dp"
+            android:layout_below="@id/invite_edit"
+            android:layout_marginTop="20dp"
+            android:background="#ffeaeaea" />
+
+        <TextView
+            android:id="@+id/confirm"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/divider"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="#ffdbb67e"
+            android:textSize="17sp" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

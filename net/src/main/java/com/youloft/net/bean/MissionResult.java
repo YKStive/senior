@@ -65,7 +65,7 @@ public class MissionResult implements IJsonObject {
         public int todayCoin;
         @SerializedName("cash")
         @Expose
-        public int cash;
+        public float cash;
 
         @SerializedName("read")
         @Expose
@@ -290,31 +290,31 @@ public class MissionResult implements IJsonObject {
              * activity_xx 活动
              */
             public boolean isImageText() {
-                return !TextUtils.isEmpty(code) && code.startsWith("imagetext_");
+                return !TextUtils.isEmpty(code) && code.startsWith("imagetext");
             }
 
             public boolean isPhoto() {
-                return !TextUtils.isEmpty(code) && code.startsWith("photo_");
+                return !TextUtils.isEmpty(code) && code.startsWith("photo");
             }
 
             public boolean isEmoj() {
-                return !TextUtils.isEmpty(code) && code.startsWith("emoj_");
+                return !TextUtils.isEmpty(code) && code.startsWith("emoj");
             }
 
             public boolean isZanImageText() {
-                return !TextUtils.isEmpty(code) && code.startsWith("zan_imagetext_");
+                return !TextUtils.isEmpty(code) && code.startsWith("zan_imagetext");
             }
 
             public boolean isZanPhoto() {
-                return !TextUtils.isEmpty(code) && code.startsWith("zan_photo_");
+                return !TextUtils.isEmpty(code) && code.startsWith("zan_photo");
             }
 
             public boolean isZanEmoj() {
-                return !TextUtils.isEmpty(code) && code.startsWith("zan_emoj_");
+                return !TextUtils.isEmpty(code) && code.startsWith("zan_emoj");
             }
 
             public boolean isActivity() {
-                return !TextUtils.isEmpty(code) && code.startsWith("activity_");
+                return !TextUtils.isEmpty(code) && code.startsWith("activity");
             }
 
             public boolean isInvite() {

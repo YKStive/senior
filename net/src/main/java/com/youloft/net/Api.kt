@@ -16,13 +16,13 @@ import retrofit2.http.Query
  */
 interface Api {
     companion object {
-        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
+        const val BASE_URL = "https://shequ.51wnl-cq.com/"
     }
 
-    @GET(Api.BASE_URL + "api/Coin_Activity/GetMissions?uid=xxxxx")
+    @GET(Api.BASE_URL + "api/Coin_Activity/GetMissions")
     fun getMissionInfo(): MissionResult?
 
-    @GET(BASE_URL + "api/Coin_Activity/Complete?code=xxx&uid=XXX&otherinfo=xxx&logintoken=xxx")
+    @GET(BASE_URL + "api/Coin_Activity/Complete")
     fun completeTask(
         @Query("code") code: String?,
         @Query("time") time: String?,

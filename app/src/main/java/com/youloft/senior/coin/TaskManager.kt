@@ -71,11 +71,9 @@ internal class TaskManager {
         code: String,
         context: Context,
         doubleMode: DoubleBean? = null,
-        otherinfo: String? = null, extData: String? = null
+        otherinfo: String? = null, extData: String? = null, success: (() -> Unit)? = null
+        , failed: (() -> Unit)? = null
     ) {
-        if (context != null) {
-
-        }
         Observable
             .unsafeCreate { subscriber: Subscriber<in JsonObject?> ->
                 try {
@@ -91,27 +89,45 @@ internal class TaskManager {
             }
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnError { }
+            .doOnError {
+                ToastMaster.showLongToast(context, "网络异常")
+                failed?.invoke()
+            }
             .onErrorResumeNext(Observable.empty())
             .onExceptionResumeNext(Observable.empty())
-            .subscribe { result: JsonObject? -> parseResult(context, result, code, doubleMode) }
+            .subscribe { result: JsonObject? ->
+                parseResult(
+                    context,
+                    result,
+                    code,
+                    doubleMode,
+                    success,
+                    failed
+                )
+            }
     }
 
     private fun parseResult(
         ctx: Context,
         result: JsonObject?,
         code: String,
-        doubleMode: DoubleBean?
+        doubleMode: DoubleBean?, success: (() -> Unit)? = null
+        , failed: (() -> Unit)? = null
     ) {
         if (result == null) {
+            ToastMaster.showLongToast(ctx, "网络异常")
+            failed?.invoke()
             return
         }
         if (!result.has("data")) {
+            ToastMaster.showLongToast(ctx, "网络异常")
+            failed?.invoke()
             return
         }
         recordLastCompletedTime(code)
         val data: JsonObject = result.getAsJsonObject("data") ?: return
         if (!data.has("coin") || data.get("coin").asInt <= 0) {
+            failed?.invoke()
             if (data.has("msg") && !TextUtils.isEmpty(data.get("msg").asString)) {
                 ToastMaster.showShortToast(
                     App.instance(),
@@ -123,6 +139,7 @@ internal class TaskManager {
             ToastMaster.showShortToast(App.instance(), "网络异常", Toast.LENGTH_SHORT)
             return
         }
+        success?.invoke()
         recordLastCompletedTime(code)
         handleDoubleMode(ctx, doubleMode)
         //成功，刷新数据
