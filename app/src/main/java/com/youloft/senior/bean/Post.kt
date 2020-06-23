@@ -4,7 +4,7 @@ data class Post(
     val avatar: String,
     val createTime: String,
     val id: String,
-    val mediaContent: List<String>,
+    var mediaContent: List<String>,
     val nickname: String,
     val postType: Int,
     val praised: Int,
@@ -36,6 +36,28 @@ data class Post(
             ),
             "别名",
             PostType.IMAGE_TEXT,
+            20,
+            "魔板内容",
+            898,
+            "电视里的繁华盛开的粉红色跨境电啊就会受到老师",
+            "123",
+            3000
+        )
+
+        val albumData: Post = Post(
+            "",
+            "1992-11-25",
+            "999",
+            listOf(
+                imagePath,
+                imagePath,
+                imagePath,
+                imagePath,
+                imagePath,
+                imagePath
+            ),
+            "别名",
+            PostType.ALBUM,
             20,
             "魔板内容",
             898,
@@ -79,7 +101,14 @@ data class Post(
         )
 
         val localAlbumData: Post = Post(
-            "", "", "", listOf(""), "", PostType.LOCAL_ALBUM, 0,
+            "", "", "", listOf(
+                imagePath,
+                imagePath,
+                imagePath,
+                imagePath,
+                imagePath,
+                imagePath
+            ), "", PostType.LOCAL_ALBUM, 0,
             "", 0, "", "", 0
         )
 

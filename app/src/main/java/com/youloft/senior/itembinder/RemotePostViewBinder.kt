@@ -17,6 +17,7 @@ import com.youloft.senior.bean.PostType
 import com.youloft.senior.utils.ImageLoader
 import com.youloft.senior.utils.dp2px
 import com.youloft.senior.utils.isByUser
+import com.youloft.senior.widgt.PostItemAlbum
 import com.youloft.senior.widgt.PostItemMultiImage
 import kotlinx.android.synthetic.main.item_post_bottom_share.view.*
 import kotlinx.android.synthetic.main.item_post_remote.view.*
@@ -120,6 +121,11 @@ open class RemotePostViewBinder(
 
 
                 //影集
+                PostType.ALBUM -> {
+                    val postItemAlbum = PostItemAlbum(App.instance(), null)
+                    postItemAlbum.setData(post.mediaContent)
+                    contentContainer.addView(postItemAlbum)
+                }
 
             }
         }

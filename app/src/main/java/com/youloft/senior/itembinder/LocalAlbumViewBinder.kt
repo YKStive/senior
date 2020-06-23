@@ -43,7 +43,7 @@ open class LocalAlbumViewBinder(
     ) {
 
         holder.itemView.run {
-
+            album.setData(item.mediaContent)
 
             //条目
             setOnClickListener {

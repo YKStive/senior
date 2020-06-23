@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <include
-        layout="@layout/item_post_header_other"
+    <com.youloft.senior.widgt.PostHeaderView
+        android:id="@+id/header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,15 +38,41 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <ImageView
-            android:id="@+id/album"
-            android:layout_width="315dp"
-            android:layout_height="315dp"
+        <com.youloft.senior.widgt.PunchMoneyView
+            android:id="@+id/pv_today"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:src="@drawable/ic_placeholder_error"
-            app:layout_constraintEnd_toEndOf="@id/tv_content"
+            app:layout_constraintEnd_toStartOf="@id/pv_tomorrow"
             app:layout_constraintStart_toStartOf="@id/tv_content"
-            app:layout_constraintTop_toBottomOf="@id/tv_content" />
+            app:layout_constraintTop_toBottomOf="@id/tv_content"
+            app:pv_date="@string/today"
+            app:pv_money="+1000" />
+
+
+        <com.youloft.senior.widgt.PunchMoneyView
+            android:id="@+id/pv_tomorrow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            app:layout_constraintEnd_toStartOf="@id/pv_acquired"
+            app:layout_constraintStart_toEndOf="@id/pv_today"
+            app:layout_constraintTop_toTopOf="@id/pv_today"
+            app:pv_date="@string/tomorrow"
+            app:pv_money="+1000"
+
+            />
+
+        <com.youloft.senior.widgt.PunchMoneyView
+            android:id="@+id/pv_acquired"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/pv_tomorrow"
+            app:layout_constraintTop_toTopOf="@id/pv_today"
+            app:pv_date="@string/acquired"
+            app:pv_money="+1000" />
 
 
         <View
@@ -55,7 +81,7 @@
             android:layout_marginTop="18dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/album" />
+            app:layout_constraintTop_toBottomOf="@id/pv_today" />
 
 
         <com.noober.background.view.BLButton
