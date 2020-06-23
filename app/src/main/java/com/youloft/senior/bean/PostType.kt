@@ -5,22 +5,17 @@ package com.youloft.senior.bean
  * @create 2020/6/22
  * @desc
  */
-enum class PostType(val type: Int) {
-    //图文
-    IMAGE_TEXT(0),
+class PostType(val type: Int) {
+    companion object {
+        //图文
+        const val IMAGE_TEXT = 0
+        const val VIDEO = 1
+        const val GIF = 2
+        const val ALBUM = 3
+        const val LOCAL_ALBUM = 4
+        const val PUNCH = 5
+        const val INVITE = 6
 
-    //视频
-    VIDEO(1),
+    }
 
-    //gif图
-    GIF(2),
-
-    //本地影集
-    LOCAL_ALBUM(3),
-
-    //签到
-    PUNCH(4),
-
-    //邀请好友
-    INVITE(5)
 }

@@ -131,7 +131,7 @@ internal class MainCoinPage(
         } else {
             coin_process.setProcess(signInfo.todayCoin, allCoin)
             my_coin_value.text = signInfo.gold.toString()
-            my_cash_value.text = "约${formatMoney(signInfo.cash)}元"
+            my_cash_value.text = "约${signInfo.cash}元"
         }
         next_coin_name.text = if (maxTask == null) "暂无" else maxTask.content
     }
@@ -347,6 +347,7 @@ internal class MainCoinPage(
                 }
                 if (bean!!.isWriteCode) {
                     //填写邀请码
+                    InviteDialog(ctx).show()
                     return@setOnClickListener
                 }
             }

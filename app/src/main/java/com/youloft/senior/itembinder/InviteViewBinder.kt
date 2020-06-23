@@ -15,7 +15,7 @@ import com.youloft.senior.base.App
 import com.youloft.senior.bean.Post
 import com.youloft.senior.utils.isByUser
 import kotlinx.android.synthetic.main.activity_home.view.*
-import kotlinx.android.synthetic.main.home_post_bottom_share.view.*
+import kotlinx.android.synthetic.main.item_post_bottom_share.view.*
 import kotlinx.android.synthetic.main.item_post_header_other.view.*
 import kotlinx.android.synthetic.main.item_post_remote.view.*
 import kotlinx.android.synthetic.main.item_post_punch.view.*
