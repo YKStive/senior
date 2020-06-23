@@ -53,6 +53,17 @@ internal class TaskManager {
         val info = CoinManager.instance.signInfo ?: return
         if (info.status == 1) {
             //已签到
+            if (info.coinSigninContentsDoublecode != null && info.coinSigninContentsDoublecode.size > info.continued) {
+                val doubleCode = info.coinSigninContentsDoublecode[info.continued - 1]
+                if (!TextUtils.isEmpty(doubleCode) && !isComplete(doubleCode)) {
+                    //有双倍
+                    val doubleBean = DoubleBean()
+                    doubleBean.doubleCode = doubleCode
+                    doubleBean.posid = info.posId
+                    doubleBean.appid = info.appId
+                    completeDoubleTask(ctx, doubleBean)
+                }
+            }
             return
         }
         val doubleBean = DoubleBean()
@@ -64,6 +75,8 @@ internal class TaskManager {
         completeTask(info.code, ctx, doubleBean)
     }
 
+    var completeing = false
+
     /**
      * 完成任务
      */
@@ -74,6 +87,10 @@ internal class TaskManager {
         otherinfo: String? = null, extData: String? = null, success: (() -> Unit)? = null
         , failed: (() -> Unit)? = null, jlspOrderId: String? = null
     ) {
+        if (completeing) {
+            return
+        }
+        completeing = true
         Observable
             .unsafeCreate { subscriber: Subscriber<in JsonObject?> ->
                 try {
@@ -99,6 +116,7 @@ internal class TaskManager {
             .doOnError {
                 ToastMaster.showLongToast(context, "网络异常")
                 failed?.invoke()
+                completeing = false
             }
             .onErrorResumeNext(Observable.empty())
             .onExceptionResumeNext(Observable.empty())
@@ -121,6 +139,7 @@ internal class TaskManager {
         doubleMode: DoubleBean?, success: (() -> Unit)? = null
         , failed: (() -> Unit)? = null
     ) {
+        completeing = false
         if (result == null) {
             ToastMaster.showLongToast(ctx, "网络异常")
             failed?.invoke()

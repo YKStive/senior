@@ -78,9 +78,8 @@ internal class MainCoinPage(
         } else {
             //打开
             isClickable = true
-            content_group.getChildAt(0)
-                .measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-            var height = content_group.getChildAt(0).measuredHeight
+            bottom_layout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+            var height = bottom_layout.measuredHeight
             val maxHeight = getHeight() - top_group.height - UiUtil.dp2Px(context, 20f)
             if (height > maxHeight) {
                 height = maxHeight
@@ -93,6 +92,7 @@ internal class MainCoinPage(
                 if (it.animatedValue as Int >= height) {
                     animationing = false
                     content_group.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                    content_group.requestLayout()
                     return@addUpdateListener
                 }
                 content_group.layoutParams.height = it.animatedValue as Int
