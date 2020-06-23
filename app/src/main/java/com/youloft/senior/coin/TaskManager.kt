@@ -61,7 +61,7 @@ internal class TaskManager {
             doubleBean.posid = info.posId
             doubleBean.appid = info.appId
         }
-        completeTask("signin", ctx, doubleBean)
+        completeTask(info.code, ctx, doubleBean)
     }
 
     /**
