@@ -86,6 +86,9 @@ public class MissionResult implements IJsonObject {
         @SerializedName("coin_signin_contents")
         @Expose
         public List<Integer> coin_signin_contents;
+        @SerializedName("coin_signin_contents_doublecode")
+        @Expose
+        public List<String> coinSigninContentsDoublecode;
 
         @SerializedName("missions")
         @Expose
@@ -122,6 +125,15 @@ public class MissionResult implements IJsonObject {
         @SerializedName("signMaxCoin")
         @Expose
         public int signMaxCoin;
+        @SerializedName("posId")
+        @Expose
+        public String posId;
+        @SerializedName("platformId")
+        @Expose
+        public String platformId;
+        @SerializedName("appId")
+        @Expose
+        public String appId;
 
         public Object tencentMission;
 
@@ -395,6 +407,13 @@ public class MissionResult implements IJsonObject {
                 @SerializedName("shareImg")
                 @Expose
                 public String shareImg;
+                @SerializedName("doubleCode")
+                @Expose
+                public String doubleCode;
+
+                @SerializedName("dayCount")
+                @Expose
+                public int dayCount;
             }
         }
     }

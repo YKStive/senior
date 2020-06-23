@@ -177,12 +177,7 @@ internal class MainCoinPage(
      * 签到
      */
     private fun sign() {
-        val signInfo: MissionResult.DataBean? = CoinManager.instance.signInfo ?: return
-        if (signInfo == null || signInfo.status == 1) {
-            //已签到
-            return
-        }
-        TaskManager.instance.completeTask("signin", context)
+        TaskManager.instance.sign(context)
     }
 
     /**

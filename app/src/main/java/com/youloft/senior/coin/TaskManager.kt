@@ -1,19 +1,23 @@
 package com.youloft.senior.coin
 
+import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.text.TextUtils
 import android.widget.Toast
+import com.alibaba.fastjson.JSONObject
 import com.google.gson.JsonObject
 import com.youloft.net.ApiHelper
 import com.youloft.net.bean.MissionResult.DataBean.MissionsBean
 import com.youloft.senior.base.App
+import com.youloft.senior.bean.DoubleBean
 import com.youloft.util.MD5
 import com.youloft.util.ToastMaster
 import rx.Observable
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.util.*
 
 /**
  * @author xll
@@ -31,7 +35,33 @@ internal class TaskManager {
         if (bean.subItems == null || bean.subItems.isEmpty()) {
             return
         }
-        completeTask(bean.subItems[0].code, context, otherinfo, extData)
+        completeTask(bean.subItems[0].code, context, createDouble(bean), otherinfo, extData)
+    }
+
+    fun createDouble(bean: MissionsBean): DoubleBean? {
+        if (bean.subItems == null || bean.subItems.isEmpty()) {
+            return null
+        }
+        val result = DoubleBean()
+        result.doubleCode = bean.subItems[0].doubleCode
+        result.posid = bean.subItems[0].posId
+        result.appid = bean.subItems[0].appId
+        return result
+    }
+
+    fun sign(ctx: Context) {
+        val info = CoinManager.instance.signInfo ?: return
+        if (info.status == 1) {
+            //已签到
+            return
+        }
+        val doubleBean = DoubleBean()
+        if (info.coinSigninContentsDoublecode != null && info.coinSigninContentsDoublecode.size > info.continued) {
+            doubleBean.doubleCode = info.coinSigninContentsDoublecode[info.continued]
+            doubleBean.posid = info.posId
+            doubleBean.appid = info.appId
+        }
+        completeTask("signin", ctx, doubleBean)
     }
 
     /**
@@ -40,6 +70,7 @@ internal class TaskManager {
     public fun completeTask(
         code: String,
         context: Context,
+        doubleMode: DoubleBean? = null,
         otherinfo: String? = null, extData: String? = null
     ) {
         if (context != null) {
@@ -63,10 +94,15 @@ internal class TaskManager {
             .doOnError { }
             .onErrorResumeNext(Observable.empty())
             .onExceptionResumeNext(Observable.empty())
-            .subscribe { result: JsonObject? -> parseResult(result, code) }
+            .subscribe { result: JsonObject? -> parseResult(context, result, code, doubleMode) }
     }
 
-    private fun parseResult(result: JsonObject?, code: String) {
+    private fun parseResult(
+        ctx: Context,
+        result: JsonObject?,
+        code: String,
+        doubleMode: DoubleBean?
+    ) {
         if (result == null) {
             return
         }
@@ -88,8 +124,57 @@ internal class TaskManager {
             return
         }
         recordLastCompletedTime(code)
+        handleDoubleMode(ctx, doubleMode)
         //成功，刷新数据
         CoinManager.instance.loadData()
+
+    }
+
+    fun handleDoubleMode(ctx: Context, doubleMode: DoubleBean?) {
+        if (doubleMode == null || !TextUtils.isEmpty(doubleMode.doubleCode)) {
+            return
+        }
+        if (!TextUtils.isEmpty(
+                doubleMode.posid
+            )
+        ) {
+            //双倍任务完成后保存值
+            saveComplete(doubleMode.doubleCode!!, true)
+            return
+        }
+        //去完成双倍任务
+        //应该先弹出对话框
+        completeDoubleTask(ctx, doubleMode)
+    }
+
+    /**
+     * 去完成视频双倍，并提交双倍到服务器
+     */
+    fun completeDoubleTask(ctx: Context, doubleMode: DoubleBean) {
+        TTRewardManager.requestReword(
+            ctx as Activity,
+            doubleMode.posid,
+            object : RewardListener() {
+                override fun onRewardResult(
+                    isSuccess: Boolean,
+                    reward: Boolean,
+                    args: JSONObject?
+                ) {
+                    if (isSuccess && reward) {
+                        //双倍提交任务
+                        val doubleBean1 = DoubleBean()
+                        doubleBean1.doubleCode = doubleMode.doubleCode
+                        completeTask(
+                            doubleMode.doubleCode!!,
+                            ctx, doubleBean1
+                        )
+                    } else if (!isSuccess) {
+                        ToastMaster.showShortToast(ctx, "这个任务看起来好像是迷路了,请稍候再试")
+                    }
+                }
+            },
+            null
+        )
     }
 
     /**
@@ -134,6 +219,29 @@ internal class TaskManager {
     fun getMissionSp(): SharedPreferences {
         return App.instance()
             .getSharedPreferences("mission_task_time", Context.MODE_PRIVATE)
+    }
+
+    fun getTaskSp(): SharedPreferences {
+        val sp = App.instance()
+            .getSharedPreferences("task_double_sp", Context.MODE_PRIVATE)
+        val calendar: Calendar = Calendar.getInstance()
+        val lastCalendar: Calendar = Calendar.getInstance()
+        lastCalendar.timeInMillis = sp.getLong("last_time", 0)
+        if (calendar.get(Calendar.YEAR) != lastCalendar.get(Calendar.YEAR)
+            || calendar.get(Calendar.MONTH) != lastCalendar.get(Calendar.MONTH)
+            || calendar.get(Calendar.DAY_OF_MONTH) != lastCalendar.get(Calendar.DAY_OF_MONTH)
+        ) {
+            sp.edit().clear().putLong("last_time", System.currentTimeMillis()).apply()
+        }
+        return sp
+    }
+
+    fun isComplete(doubleCode: String): Boolean {
+        return getTaskSp().getBoolean(doubleCode, false)
+    }
+
+    fun saveComplete(doubleCode: String, value: Boolean) {
+        getTaskSp().edit().putBoolean(doubleCode, value).apply()
     }
 
     companion object {
