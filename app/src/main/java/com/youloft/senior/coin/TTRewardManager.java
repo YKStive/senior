@@ -21,7 +21,7 @@ public class TTRewardManager {
     static {
         TTAdSdk.init(App.Companion.instance(),
                 new TTAdConfig.Builder()
-                        .appId("5000975")
+                        .appId("5078739")
                         .appName("万年历")
                         .titleBarTheme(TTAdConstant.TITLE_BAR_THEME_NO_TITLE_BAR)
                         .allowShowNotify(true) //是否允许sdk展示通知栏提示

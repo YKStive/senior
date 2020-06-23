@@ -13,10 +13,7 @@ import androidx.lifecycle.Observer
 import com.alibaba.fastjson.JSONObject
 import com.youloft.net.bean.MissionResult
 import com.youloft.senior.R
-import com.youloft.senior.coin.CoinManager
-import com.youloft.senior.coin.RewardListener
-import com.youloft.senior.coin.TTRewardManager
-import com.youloft.senior.coin.TaskManager
+import com.youloft.senior.coin.*
 import com.youloft.senior.tuia.TuiaUtil
 import com.youloft.senior.tuia.TuiaWebActivity
 import com.youloft.util.ToastMaster
@@ -273,6 +270,10 @@ internal class MainCoinPage(
                     if (bean!!.subItems == null || bean!!.subItems.isEmpty()) {
                         return@setOnClickListener
                     }
+                    if (TaskManager.instance.getRemainTimeFor(bean!!) > 0) {
+                        //倒计时还没有结束
+                        return@setOnClickListener
+                    }
                     TTRewardManager.requestReword(
                         ctx as Activity,
                         bean!!.subItems[0].posId,
@@ -335,6 +336,7 @@ internal class MainCoinPage(
         var bean: MissionResult.DataBean.MissionsBean? = null
 
         fun bindItem(bean: MissionResult.DataBean.MissionsBean) {
+            MissionCountDownTimer.cancelTimer(itemView.item_button)
             this.bean = bean
             itemView.item_title.text = bean.content
             if (bean.subItems == null || bean.subItems.isEmpty()) {
@@ -356,6 +358,13 @@ internal class MainCoinPage(
             itemView.item_content.text = bean.subItems[0].content
             itemView.item_coin.text = "+${bean.subItems[0].coin}"
             itemView.item_button.text = if (bean.hasDone()) "已完成" else bean.button
+            if (bean.isRewardTask && !bean.hasDone()) {
+                //判定是否有 iterval
+                MissionCountDownTimer.updateCountDown(
+                    itemView.item_button,
+                    TaskManager.instance.getRemainTimeFor(bean)
+                )
+            }
         }
 
     }
