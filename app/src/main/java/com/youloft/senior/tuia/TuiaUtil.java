@@ -3,6 +3,7 @@ package com.youloft.senior.tuia;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSONObject;
+import com.youloft.net.bean.MissionResult;
 import com.youloft.senior.base.App;
 import com.youloft.senior.utils.MiitHelper;
 import com.youloft.util.AppUtil;
@@ -21,6 +22,17 @@ import okhttp3.Response;
 import rx.Observable;
 
 public class TuiaUtil {
+
+    private static MissionResult.DataBean.MissionsBean tuiaBean;
+
+    public static MissionResult.DataBean.MissionsBean getTuiaBean() {
+        return tuiaBean;
+    }
+
+    public static void setTuiaBean(MissionResult.DataBean.MissionsBean tuiaBean) {
+        TuiaUtil.tuiaBean = tuiaBean;
+    }
+
     private static String getTuiaUrl(String slotId) {
         try {
             String appSecret = "3W5HzW15iUVqMkLPcJQWxQmDm6VaMinxDwMGZ8J";

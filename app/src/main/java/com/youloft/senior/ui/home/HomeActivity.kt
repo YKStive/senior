@@ -1,5 +1,6 @@
 package com.youloft.senior.ui.home
 
+import android.content.Intent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
@@ -62,6 +63,11 @@ class HomeActivity : BaseActivity() {
         btn_function.setOnClickListener {
             GifActivity.start(this)
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        main_coin_page.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun initData() {

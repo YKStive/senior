@@ -3,6 +3,8 @@ package com.youloft.senior.ui
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -242,6 +244,24 @@ internal class MainCoinPage(
     }
 
 
+    fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        if (requestCode == 10202 && resultCode == Activity.RESULT_OK && data != null) {
+            if (TuiaUtil.getTuiaBean() == null) {
+                return
+            }
+            //tuia读取完成，去提交任务
+            val tuiaData = data.getStringExtra("tuia_data")
+            if (!TextUtils.isEmpty(tuiaData)) {
+                //完成任务
+                TaskManager.instance.completeTask(TuiaUtil.getTuiaBean(), context, null, tuiaData)
+            }
+        }
+    }
+
     class ViewHolder(ctx: Context) {
         val itemView: View =
             LayoutInflater.from(ctx).inflate(R.layout.main_coin_page_task_item_layout, null, false)
@@ -256,6 +276,7 @@ internal class MainCoinPage(
                     if (bean!!.tuiaData == null) {
                         return@setOnClickListener
                     }
+                    TuiaUtil.setTuiaBean(bean)
                     TuiaUtil.reportUrl(bean!!.tuiaData.getString("reportClickUrl"))
                     TuiaWebActivity.start(
                         itemView.context as Activity?,
@@ -284,7 +305,10 @@ internal class MainCoinPage(
                                 args: JSONObject?
                             ) {
                                 if (isSuccess && reward) {
-                                    TaskManager.instance.completeTask(bean!!.subItems[0].code)
+                                    TaskManager.instance.completeTask(
+                                        bean!!.subItems[0].code,
+                                        itemView.context
+                                    )
                                 } else if (!isSuccess) {
                                     ToastMaster.showShortToast(ctx, "这个任务看起来好像是迷路了,请稍候再试")
                                 }

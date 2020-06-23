@@ -20,13 +20,26 @@ import rx.schedulers.Schedulers
  * @date 2020/6/22 15:41
  */
 internal class TaskManager {
+    /**
+     * 完成任务
+     */
+    public fun completeTask(
+        bean: MissionsBean,
+        context: Context,
+        otherinfo: String? = null, extData: String? = null
+    ) {
+        if (bean.subItems == null || bean.subItems.isEmpty()) {
+            return
+        }
+        completeTask(bean.subItems[0].code, context, otherinfo, extData)
+    }
 
     /**
      * 完成任务
      */
     public fun completeTask(
         code: String,
-        context: Context? = null,
+        context: Context,
         otherinfo: String? = null, extData: String? = null
     ) {
         if (context != null) {
