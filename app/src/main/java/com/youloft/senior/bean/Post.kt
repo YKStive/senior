@@ -16,27 +16,80 @@ data class Post(
 ) {
 
 
-
     companion object {
 
+        val imagePath =
+            "https://pic-bucket.ws.126.net/photo/0009/2019-04-19/ED4HKOFA0AI20009NOS.jpg"
+        val gifPath =
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/200px-Rotating_earth_%28large%29.gif"
         val multiData: Post = Post(
-            "", "1992-11-25", "999", listOf("1", "2"), "别名", PostType.IMAGE_TEXT.type, 20,
-            "魔板内容", 898, "电视里的繁华盛开的粉红色跨境电啊就会受到老师", "123", 3000
+            "",
+            "1992-11-25",
+            "999",
+            listOf(
+                imagePath,
+                imagePath,
+                imagePath,
+                imagePath,
+                imagePath,
+                imagePath
+            ),
+            "别名",
+            PostType.IMAGE_TEXT,
+            20,
+            "魔板内容",
+            898,
+            "电视里的繁华盛开的粉红色跨境电啊就会受到老师",
+            "123",
+            3000
         )
 
+        val singleData: Post = Post(
+            "",
+            "1992-11-25",
+            "999",
+            listOf(
+                imagePath
+            ),
+            "别名",
+            PostType.IMAGE_TEXT,
+            20,
+            "魔板内容",
+            898,
+            "电视里的繁华盛开的粉红色跨境电啊就会受到老师",
+            "123",
+            3000
+        )
+
+        val gifData: Post = Post(
+            "",
+            "1992-11-25",
+            "999",
+            listOf(
+                gifPath
+            ),
+            "别名",
+            PostType.GIF,
+            20,
+            "魔板内容",
+            898,
+            "电视里的繁华盛开的粉红色跨境电啊就会受到老师",
+            "123",
+            3000
+        )
 
         val localAlbumData: Post = Post(
-            "", "", "", listOf(""), "", PostType.LOCAL_ALBUM.type, 0,
+            "", "", "", listOf(""), "", PostType.LOCAL_ALBUM, 0,
             "", 0, "", "", 0
         )
 
         val inviteData: Post = Post(
-            "", "", "", listOf(""), "", PostType.INVITE.type, 0,
+            "", "", "", listOf(""), "", PostType.INVITE, 0,
             "", 0, "", "", 0
         )
 
         val punchData: Post = Post(
-            "", "", "", listOf(""), "", PostType.PUNCH.type, 0,
+            "", "", "", listOf(""), "", PostType.PUNCH, 0,
             "", 0, "", "", 0
         )
     }

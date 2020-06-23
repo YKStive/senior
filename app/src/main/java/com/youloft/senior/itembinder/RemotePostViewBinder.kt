@@ -12,14 +12,19 @@ import com.drakeet.multitype.ItemViewBinder
 import com.youloft.senior.R
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.Post
+import com.youloft.senior.bean.Post.Companion.multiData
+import com.youloft.senior.bean.PostType
+import com.youloft.senior.utils.ImageLoader
+import com.youloft.senior.utils.dp2px
 import com.youloft.senior.utils.isByUser
-import kotlinx.android.synthetic.main.home_post_bottom_share.view.*
+import com.youloft.senior.widgt.PostItemMultiImage
+import kotlinx.android.synthetic.main.item_post_bottom_share.view.*
 import kotlinx.android.synthetic.main.item_post_remote.view.*
 
 /**
  * @author you
  * @create 2020/6/22
- * @desc 信息流多图item
+ * @desc 远程贴子，处理多种类型
  */
 open class RemotePostViewBinder(
     private val goPersonPage: (userId: String) -> Unit,
@@ -27,28 +32,24 @@ open class RemotePostViewBinder(
     val onShare: (postId: String) -> Unit,
     val onPraise: (postId: String) -> Unit
 ) :
-    ItemViewBinder<Post, RemotePostViewBinder.ViewHolder>() {
+    ItemViewBinder<Post, RemotePostViewBinder.RemoteViewHolder>() {
     override fun onCreateViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup
-    ): ViewHolder {
+    ): RemoteViewHolder {
         val root: ConstraintLayout =
             inflater.inflate(R.layout.item_post_remote, parent, false) as ConstraintLayout
-        return ViewHolder(root)
+        return RemoteViewHolder(root)
     }
 
     override fun onBindViewHolder(
-        holder: ViewHolder, item: Post
+        holder: RemoteViewHolder, item: Post
     ) {
 
         holder.addHeader(item, goPersonPage)
+        holder.addContent(item)
         holder.itemView.run {
-
             tv_content.text = item.textContent
-
-            //todo 多图
-
-
             //条目
             setOnClickListener {
                 onItemClick(item.id, false)
@@ -65,22 +66,84 @@ open class RemotePostViewBinder(
             }
 
             //点赞
-            tv_praise.text = item.praised.toString()
-            tv_praise.setOnClickListener {
-                onPraise(item.id)
+            tv_praise.apply {
+                text = item.praised.toString()
+                setOnClickListener {
+                    isSelected = !isSelected
+                    text = if (isSelected) {
+                        (text.toString().toInt() + 1).toString()
+                    } else {
+                        (text.toString().toInt() - 1).toString()
+                    }
+                    onPraise(item.id)
+                }
             }
 
         }
     }
 
-    class ViewHolder(itemView: View) :
+    class RemoteViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
+        private val contentContainer by lazy {
+            itemView.fl_content_container
+        }
+
+        private val headerContainer by lazy {
+            itemView.fl_header_container
+        }
+
+        /**
+         * 根据不同类型，添加不同的content
+         * @param post Post 贴子
+         */
+        fun addContent(post: Post) {
+            contentContainer.removeAllViews()
+            when (post.postType) {
+                //图文
+                PostType.IMAGE_TEXT -> {
+                    if (post.mediaContent.size > 1) {
+                        val multiImageView = PostItemMultiImage(App.instance(), null)
+                        multiImageView.setData(post.mediaContent)
+                        contentContainer.addView(multiImageView)
+                    } else if (post.mediaContent.size == 1) {
+                        setSingleImage(post)
+                    }
+
+                }
+
+                //gif
+                PostType.GIF -> {
+                    setSingleImage(post)
+                }
+
+                //视频
+
+
+                //影集
+
+            }
+        }
+
+        /**
+         * 设置单张图片
+         * @param post Post
+         */
+        private fun setSingleImage(post: Post) {
+            val imageView = ImageView(App.instance())
+            imageView.scaleType = ImageView.ScaleType.FIT_XY
+            val layoutParams = ViewGroup.LayoutParams(201.dp2px, 201.dp2px)
+            imageView.layoutParams = layoutParams
+            ImageLoader.loadImage(contentContainer, post.mediaContent[0], imageView)
+            contentContainer.addView(imageView)
+        }
+
 
         /**
          * 是否是用户自己的帖子，展示不同的header
          * @param post Post 帖子
          */
         fun addHeader(post: Post, goPersonPage: (userId: String) -> Unit) {
+            headerContainer.removeAllViews()
             val header: View = if (post.userId.isByUser()) {
                 LayoutInflater.from(App.instance())
                     .inflate(R.layout.item_post_header_main, itemView as ViewGroup, false)
@@ -88,7 +151,7 @@ open class RemotePostViewBinder(
                 LayoutInflater.from(App.instance())
                     .inflate(R.layout.item_post_header_other, itemView as ViewGroup, false)
             }
-            itemView.fl_header_container.addView(header)
+            headerContainer.addView(header)
 
             val ivAvatar = header.findViewById<ImageView>(R.id.iv_avatar)
             val tvNickname = header.findViewById<TextView>(R.id.tv_name)

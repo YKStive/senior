@@ -28,7 +28,8 @@ class VideoDetailActivity : BaseActivity() {
             Toast.makeText(this@VideoDetailActivity, "点击", Toast.LENGTH_SHORT).show()
             UmengShareActionImpl(this@VideoDetailActivity).platform(SOC_MEDIA.WEIXIN_CIRCLE).web(
                 ShareWeb("www.baidu.com").setThumb(ShareImage(this@VideoDetailActivity, ""))
-                    .setDescription("内容").setTitle("标题")).perform()
+                    .setDescription("内容").setTitle("标题")
+            ).perform()
 
 
 //                .prepare(object :
