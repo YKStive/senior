@@ -178,13 +178,6 @@ internal class MainCoinPage(
     }
 
     /**
-     * 签到
-     */
-    private fun sign() {
-        TaskManager.instance.sign(context)
-    }
-
-    /**
      * 绑定签到数据
      */
     private fun bindSignGroup() {
@@ -214,10 +207,6 @@ internal class MainCoinPage(
         for (i in signInfo.coin_signin_contents.size until sign_group.childCount) {
             sign_group.getChildAt(i).visibility = View.GONE
         }
-        sign_button.text = if (signInfo.status == 1) "已签到" else "立即签到"
-        sign_button.setOnClickListener {
-            sign()
-        }
     }
 
     class SignViewHolder(ctx: Context) {
@@ -234,13 +223,18 @@ internal class MainCoinPage(
                 //当前是今天，但是今天么有签到的情况
                 state = 1;
                 itemView.isSelected = true
+                itemView.setOnClickListener({
+                    TaskManager.instance.sign(itemView.context)
+                })
             } else if (position >= con) {
                 //未签到的天
                 state = 2
+                itemView.setOnClickListener(null)
                 itemView.isSelected = false
             }else{
                 //已签到
                 state = 0
+                itemView.setOnClickListener(null)
                 itemView.isSelected = true
             }
         }

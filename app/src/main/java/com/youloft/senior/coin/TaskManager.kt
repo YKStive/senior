@@ -180,7 +180,7 @@ internal class TaskManager {
             CoinTipsDialog(ctx, "恭喜获得", "测试", data.get("coin").asInt, null, null).show()
             return
         }
-        if (!TextUtils.isEmpty(
+        if (TextUtils.isEmpty(
                 doubleMode.posid
             )
         ) {
