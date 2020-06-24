@@ -18,6 +18,7 @@ import retrofit2.http.Query
 interface Api {
     companion object {
         const val BASE_URL = "https://shequ.51wnl-cq.com/"
+//        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
     }
 
     @GET(Api.BASE_URL + "api/Coin_Activity/GetMissions")
@@ -29,8 +30,12 @@ interface Api {
         @Query("time") time: String?,
         @Query("sn") sn: String?,
         @Query("otherinfo") otherinfo: String? = null,
-        @Query("extData") extData: String? = null
+        @Query("extData") extData: String? = null,
+        @Query("JlspOrderId") jlspOrderId: String? = null
     ): JsonObject?
+
+    @GET(BASE_URL + "Api/User/GetCoinDetail")
+    fun getCoinDetail(): JsonObject?
 
     @POST("/api/user/login")
     @FormUrlEncoded

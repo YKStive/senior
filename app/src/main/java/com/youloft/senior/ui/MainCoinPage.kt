@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.main_coin_page_task_item_layout.view.*
 import kotlinx.android.synthetic.main.main_coin_page_task_item_layout.view.item_coin
 import java.math.BigDecimal
 import java.text.DecimalFormat
+import java.util.*
 
 /**
  * @author xll
@@ -43,6 +44,9 @@ internal class MainCoinPage(
         })
         more.setOnClickListener {
             openOrCloseMore()
+        }
+        coin_more.setOnClickListener {
+            context.startActivity(Intent(context, CoinDetailActivity::class.java))
         }
     }
 
@@ -74,9 +78,8 @@ internal class MainCoinPage(
         } else {
             //打开
             isClickable = true
-            content_group.getChildAt(0)
-                .measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-            var height = content_group.getChildAt(0).measuredHeight
+            bottom_layout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+            var height = bottom_layout.measuredHeight
             val maxHeight = getHeight() - top_group.height - UiUtil.dp2Px(context, 20f)
             if (height > maxHeight) {
                 height = maxHeight
@@ -89,6 +92,7 @@ internal class MainCoinPage(
                 if (it.animatedValue as Int >= height) {
                     animationing = false
                     content_group.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                    content_group.requestLayout()
                     return@addUpdateListener
                 }
                 content_group.layoutParams.height = it.animatedValue as Int
@@ -174,13 +178,6 @@ internal class MainCoinPage(
     }
 
     /**
-     * 签到
-     */
-    private fun sign() {
-        TaskManager.instance.sign(context)
-    }
-
-    /**
      * 绑定签到数据
      */
     private fun bindSignGroup() {
@@ -210,10 +207,6 @@ internal class MainCoinPage(
         for (i in signInfo.coin_signin_contents.size until sign_group.childCount) {
             sign_group.getChildAt(i).visibility = View.GONE
         }
-        sign_button.text = if (signInfo.status == 1) "已签到" else "立即签到"
-        sign_button.setOnClickListener {
-            sign()
-        }
     }
 
     class SignViewHolder(ctx: Context) {
@@ -230,10 +223,19 @@ internal class MainCoinPage(
                 //当前是今天，但是今天么有签到的情况
                 state = 1;
                 itemView.isSelected = true
+                itemView.setOnClickListener({
+                    TaskManager.instance.sign(itemView.context)
+                })
             } else if (position >= con) {
-                //为签到的天
+                //未签到的天
                 state = 2
+                itemView.setOnClickListener(null)
                 itemView.isSelected = false
+            }else{
+                //已签到
+                state = 0
+                itemView.setOnClickListener(null)
+                itemView.isSelected = true
             }
         }
     }
@@ -263,8 +265,23 @@ internal class MainCoinPage(
 
         init {
             itemView.item_button.setOnClickListener {
-                if (bean == null || bean!!.hasDone()) {
-                    //已经完成了
+                if (bean == null) {
+                    return@setOnClickListener
+                }
+                if (bean!!.hasDone()) {
+                    //已经完成了,判断是否有双倍，且没完成的情况
+                    if (bean!!.subItems != null && bean!!.subItems.isNotEmpty() && !TextUtils.isEmpty(
+                            bean!!.subItems[0].doubleCode
+                        )
+                    ) {
+                        //有双倍
+                        if (!TaskManager.instance.isComplete(bean!!.subItems[0].doubleCode)) {
+                            val mode = TaskManager.instance.createDouble(bean!!)
+                            if (mode != null) {
+                                TaskManager.instance.completeDoubleTask(itemView.context, mode)
+                            }
+                        }
+                    }
                     return@setOnClickListener
                 }
                 if (bean!!.isTuiaTask) {
@@ -290,6 +307,10 @@ internal class MainCoinPage(
                         //倒计时还没有结束
                         return@setOnClickListener
                     }
+                    val uuid = UUID.randomUUID().toString()
+                    val extra = JSONObject()
+                    extra["uuid"] = uuid
+                    extra["code"] = bean!!.subItems[0].code
                     TTRewardManager.requestReword(
                         ctx as Activity,
                         bean!!.subItems[0].posId,
@@ -309,7 +330,7 @@ internal class MainCoinPage(
                                 }
                             }
                         },
-                        null
+                        extra
                     )
                     return@setOnClickListener
                 }
@@ -384,6 +405,14 @@ internal class MainCoinPage(
                     itemView.item_button,
                     TaskManager.instance.getRemainTimeFor(bean)
                 )
+            }
+            if (bean.hasDone()) {
+                if (!TextUtils.isEmpty(bean.subItems[0].doubleCode)) {
+                    //有双倍
+                    if (!TaskManager.instance.isComplete(bean.subItems[0].doubleCode)) {
+                        itemView.item_button.text = "立即播放"
+                    }
+                }
             }
         }
 

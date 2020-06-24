@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.youloft.core.base.BaseViewModel
 import com.youloft.senior.base.App
+import com.youloft.senior.bean.ImageCursor
 import com.youloft.senior.bean.ImageRes
 import com.youloft.senior.bean.Post
 import com.youloft.senior.bean.Post.Companion.inviteData
@@ -13,8 +14,10 @@ import com.youloft.senior.bean.Post.Companion.localAlbumData
 import com.youloft.senior.bean.Post.Companion.punchData
 import com.youloft.senior.utils.DateUtil
 import com.youloft.senior.utils.Preference
+import com.youloft.senior.utils.logD
 import com.youloft.senior.utils.moreThanOneDay
 import kotlinx.coroutines.launch
+import java.lang.StringBuilder
 import java.util.*
 
 /**
@@ -43,6 +46,7 @@ class HomeViewModel : BaseViewModel() {
                     index % 2 == 1 -> posts.add(Post.multiData)
                     index % 3 == 1 -> posts.add(Post.singleData)
                     index % 5 == 1 -> posts.add(Post.gifData)
+                    index % 7 == 1 -> posts.add(Post.albumData)
                 }
             }
             focusInsert()
@@ -70,7 +74,9 @@ class HomeViewModel : BaseViewModel() {
                     when (index / 10 % 2) {
                         //插入影集
                         1 -> {
-                            posts.add(index, localAlbumData)
+                            posts.add(
+                                index,
+                                localAlbumData.apply { mediaContent = albumData!![albumIndex] })
                             albumIndex++
                             if (albumIndex >= albumData!!.size) {
                                 albumIndex = 0
@@ -109,7 +115,9 @@ class HomeViewModel : BaseViewModel() {
                         }
                         //插入影集
                         2 -> {
-                            posts.add(index, localAlbumData)
+                            posts.add(
+                                index,
+                                localAlbumData.apply { mediaContent = albumData!![albumIndex] })
                             albumIndex++
                             if (albumIndex >= albumData!!.size) {
                                 albumIndex = 0
@@ -148,49 +156,106 @@ class HomeViewModel : BaseViewModel() {
      * 获取影集照片的地址集合
      */
     private fun getAlbumDate(): List<List<String>>? {
-
-//        getImagePathByCursor()
-        val mutableListOf = mutableListOf<List<String>>()
-        for (index in 0..2) {
-            mutableListOf.addAll(listOf(listOf("1", "2", "3")))
-        }
-        return mutableListOf
+        val imagePathByCursor = getImagePathByCursor()
+        return filterCursor(imagePathByCursor)
     }
 
-    private fun getImagePathByCursor() {
-        val cursorResult = mutableListOf<String>()
+    /**
+     * 过滤数据库图片
+     * @param imagePathByCursor MutableList<ImageCursor>
+     * @return List<List<String>>?
+     */
+    private fun filterCursor(imagePathByCursor: MutableList<ImageCursor>): List<List<String>>? {
+        val publishedAlbumTime by Preference<List<String>>(
+            Preference.PUBLISHED_ALBUM_TIME,
+            listOf()
+        )
+        //todo 从已经发表的剔除
+//        imagePathByCursor.filter {
+//
+//        }
+        val result = mutableListOf<MutableList<String>>()
+        val temp = mutableListOf<String>()
+        var now = Calendar.getInstance().timeInMillis
+        for (imageCursor in imagePathByCursor) {
+            //如果跟已经发表的时间重复，则跳过
+
+            //如果已经有三个时间段，退出循环
+            if (result.size == 3) {
+                break
+            }
+            if (com.youloft.util.DateUtil.isSameDay(imageCursor.date, now)) {
+                temp.add(imageCursor.path)
+                continue
+            } else {
+
+                //取前20张图片
+                if (temp.size > 3) {
+                    val limiter = if (temp.size > 20) temp.subList(0, 20) else temp
+                    result.add(limiter.toMutableList())
+                }
+                //时间增加一天，继续遍历
+                else {
+                    now -= 24 * 3600 * 1000
+                }
+
+                temp.clear()
+                continue
+            }
+        }
+
+        return result
+    }
+
+    /**
+     * 取出相册图片
+     * @return MutableList<ImageCursor>
+     */
+    private fun getImagePathByCursor(): MutableList<ImageCursor> {
+
+        val cursorResult = mutableListOf<ImageCursor>()
         val resolver = App.instance().contentResolver
         val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(
             MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
             MediaStore.Images.Media.DATA,
             MediaStore.Images.Media.DISPLAY_NAME,
-            MediaStore.Images.Media.SIZE
+            MediaStore.Images.Media.SIZE,
+            MediaStore.Images.Media.DATE_ADDED
         )
 
-        val where =
-            MediaStore.Images.Media.DATE_ADDED + ">=? and" +
-                    MediaStore.Images.Media.MIME_TYPE + "=? or " +
-                    MediaStore.Images.Media.MIME_TYPE + "=? or " +
-                    MediaStore.Images.Media.MIME_TYPE + "=?"
 
+        val where =
+            StringBuilder().append(MediaStore.Images.Media.DATE_ADDED + ">=? and ")
+                .append(MediaStore.Images.Media.MIME_TYPE + "=? or ")
+                .append(MediaStore.Images.Media.MIME_TYPE + "=? or ")
+                .append(MediaStore.Images.Media.MIME_TYPE + "=? ")
+
+
+        //6个月的秒数
+        val sixMonthLong = 15552000
         val startTime =
-            DateUtil.getMillon(Calendar.getInstance().timeInMillis - (6 * 30 * 24 * 3600))
-        val whereArgs = arrayOf(startTime, "image/jpeg", "image/png", "image/jpg")
+            Calendar.getInstance().timeInMillis / 1000 - sixMonthLong
+        startTime.toString().logD("6个月前秒数")
+        val whereArgs = arrayOf(startTime.toString(), "image/jpeg", "image/png", "image/jpg")
 
         val cursor = resolver.query(
             uri,
             projection,
-            where,
+            where.toString(),
             whereArgs,
             MediaStore.Images.Media.DATE_MODIFIED + " desc "
         )
         var path: String?
+        var date: String?
         while (cursor!!.moveToNext()) {
             path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
+            date = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED))
             if (path.isNullOrEmpty()) continue
-            cursorResult.add(path)
+            cursorResult.add(ImageCursor(date.toLong() * 1000, path))
         }
         cursor.close()
+
+        return cursorResult
     }
 }

@@ -187,6 +187,7 @@
                                 android:textSize="17dp" />
 
                             <TextView
+                                android:id="@+id/coin_more"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
@@ -259,26 +260,6 @@
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal" />
                             </HorizontalScrollView>
-
-                            <TextView
-                                android:id="@+id/sign_button"
-                                android:layout_width="0dp"
-                                android:layout_height="48dp"
-                                android:layout_marginLeft="37dp"
-                                android:layout_marginTop="21dp"
-                                android:layout_marginRight="37dp"
-                                android:background="@drawable/top_sign_bg"
-                                android:gravity="center"
-                                android:shadowColor="#ffe0232d"
-                                android:shadowDx="0"
-                                android:shadowDy="1"
-                                android:shadowRadius="3"
-                                android:text="立即签到"
-                                android:textColor="#ffffffff"
-                                android:textSize="20dp"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/sign_detail" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <LinearLayout

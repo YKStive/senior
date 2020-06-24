@@ -26,7 +26,6 @@ class PostItemMultiImage(context: Context, attributeSet: AttributeSet?) :
     RecyclerView(context, attributeSet) {
 
     init {
-
         layoutManager = GridLayoutManager(context, 3)
         addItemDecoration(
             RecycleViewDivider(

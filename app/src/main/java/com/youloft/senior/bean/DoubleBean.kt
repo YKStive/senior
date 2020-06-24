@@ -9,4 +9,5 @@ class DoubleBean {
     var doubleCode: String? = null
     var appid: String? = null
     var posid: String? = null
+    var cash: Boolean = false
 }

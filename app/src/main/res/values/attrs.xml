@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="PunchMoneyView">
+        <attr name="pv_date" format="string" />
+        <attr name="pv_money" format="string" />
+    </declare-styleable>
+
+
+    <declare-styleable name="PostHeaderView">
+        <attr name="hv_avatar" format="string" />
+        <attr name="hv_title" format="string" />
+        <attr name="hv_desc" format="string" />
+        <attr name="hv_is_main" format="boolean" />
+    </declare-styleable>
+
+
+
+</resources>

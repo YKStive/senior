@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.ui.gif.GifActivity
+import com.youloft.senior.widgt.OperateDialog
 import kotlinx.android.synthetic.main.activity_home.*
 
 /**
@@ -61,7 +62,7 @@ class HomeActivity : BaseActivity() {
         }
 
         btn_function.setOnClickListener {
-            GifActivity.start(this)
+            OperateDialog(this).show()
         }
     }
 

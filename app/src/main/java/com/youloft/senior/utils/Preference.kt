@@ -23,6 +23,9 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
         const val USER_ID = "user_id"
         const val IS_PUNCH = "is_punch"
         const val LAST_PUBLISH_ALBUM_TIME = "last_publish_album_time"
+
+        //已发布的相册的时间
+        const val PUBLISHED_ALBUM_TIME = "published_album_time"
     }
 
     private val prefs: SharedPreferences by lazy {
