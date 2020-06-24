@@ -1,11 +1,9 @@
 package com.youloft.senior.ui.login
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.youloft.core.base.BaseViewModel
-import com.youloft.net.bean.LoginBean
+import com.youloft.senior.bean.LoginBean
 import com.youloft.senior.Repository
-import kotlinx.coroutines.async
 
 
 /**

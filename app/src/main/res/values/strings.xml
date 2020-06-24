@@ -21,4 +21,7 @@
     <string name="tomorrow">明天</string>
     <string name="acquired">后天</string>
     <string name="operate_for_money">发表内容得奖励，\n随时提现不封顶!</string>
+    <string name="make_gif">制作表情</string>
+    <string name="make">制作</string>
+    <string name="use">使用</string>
 </resources>

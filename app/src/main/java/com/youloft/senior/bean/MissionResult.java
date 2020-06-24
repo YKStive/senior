@@ -1,4 +1,4 @@
-package com.youloft.net.bean;
+package com.youloft.senior.bean;
 
 import android.text.TextUtils;
 

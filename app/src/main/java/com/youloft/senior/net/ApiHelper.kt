@@ -1,7 +1,10 @@
-package com.youloft.net
+package com.youloft.senior.net
 
 import android.content.Context
 import com.facebook.stetho.Stetho
+import com.youloft.net.BaseRetrofitClient
+import com.youloft.net.ParamsInterface
+import com.youloft.net.bean.NetResponse
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -24,8 +27,25 @@ object ApiHelper : BaseRetrofitClient() {
 
     fun initSteho(context: Context, paramHandlers: ParamsInterface) {
         Stetho.initializeWithDefaults(context);
-        this.paramHandlers = paramHandlers
+        ApiHelper.paramHandlers = paramHandlers
     }
+
+    /**
+     * response统一返回
+     * @param response NetResponse<T>
+     */
+    fun <T : Any> executeResponse(
+        response: NetResponse<T>,
+        successBlock: (data: T) -> Unit,
+        errorBlock: (msg: String) -> Unit
+    ) {
+        if (response.isSuccess()) {
+            successBlock.invoke(response.data)
+        } else {
+            errorBlock.invoke(response.msg)
+        }
+    }
+
 
     /**
      * 处理所有51wnl-cq.com下请求的公共参数
@@ -35,8 +55,8 @@ object ApiHelper : BaseRetrofitClient() {
         override fun intercept(chain: Interceptor.Chain): Response {
             var request: Request = chain.request()
 //            if (request.url.host.toLowerCase().endsWith("51wnl-cq.com")) {
-                //处理公共参数
-                request = parseRequest(request)
+            //处理公共参数
+            request = parseRequest(request)
 //            }
             return chain.proceed(request)
         }

@@ -3,7 +3,7 @@ package com.youloft.senior.tuia;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.youloft.net.bean.MissionResult;
+import com.youloft.senior.bean.MissionResult;
 import com.youloft.senior.base.App;
 import com.youloft.senior.utils.MiitHelper;
 import com.youloft.util.AppUtil;

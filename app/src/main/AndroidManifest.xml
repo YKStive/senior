@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.youloft.senior">
+
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -8,13 +9,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:allowBackup="true"
         android:name=".base.App"
+        android:allowBackup="true"
         android:label="@string/app_name"
-        android:supportsRtl="true"
-        tools:replace="android:allowBackup"
         android:requestLegacyExternalStorage="true"
-        android:theme="@style/AppTheme">
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5b581241b27b0a497c00003a" />
@@ -40,8 +41,8 @@
 
         <receiver
             android:name="com.youloft.calendar.MeizuMessageReceiver"
-            tools:node="remove"
-            android:enabled="false" />
+            android:enabled="false"
+            tools:node="remove" />
         <receiver android:name=".MeizuMessageReceiver">
             <intent-filter>
                 <!-- 接收push消息 -->
@@ -64,6 +65,7 @@
             android:launchMode="singleTask" />
         <activity android:name=".web.WebActivity" />
         <activity android:name=".coin.CoinDetailActivity" />
+        <activity android:name=".ui.gif.GifListActivity" />
     </application>
 
 

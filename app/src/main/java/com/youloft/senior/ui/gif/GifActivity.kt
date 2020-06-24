@@ -30,36 +30,6 @@ class GifActivity : BaseActivity() {
     }
 
     override fun initView() {
-        btn_resource.setOnClickListener {
-            ChoiceImageActivity.start(this, false) {
-                Glide.with(this).load(it[0].path).into(iv_resource)
-                resource = BitmapFactory.decodeFile(it[0].path)
-            }
-        }
-
-        btn_temp.setOnClickListener {
-            lifecycleScope.launch {
-                withContext(Dispatchers.IO) {
-                    val submit =
-                        Glide.with(applicationContext).asGif().load(R.drawable.test).submit()
-                    temp = submit.get()
-                }
-
-                withContext(Dispatchers.Main) {
-                    iv_temp.setImageDrawable(temp)
-                }
-            }
-        }
-
-        composite.setOnClickListener {
-            val gifMaker = GifMaker()
-            composite.setText("合成中...")
-            gifMaker.makeNeGif(applicationContext, temp, resource) {
-                composite.setText("合成成功")
-                Log.d("GifActivity", it)
-                Glide.with(this).load(it).into(iv_target)
-            }
-        }
 
 
     }

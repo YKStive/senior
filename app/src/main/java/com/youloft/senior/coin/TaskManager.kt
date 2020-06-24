@@ -7,8 +7,8 @@ import android.text.TextUtils
 import android.widget.Toast
 import com.alibaba.fastjson.JSONObject
 import com.google.gson.JsonObject
-import com.youloft.net.ApiHelper
-import com.youloft.net.bean.MissionResult.DataBean.MissionsBean
+import com.youloft.senior.net.ApiHelper
+import com.youloft.senior.bean.MissionResult.DataBean.MissionsBean
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.DoubleBean
 import com.youloft.util.MD5

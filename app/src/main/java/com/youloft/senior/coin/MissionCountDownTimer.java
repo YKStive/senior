@@ -2,7 +2,6 @@ package com.youloft.senior.coin;
 
 import android.widget.TextView;
 
-import com.youloft.net.bean.MissionResult;
 import com.youloft.senior.R;
 
 

@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.youloft.core.base.BaseVMFragment
-import com.youloft.net.bean.ItemDetailBean
 import com.youloft.net.bean.MineData
 import com.youloft.senior.R
 import com.youloft.senior.ui.adapter.MineItemAdapter

@@ -3,7 +3,7 @@ package com.youloft.senior.base
 import android.app.Application
 import com.umeng.commonsdk.UMConfigure
 import com.umeng.socialize.PlatformConfig
-import com.youloft.net.ApiHelper
+import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.push.PushWrapper
 import com.youloft.senior.utils.Preference
 import com.youloft.senior.web.WebComponentHandle
@@ -31,6 +31,8 @@ class App : Application() {
             "af16a3c2d7b39dd4e8022e04ca1baa3f"
         )
         PushWrapper.init(this)
+
+
         ApiHelper.initSteho(this, object : ParamsInterface1 {
             override fun bindParams(urlBuilder: HttpUrl.Builder, params: Set<String>?) {
                 bindParams1(urlBuilder, params)

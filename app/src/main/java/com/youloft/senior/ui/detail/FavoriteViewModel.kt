@@ -5,8 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.youloft.core.base.BaseViewModel
 import com.youloft.net.bean.CommentData
-import com.youloft.net.bean.ItemDetailBean
-import com.youloft.senior.bean.Post
 import kotlinx.coroutines.launch
 
 

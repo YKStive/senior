@@ -3,10 +3,10 @@ package com.youloft.senior.coin
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alibaba.fastjson.JSONObject
-import com.youloft.net.ApiHelper.api
-import com.youloft.net.bean.MissionResult
-import com.youloft.net.bean.MissionResult.DataBean
-import com.youloft.net.bean.MissionResult.DataBean.MissionsBean
+import com.youloft.senior.net.ApiHelper.api
+import com.youloft.senior.bean.MissionResult
+import com.youloft.senior.bean.MissionResult.DataBean
+import com.youloft.senior.bean.MissionResult.DataBean.MissionsBean
 import com.youloft.senior.tuia.TuiaUtil
 import rx.Observable
 import rx.Subscriber

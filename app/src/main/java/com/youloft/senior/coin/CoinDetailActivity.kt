@@ -2,8 +2,8 @@ package com.youloft.senior.coin
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.youloft.core.base.BaseActivity
-import com.youloft.net.ApiHelper
 import com.youloft.senior.R
+import com.youloft.senior.net.ApiHelper
 import kotlinx.android.synthetic.main.activity_coin_detail_layout.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -43,7 +43,7 @@ class CoinDetailActivity : BaseActivity() {
 
     suspend fun request() = kotlinx.coroutines.withContext(Dispatchers.IO) {
         kotlin.runCatching {
-            return@runCatching ApiHelper.api.getCoinDetail()
+            ApiHelper.api.getCoinDetail()
         }.getOrNull()
     }
 

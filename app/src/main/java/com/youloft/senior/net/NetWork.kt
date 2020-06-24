@@ -1,4 +1,4 @@
-package com.youloft.net
+package com.youloft.senior.net
 
 import retrofit2.Call
 import retrofit2.Callback

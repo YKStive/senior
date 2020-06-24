@@ -4,9 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import com.youloft.core.base.BaseViewModel
-import com.youloft.net.bean.ItemDetailBean
-import com.youloft.senior.bean.Post
-import kotlinx.coroutines.launch
 import com.youloft.senior.Repository as Repository
 
 

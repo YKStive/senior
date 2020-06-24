@@ -1,13 +1,13 @@
-package com.youloft.net
+package com.youloft.senior.net
 
-import com.youloft.net.bean.LoginBean
+import com.youloft.senior.bean.LoginBean
 import retrofit2.Call
 import retrofit2.http.*
 
 import com.google.gson.JsonObject
 import com.youloft.net.bean.FavoriteHeadBean
-import com.youloft.net.bean.ItemDetailBean
-import com.youloft.net.bean.MissionResult
+import com.youloft.senior.bean.ItemDetailBean
+import com.youloft.senior.bean.MissionResult
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -18,11 +18,10 @@ import retrofit2.http.Query
  */
 interface Api {
     companion object {
-//        const val BASE_URL = "https://shequ.51wnl-cq.com/"
-        const val BASE_URL = "http://192.168.1.85:3000/"
+        const val BASE_URL = "https://shequ.51wnl-cq.com/"
     }
 
-    @GET(Api.BASE_URL + "api/Coin_Activity/GetMissions")
+    @GET(BASE_URL + "api/Coin_Activity/GetMissions")
     fun getMissionInfo(): MissionResult?
 
     @GET(BASE_URL + "api/Coin_Activity/Complete")
@@ -50,4 +49,7 @@ interface Api {
 
     @GET("mock/703/api/post/{id}")
     fun getItem(@Path("id") id: String): Call<ItemDetailBean>
+
+
+//    fun getStickers(): NetResponse<>
 }

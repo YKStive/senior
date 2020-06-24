@@ -2,7 +2,7 @@ package com.youloft.senior
 
 import android.util.Log
 import androidx.lifecycle.liveData
-import com.youloft.net.NetWork
+import com.youloft.senior.net.NetWork
 
 
 /**

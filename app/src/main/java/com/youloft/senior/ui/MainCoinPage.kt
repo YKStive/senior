@@ -13,7 +13,7 @@ import android.widget.LinearLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import com.alibaba.fastjson.JSONObject
-import com.youloft.net.bean.MissionResult
+import com.youloft.senior.bean.MissionResult
 import com.youloft.senior.R
 import com.youloft.senior.coin.*
 import com.youloft.senior.tuia.TuiaUtil

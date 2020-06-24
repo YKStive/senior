@@ -41,6 +41,7 @@ class OperateDialog(val context: FragmentActivity) : BaseDialog(context) {
 
         btn_gif.setOnClickListener {
             GifActivity.start(context)
+            dismiss()
         }
     }
 
