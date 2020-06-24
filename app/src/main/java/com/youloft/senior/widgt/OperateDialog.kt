@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentActivity
 import com.youloft.core.base.BaseDialog
 import com.youloft.senior.R
 import com.youloft.senior.ui.gif.GifActivity
+import com.youloft.senior.ui.gif.GifListActivity
 import com.youloft.senior.utils.logD
 import kotlinx.android.synthetic.main.dialog_operate.*
 
@@ -40,7 +41,7 @@ class OperateDialog(val context: FragmentActivity) : BaseDialog(context) {
         }
 
         btn_gif.setOnClickListener {
-            GifActivity.start(context)
+            GifListActivity.start(context)
             dismiss()
         }
     }

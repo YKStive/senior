@@ -5,10 +5,9 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.youloft.senior.utils.dp2px
+import com.youloft.coolktx.dp2px
 
 /**
  * @author you

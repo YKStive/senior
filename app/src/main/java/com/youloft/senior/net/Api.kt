@@ -18,8 +18,8 @@ import retrofit2.http.*
  */
 interface Api {
     companion object {
-        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
-//        const val BASE_URL = "https://shequ.51wnl-cq.com/"
+        //        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
+        const val BASE_URL = "https://shequ.51wnl-cq.com/"
     }
 
     @GET(BASE_URL + "api/Coin_Activity/GetMissions")
@@ -48,7 +48,7 @@ interface Api {
     @GET("/api/post/praise")
     fun getFavoritetList(@QueryMap params: Map<String, String>): Call<FavoriteHeadBean>
 
-    @GET("mock/703/api/post/{id}")
+    @GET("/api/post/{id}")
     fun getItem(@Path("id") id: String): Call<ItemDetailBean>
 
     /**
@@ -70,7 +70,7 @@ interface Api {
     fun getUserCoinInfo(): JSONObject?
 
     @GET("/api/post/sticker")
-    fun getStickers(): NetResponse<GifBean>
+    fun getStickers(): NetResponse<List<GifBean>>
 
     @POST(BASE_URL + "api/user/authcode")
     fun sendPhoneCode(@Body body: String): JSONObject?

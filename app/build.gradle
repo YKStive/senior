@@ -69,6 +69,7 @@ dependencies {
     api(name: 'msa_mdid_1.0.13', ext: 'aar')
     implementation project(path: ':core')
     implementation project(path: ':net')
+    implementation project(path: ':coolKtx')
 
     implementation "com.wnl.common:push-umeng:$libVersion"
 

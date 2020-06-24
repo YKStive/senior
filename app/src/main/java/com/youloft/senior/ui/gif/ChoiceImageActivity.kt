@@ -49,7 +49,7 @@ class ChoiceImageActivity : BaseActivity() {
     override fun initData() {
         reqPermissions()
         mBinder =
-            ChoiceImageItemBinder(isSingle, onItemClick = { position, item ->
+            ChoiceImageItemBinder(mCount, onItemClick = { position, item ->
                 finishWithResult(item)
             })
 
@@ -122,14 +122,14 @@ class ChoiceImageActivity : BaseActivity() {
     }
 
     companion object {
-        var isSingle: Boolean = true
+        private var mCount: Int = 1
         private const val KEY_RESULT: String = "images"
         fun start(
             context: FragmentActivity,
-            isSingle: Boolean = true,
+            count: Int = 1,
             onResult: (bean: ArrayList<ImageRes>) -> Unit
         ) {
-            this.isSingle = isSingle
+            this.mCount = count
             JumpResult(context).startForResult(ChoiceImageActivity::class.java) { requestCode, data ->
                 data?.apply {
                     val imageRes = data.getParcelableArrayListExtra<ImageRes>(KEY_RESULT)

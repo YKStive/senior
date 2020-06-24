@@ -3,6 +3,7 @@ package com.youloft.senior
 import android.util.Log
 import androidx.lifecycle.liveData
 import com.youloft.senior.net.NetWork
+import kotlinx.coroutines.Dispatchers
 
 
 /**
@@ -17,7 +18,7 @@ import com.youloft.senior.net.NetWork
  */
 object Repository {
     private const val TAG = "Repository"
-    fun getLogin(params:Map<String,String>) = this.fire {
+    fun getLogin(params: Map<String, String>) = this.fire {
         val projectTree = NetWork.getLogin(params)
         if (projectTree.status == 200) {
             val bannerList = projectTree.data
@@ -26,7 +27,8 @@ object Repository {
             Result.failure(RuntimeException("response status is ${projectTree.status}  msg is ${projectTree.msg}"))
         }
     }
-    fun getItem(params:String) = this.fire {
+
+    fun getItem(params: String) = this.fire {
         val projectTree = NetWork.getItem(params)
         if (projectTree.status == 200) {
             val bannerList = projectTree.data
@@ -37,7 +39,7 @@ object Repository {
     }
 
     fun <T> fire(block: suspend () -> Result<T>) =
-        liveData {
+        liveData(Dispatchers.IO) {
             val result = try {
                 block()
             } catch (e: Exception) {

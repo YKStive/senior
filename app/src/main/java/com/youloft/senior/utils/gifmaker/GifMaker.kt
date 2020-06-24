@@ -7,10 +7,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import com.bumptech.glide.gifdecoder.GifDecoder
 import com.bumptech.glide.load.resource.gif.GifDrawable
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -48,14 +45,15 @@ class GifMaker {
      * @param resource Bitmap 选择的图片
      * @param onSuccess Function1<[@kotlin.ParameterName] String, Unit> 成功回调新gif路径
      */
-    fun makeNeGif(
+      fun makeNeGif(
+        scope: CoroutineScope,
         context: Context,
         template: GifDrawable,
         resource: Bitmap,
         onSuccess: (path: String?) -> Unit
     ) {
 
-        GlobalScope.launch(Dispatchers.IO) {
+        scope.launch(Dispatchers.IO) {
             val taskTime = TaskTime()
             val gifDecoder = getGifDecoder(template)
             gifDecoder?.apply {

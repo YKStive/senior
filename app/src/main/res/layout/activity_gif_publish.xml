@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.youloft.senior.base.CommonTitle
+        android:id="@+id/common_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.noober.background.view.BLTextView
+            android:id="@+id/tv_publish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:paddingStart="12dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="5dp"
+            android:text="@string/publish"
+            android:textColor="#ffffff"
+            android:textSize="17sp"
+            app:bl_corners_radius="2dp"
+            app:bl_gradient_angle="90"
+            app:bl_gradient_endColor="#FA6634"
+            app:bl_gradient_startColor="#FF7841"
+            app:bl_gradient_type="linear"
+            app:bl_gradient_useLevel="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </com.youloft.senior.base.CommonTitle>
+
+    <com.noober.background.view.BLEditText
+        android:id="@+id/et_content"
+        android:layout_width="0dp"
+        android:layout_height="130dp"
+        android:background="@null"
+        android:gravity="start"
+        android:hint="@string/input_want_say"
+        android:padding="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/common_title" />
+
+    <ImageView
+        android:id="@+id/iv_gif"
+        android:layout_width="225dp"
+        android:layout_height="225dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_content" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

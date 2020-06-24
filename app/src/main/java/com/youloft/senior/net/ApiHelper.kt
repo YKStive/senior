@@ -37,12 +37,12 @@ object ApiHelper : BaseRetrofitClient() {
     fun <T : Any> executeResponse(
         response: NetResponse<T>,
         successBlock: (data: T) -> Unit,
-        errorBlock: (msg: String) -> Unit
+        errorBlock: ((msg: String) -> Unit)? = null
     ) {
         if (response.isSuccess()) {
             successBlock.invoke(response.data)
         } else {
-            errorBlock.invoke(response.msg)
+            errorBlock?.invoke(response.msg)
         }
     }
 
