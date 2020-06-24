@@ -89,6 +89,22 @@ class CashActivity : BaseActivity() {
         }
     }
 
+    fun withDraw() {
+        if (selectCashItem == null) {
+            return
+        }
+        GlobalScope.launch(Dispatchers.Main) {
+            val result = withContext(Dispatchers.IO) {
+                kotlin.runCatching {
+                    ApiHelper.api.withDraw(
+                        selectCashItem!!.getString("price"),
+                        0, selectCashItem!!.getIntValue("type")
+                    )
+                }.getOrNull()
+            }
+        }
+    }
+
     private fun bindUI(cashListResult: JSONArray) {
         if (userWXMessage == null) {
             loadError()

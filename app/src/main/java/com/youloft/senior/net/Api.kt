@@ -78,4 +78,14 @@ interface Api {
     @POST(BASE_URL + "api/user/verifyPhoneCode")
     fun verifyPhoneCode(@Body body: String): JSONObject?
 
+    /**
+     * 提现接口
+     */
+    @GET(BASE_URL + "Api/User/WithDraw")
+    fun withDraw(
+        @Query("cash") cash: String?,
+        @Query("type") type: Int?,
+        @Query("cashtype") cashtype: Int?
+    ): JSONObject?
+
 }
