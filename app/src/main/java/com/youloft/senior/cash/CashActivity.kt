@@ -44,6 +44,7 @@ class CashActivity : BaseActivity() {
         selectCashItem = cash_list_view.getSelectItem()
         cash_submit.setOnClickListener {
             PhoneDialog(this).show()
+            withDraw()
         }
     }
 
