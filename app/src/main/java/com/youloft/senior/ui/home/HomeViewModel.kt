@@ -229,7 +229,7 @@ class HomeViewModel : BaseViewModel() {
             StringBuilder().append(MediaStore.Images.Media.DATE_ADDED + ">=? and ")
                 .append(MediaStore.Images.Media.MIME_TYPE + "=? or ")
                 .append(MediaStore.Images.Media.MIME_TYPE + "=? or ")
-                .append(MediaStore.Images.Media.MIME_TYPE + "=? or ")
+                .append(MediaStore.Images.Media.MIME_TYPE + "=? ")
 
 
         //6个月的秒数
