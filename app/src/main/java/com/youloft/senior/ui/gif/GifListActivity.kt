@@ -8,6 +8,7 @@ import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.R
 import com.youloft.senior.bean.GifBean
 import com.youloft.senior.itembinder.GifListViewBinder
+import com.youloft.senior.net.Api
 import com.youloft.senior.utils.logD
 import kotlinx.android.synthetic.main.activity_gif_list.*
 
@@ -42,7 +43,12 @@ class GifListActivity : BaseActivity() {
 
     override fun initData() {
         lifecycleScope.launchWhenCreated {
-//            ApiHelper.api.login()
+            val stickers = ApiHelper.api.getStickers()
+            ApiHelper.executeResponse(stickers, {
+
+            }, {
+
+            })
         }
     }
 }

@@ -6,6 +6,8 @@ import retrofit2.http.*
 
 import com.google.gson.JsonObject
 import com.youloft.net.bean.FavoriteHeadBean
+import com.youloft.net.bean.NetResponse
+import com.youloft.senior.bean.GifBean
 import com.youloft.senior.bean.ItemDetailBean
 import com.youloft.senior.bean.MissionResult
 import retrofit2.http.GET
@@ -18,6 +20,7 @@ import retrofit2.http.Query
  */
 interface Api {
     companion object {
+        //        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
         const val BASE_URL = "https://shequ.51wnl-cq.com/"
     }
 
@@ -51,5 +54,6 @@ interface Api {
     fun getItem(@Path("id") id: String): Call<ItemDetailBean>
 
 
-//    fun getStickers(): NetResponse<>
+    @GET("/api/post/sticker")
+    fun getStickers(): NetResponse<GifBean>
 }
