@@ -75,6 +75,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/my_coin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="25dp"
@@ -190,6 +191,7 @@
                 android:layout_marginTop="5dp" />
 
             <LinearLayout
+                android:id="@+id/short_group"
                 android:layout_width="match_parent"
                 android:layout_height="34dp"
                 android:layout_marginLeft="15dp"
@@ -198,10 +200,11 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <com.youloft.senior.widgt.AutoScaleTextView
+                <TextView
                     android:id="@+id/short_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:singleLine="true"
                     android:text="还差4.5元即可提现，快去做任务赚钱吧"
                     android:textColor="#fff7612c"
                     android:textSize="18dp" />

@@ -1,17 +1,15 @@
 package com.youloft.senior.net
 
-import com.youloft.senior.bean.LoginBean
-import retrofit2.Call
-import retrofit2.http.*
-
+import com.alibaba.fastjson.JSONObject
 import com.google.gson.JsonObject
 import com.youloft.net.bean.FavoriteHeadBean
 import com.youloft.net.bean.NetResponse
 import com.youloft.senior.bean.GifBean
 import com.youloft.senior.bean.ItemDetailBean
+import com.youloft.senior.bean.LoginBean
 import com.youloft.senior.bean.MissionResult
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.Call
+import retrofit2.http.*
 
 /**
  * @author you
@@ -20,8 +18,8 @@ import retrofit2.http.Query
  */
 interface Api {
     companion object {
-        //        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
-        const val BASE_URL = "https://shequ.51wnl-cq.com/"
+        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
+//        const val BASE_URL = "https://shequ.51wnl-cq.com/"
     }
 
     @GET(BASE_URL + "api/Coin_Activity/GetMissions")
@@ -53,6 +51,23 @@ interface Api {
     @GET("mock/703/api/post/{id}")
     fun getItem(@Path("id") id: String): Call<ItemDetailBean>
 
+    /**
+     * 获取提现金额列表
+     */
+    @GET(BASE_URL + "api/user/GetCashList")
+    fun getCashList(): JSONObject?
+
+    /**
+     * 获取提现进度
+     */
+    @GET(BASE_URL + "api/user/CashProgress?Uid=phone20190924111851417523&caid=24&cid=Youloft_Android")
+    fun getCashRecord(): JSONObject?
+
+    /**
+     * 获取用户金币信息
+     */
+    @GET(BASE_URL + "api/user/info")
+    fun getUserCoinInfo(): JSONObject?
 
     @GET("/api/post/sticker")
     fun getStickers(): NetResponse<GifBean>
