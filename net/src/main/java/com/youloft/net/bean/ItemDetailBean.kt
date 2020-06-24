@@ -3,7 +3,7 @@ package com.youloft.net.bean
 
 /**
  *
- * @Description:
+ * @Description:  帖子详情
  * @Author:         slh
  * @CreateDate:     2020/6/22 16:26
  * @UpdateUser:     更新者：
@@ -28,7 +28,15 @@ package com.youloft.net.bean
 // "createTime": "2020-06-18T15:25:40.865+08:00",//创建时间
 //}
  data class ItemDetailBean(
+    var `data`: ItemData?,
+    var msg: String,
+    var sign: String,
+    var status: Int
+)
+
+data class ItemData(
     var avatar: String,
+    var commented: Int,
     var createTime: String,
     var id: String,
     var mediaContent: List<String>,

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/iv_head"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_15"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_image_checked" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:textColor="#ff555555"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/iv_head"
+        app:layout_constraintTop_toTopOf="@id/iv_head"
+        tools:text="丢撒的大大" />
+
+    <TextView
+        android:id="@+id/tv_browse_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="201次浏览"
+        android:textColor="#ff999999"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@id/tv_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_name" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:textColor="#ff333333"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_browse_number"
+        tools:text="电视里的繁华盛开的粉红色跨境电啊就会受到老师" />
+
+    <ImageView
+        android:id="@+id/web_movie"
+        android:layout_width="match_parent"
+        android:layout_height="345dp"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_15"
+        app:layout_constraintTop_toBottomOf="@id/tv_content" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="18dp"
+        android:background="@color/line_color"
+        app:layout_constraintTop_toBottomOf="@id/web_movie" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/icon_make_move_bg"
+        android:gravity="center"
+        android:shadowColor="#fffe4249"
+        android:text="制作同样的影集"
+        android:textColor="#ffffffff"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

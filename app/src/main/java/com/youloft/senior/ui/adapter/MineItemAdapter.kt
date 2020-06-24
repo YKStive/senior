@@ -1,9 +1,8 @@
 package com.youloft.senior.ui.adapter
 
-import android.os.Parcel
-import android.os.Parcelable
 import com.chad.library.adapter.base.BaseProviderMultiAdapter
 import com.youloft.net.bean.MineData
+import com.youloft.senior.utils.logD
 
 
 /**
@@ -16,12 +15,15 @@ import com.youloft.net.bean.MineData
  * @UpdateRemark:   更新说明：
  * @Version:        1.0
  */
-class MineItemAdapter : BaseProviderMultiAdapter<MineData>() {
+class MineItemAdapter(val params: (String) -> Unit) : BaseProviderMultiAdapter<MineData>() {
     init {
-        addItemProvider(TextAndImageItem())
-        addItemProvider(VideoItem())
-        addItemProvider(MovieItem())
-        addItemProvider(GifItem())
+        addItemProvider(TextAndImageItem(params))
+        addItemProvider(VideoItem(params))
+        println("Adapter CB ${params.hashCode().toString()}")
+        addItemProvider(MovieItem {
+            params(it)
+        })
+        addItemProvider(GifItem(params))
     }
 
 

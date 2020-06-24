@@ -26,6 +26,15 @@ object Repository {
             Result.failure(RuntimeException("response status is ${projectTree.status}  msg is ${projectTree.msg}"))
         }
     }
+    fun getItem(params:String) = this.fire {
+        val projectTree = NetWork.getItem(params)
+        if (projectTree.status == 200) {
+            val bannerList = projectTree.data
+            Result.success(projectTree)
+        } else {
+            Result.failure(RuntimeException("response status is ${projectTree.status}  msg is ${projectTree.msg}"))
+        }
+    }
 
     fun <T> fire(block: suspend () -> Result<T>) =
         liveData {

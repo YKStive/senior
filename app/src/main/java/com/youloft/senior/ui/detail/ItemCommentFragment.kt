@@ -58,7 +58,7 @@ class ItemCommentFragment : BaseVMFragment(), OnLoadMoreListener {
 
     override fun startObserve() {
         mViewModel._data.observe(this, Observer {
-            with(adapterr) { setNewInstance(it) }
+//            with(adapterr) { setNewInstance(it) }
         })
     }
 

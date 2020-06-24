@@ -18,7 +18,7 @@ import com.youloft.senior.R
  * @UpdateRemark:   更新说明：
  * @Version:        1.0
  */
-class VideoItem : BaseItemProvider<MineData>() {
+class VideoItem(params: (String) -> Unit) : BaseItemProvider<MineData>() {
     override val itemViewType: Int
         get() = MineData.VIDEO_TYPE
     override val layoutId: Int

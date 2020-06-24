@@ -1,9 +1,9 @@
 package com.youloft.senior.ui.home
 
 import android.content.Intent
+import android.os.Handler
+import android.os.Message
 import android.view.View
-import androidx.activity.viewModels
-import androidx.fragment.app.viewModels
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.ui.gif.GifActivity
@@ -16,6 +16,22 @@ import kotlinx.android.synthetic.main.activity_home.*
  * @desc
  */
 class HomeActivity : BaseActivity() {
+    var showPublishFlag = true
+    var timecount = 3
+    private val timeHandler: Handler = object : Handler() {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            if (msg.what === 100) {
+                if (timecount > 0) {
+                    timecount--
+                    sendEmptyMessageDelayed(100, 1000)
+                } else {
+                    img_publish.visibility = View.GONE
+                    showPublishFlag = false
+                }
+            }
+        }
+    }
 
     override fun getLayoutResId(): Int {
         return R.layout.activity_home
@@ -41,6 +57,7 @@ class HomeActivity : BaseActivity() {
                     .show(homeFragment)
                     .commit()
                 main_coin_page.visibility = View.VISIBLE
+
                 isSelected = true
                 btn_main.isSelected = false
             }
@@ -50,6 +67,10 @@ class HomeActivity : BaseActivity() {
 
         btn_main.apply {
             setOnClickListener {
+                if (showPublishFlag) {
+                    timeHandler.sendEmptyMessageDelayed(100, 1000);
+                    img_publish.visibility = View.VISIBLE
+                }
                 supportFragmentManager.beginTransaction()
                     .hide(homeFragment)
                     .show(mainFragment)
@@ -73,4 +94,5 @@ class HomeActivity : BaseActivity() {
 
     override fun initData() {
     }
+
 }

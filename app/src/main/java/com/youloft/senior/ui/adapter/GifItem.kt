@@ -17,7 +17,7 @@ import com.youloft.senior.R
  * @UpdateRemark:   更新说明：
  * @Version:        1.0
  */
-class GifItem : BaseItemProvider<MineData>() {
+class GifItem(params: (String) -> Unit) : BaseItemProvider<MineData>() {
     override val itemViewType: Int
         get() = MineData.GIF_TYPE
     override val layoutId: Int

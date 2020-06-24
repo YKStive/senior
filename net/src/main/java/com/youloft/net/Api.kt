@@ -5,6 +5,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 import com.google.gson.JsonObject
+import com.youloft.net.bean.FavoriteHeadBean
 import com.youloft.net.bean.ItemDetailBean
 import com.youloft.net.bean.MissionResult
 import retrofit2.http.GET
@@ -17,8 +18,8 @@ import retrofit2.http.Query
  */
 interface Api {
     companion object {
-        const val BASE_URL = "https://shequ.51wnl-cq.com/"
-//        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
+//        const val BASE_URL = "https://shequ.51wnl-cq.com/"
+        const val BASE_URL = "http://192.168.1.85:3000/"
     }
 
     @GET(Api.BASE_URL + "api/Coin_Activity/GetMissions")
@@ -43,4 +44,10 @@ interface Api {
 
     @GET("/api/post/comment")
     fun getCommentList(@QueryMap params: Map<String, String>): Call<ItemDetailBean>
+
+    @GET("/api/post/praise")
+    fun getFavoritetList(@QueryMap params: Map<String, String>): Call<FavoriteHeadBean>
+
+    @GET("mock/703/api/post/{id}")
+    fun getItem(@Path("id") id: String): Call<ItemDetailBean>
 }
