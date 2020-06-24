@@ -29,7 +29,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.0.0'
     api 'com.squareup.retrofit2:adapter-rxjava:2.6.0'
-
+    implementation rootProject.ext.dependencies['fastjson']
     api rootProject.ext.dependencies['stehoOkhttp']
     api rootProject.ext.dependencies['steho']
 

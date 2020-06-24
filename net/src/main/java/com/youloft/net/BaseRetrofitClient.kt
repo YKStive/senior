@@ -2,6 +2,7 @@ package com.youloft.net
 
 import com.youloft.net.raw.RawCallAdapterFactory
 import com.facebook.stetho.okhttp3.StethoInterceptor
+import com.youloft.net.retofit.fastjson.FastJsonConverterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -41,6 +42,7 @@ abstract class BaseRetrofitClient {
             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
             .addCallAdapterFactory(RawCallAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(FastJsonConverterFactory.create())
             .baseUrl(baseUrl)
             .build().create(serviceClass)
     }

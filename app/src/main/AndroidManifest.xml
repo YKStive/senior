@@ -66,6 +66,7 @@
         <activity android:name=".web.WebActivity" />
         <activity android:name=".coin.CoinDetailActivity" />
         <activity android:name=".ui.gif.GifListActivity" />
+        <activity android:name=".cash.CashActivity" />
     </application>
 
 

@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import com.alibaba.fastjson.JSONObject
 import com.youloft.senior.bean.MissionResult
 import com.youloft.senior.R
+import com.youloft.senior.cash.CashActivity
 import com.youloft.senior.coin.*
 import com.youloft.senior.tuia.TuiaUtil
 import com.youloft.senior.tuia.TuiaWebActivity
@@ -47,6 +48,9 @@ internal class MainCoinPage(
         }
         coin_more.setOnClickListener {
             context.startActivity(Intent(context, CoinDetailActivity::class.java))
+        }
+        submit.setOnClickListener {
+            context.startActivity(Intent(context, CashActivity::class.java))
         }
     }
 
@@ -231,7 +235,7 @@ internal class MainCoinPage(
                 state = 2
                 itemView.setOnClickListener(null)
                 itemView.isSelected = false
-            }else{
+            } else {
                 //已签到
                 state = 0
                 itemView.setOnClickListener(null)
