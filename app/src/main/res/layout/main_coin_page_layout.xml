@@ -144,18 +144,16 @@
 
                         <FrameLayout
                             android:layout_width="match_parent"
-                            android:layout_height="139dp"
-                            android:layout_marginHorizontal="15dp"
-                            android:layout_marginLeft="15dp"
+                            android:layout_height="164dp"
                             android:layout_marginTop="22dp"
-                            android:background="@drawable/top_today_coin_bg"
-                            android:paddingTop="20dp"
-                            android:paddingBottom="22dp">
+                            android:background="@drawable/jb_tx_card"
+                            android:paddingTop="30dp"
+                            android:paddingBottom="37dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="25dp"
+                                android:layout_marginLeft="40dp"
                                 android:text="金币余额"
                                 android:textColor="#995b2020"
                                 android:textSize="19dp" />
@@ -165,7 +163,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="25dp"
+                                android:layout_marginLeft="40dp"
                                 android:layout_marginBottom="5dp"
                                 android:text="5465"
                                 android:textColor="#ff5b2020"
@@ -176,10 +174,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom"
-                                android:layout_marginLeft="22dp"
-                                android:background="@drawable/coin_tixian_bg"
+                                android:layout_marginLeft="37dp"
+                                android:background="@drawable/tx_card_qp"
                                 android:paddingLeft="12dp"
-                                android:paddingTop="3dp"
+                                android:paddingTop="6dp"
                                 android:paddingRight="12dp"
                                 android:paddingBottom="3dp"
                                 android:text="约10.24元"
@@ -191,7 +189,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
-                                android:layout_marginRight="30dp"
+                                android:layout_marginRight="45dp"
                                 android:drawableRight="@drawable/coin_more_icon"
                                 android:drawablePadding="2dp"
                                 android:text="金币明细"
@@ -203,7 +201,7 @@
                                 android:layout_width="93dp"
                                 android:layout_height="36dp"
                                 android:layout_gravity="right|bottom"
-                                android:layout_marginRight="25dp"
+                                android:layout_marginRight="40dp"
                                 android:background="@drawable/coin_tixian_bg"
                                 android:gravity="center"
                                 android:text="提现"
@@ -214,7 +212,7 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="35dp">
+                            android:layout_marginTop="20dp">
 
                             <TextView
                                 android:id="@+id/continued_title"

@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <FrameLayout
+        android:id="@+id/top_group"
+        style="@style/ActionBar"
+        android:layout_width="0dp"
+        android:background="#FFF2ED"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ic_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:src="@drawable/theme_nav_back_icon"
+            android:tint="#333333" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="金币明细"
+            android:textColor="#ff333333"
+            android:textSize="18sp" />
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_group_divider"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_group">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:background="#FFF2ED" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="149dp"
+                    android:background="@drawable/jb_tx_card_2"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginTop="32dp"
+                        android:text="金币余额"
+                        android:textColor="#995b2020"
+                        android:textSize="19dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginBottom="20dp"
+                        android:includeFontPadding="false"
+                        android:text="5465"
+                        android:textColor="#ff5b2020"
+                        android:textSize="42sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <TextView
+                        android:id="@+id/last_cash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="33dp"
+                        android:layout_marginRight="25dp"
+                        android:drawableRight="@drawable/coin_more_icon"
+                        android:drawablePadding="2dp"
+                        android:text="上次提现进度"
+                        android:textColor="#cc5b2020"
+                        android:textSize="18dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/yuan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginBottom="25dp"
+                        android:text="元"
+                        android:textColor="#cc5b2020"
+                        android:textSize="19dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <Space
+                        android:id="@+id/space"
+                        android:layout_width="1dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="4dp"
+                        app:layout_constraintRight_toLeftOf="@+id/yuan"
+                        app:layout_constraintTop_toBottomOf="@+id/yuan" />
+
+                    <TextView
+                        android:id="@+id/top_cash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5.4"
+                        android:textColor="#cc5b2020"
+                        android:textSize="28sp"
+                        app:layout_constraintBottom_toTopOf="@+id/space"
+                        app:layout_constraintRight_toLeftOf="@+id/yuan" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="约"
+                        android:textColor="#cc5b2020"
+                        android:textSize="19dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/yuan"
+                        app:layout_constraintRight_toLeftOf="@+id/top_cash" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/bind_wx_item_bg">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:drawableLeft="@drawable/tx_bd_wechat"
+                    android:drawablePadding="6dp"
+                    android:text="绑定微信"
+                    android:textColor="#ff333333"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/wx_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginRight="10dp"
+                    android:drawableRight="@drawable/pull_down_icon"
+                    android:drawablePadding="4dp"
+                    android:text="高山流水"
+                    android:textColor="#ff777777"
+                    android:textSize="20dp" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:text="选择金额"
+                android:textColor="#ff333333"
+                android:textSize="24dp" />
+
+            <com.youloft.senior.widgt.CashListView
+                android:id="@+id/cash_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/short_tips_bg"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.youloft.senior.widgt.AutoScaleTextView
+                    android:id="@+id/short_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="还差4.5元即可提现，快去做任务赚钱吧"
+                    android:textColor="#fff7612c"
+                    android:textSize="18dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:src="@drawable/pull_down_icon"
+                    android:tint="#F7612C" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:background="#fffbfbfb"
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="常见问题"
+                    android:textColor="#ffaeaeae"
+                    android:textSize="19dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="新用户专享首次提现额度为0.3元。每个账号仅可享受一次。"
+                    android:textColor="#ffaeaeae"
+                    android:textSize="17dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="由于微信支付需要实名制，非实名用户账号无法支出提现，请务必将提现的微信号进行实名认证。"
+                    android:textColor="#ffaeaeae"
+                    android:textSize="17dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="13dp"
+                    android:text="今日兑换比例：10000金币＝ 1元人民币"
+                    android:textColor="#ffaeaeae"
+                    android:textSize="17dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/bottom_group_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EAEAEA"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_group"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/bottom_group"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:includeFontPadding="false"
+            android:text="所需金币："
+            android:textColor="#ff333333"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/coin_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:includeFontPadding="false"
+            android:text="5465"
+            android:textColor="#fff7612c"
+            android:textSize="28dp" />
+
+        <TextView
+            android:id="@+id/cash_submit"
+            android:layout_width="116dp"
+            android:layout_height="37dp"
+            android:layout_marginRight="14dp"
+            android:background="@drawable/cash_button_bg"
+            android:gravity="center"
+            android:text="申请提现"
+            android:textColor="#ffffffff"
+            android:textSize="19dp" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
