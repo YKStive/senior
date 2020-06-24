@@ -20,4 +20,5 @@
     <string name="today">今天</string>
     <string name="tomorrow">明天</string>
     <string name="acquired">后天</string>
+    <string name="operate_for_money">发表内容得奖励，\n随时提现不封顶!</string>
 </resources>
