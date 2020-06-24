@@ -42,6 +42,9 @@ class CashActivity : BaseActivity() {
         }
         ic_back.setOnClickListener { finish() }
         selectCashItem = cash_list_view.getSelectItem()
+        cash_submit.setOnClickListener {
+            PhoneDialog(this).show()
+        }
     }
 
     private fun refreshUI() {

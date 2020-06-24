@@ -71,4 +71,11 @@ interface Api {
 
     @GET("/api/post/sticker")
     fun getStickers(): NetResponse<GifBean>
+
+    @POST(BASE_URL + "api/user/authcode")
+    fun sendPhoneCode(@Body body: String): JSONObject?
+
+    @POST(BASE_URL + "api/user/verifyPhoneCode")
+    fun verifyPhoneCode(@Body body: String): JSONObject?
+
 }
