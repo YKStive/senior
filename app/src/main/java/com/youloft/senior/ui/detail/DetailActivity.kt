@@ -7,11 +7,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.youloft.core.base.BaseActivity
-import com.youloft.net.bean.CommentData
-import com.youloft.net.bean.MineData
 import com.youloft.senior.R
+import com.youloft.senior.bean.MineDataBean
 import com.youloft.senior.ui.adapter.CommentAdapterr
-import com.youloft.senior.widgt.CustomLinearLayoutManager
 import com.youloft.socialize.SOC_MEDIA
 import com.youloft.socialize.share.ShareImage
 import com.youloft.socialize.share.ShareWeb
@@ -19,7 +17,6 @@ import com.youloft.socialize.share.UmengShareActionImpl
 import com.youloft.util.StatusBarUtils.getStatusHeight
 import kotlinx.android.synthetic.main.activity_video_detail.*
 import kotlinx.android.synthetic.main.conmon_title.*
-import kotlinx.android.synthetic.main.fragment_item_comment.*
 
 /**
  *
@@ -56,23 +53,23 @@ class DetailActivity : BaseActivity() {
 //        tablayout.setViewPager(viewpager, arrayOf("全部评论", "点赞"), this, fragments)
         informationId = intent.getStringExtra("informationId")
         informationType = intent.getIntExtra("informationType", 0)
-        if (informationType == MineData.MOVIE_TYPE) {
+        if (informationType == MineDataBean.MOVIE_TYPE) {
             //影集
             supportFragmentManager.beginTransaction()
                 .add(
                     R.id.framelayout_detail,
-                    MovieAndGifDetailFragment.newInstance(MineData.MOVIE_TYPE, "")
+                    MovieAndGifDetailFragment.newInstance(MineDataBean.MOVIE_TYPE, "")
                 )
                 .commit()
-        } else if (informationType == MineData.GIF_TYPE) {
+        } else if (informationType == MineDataBean.GIF_TYPE) {
             //gif
             supportFragmentManager.beginTransaction()
                 .add(
                     R.id.framelayout_detail,
-                    MovieAndGifDetailFragment.newInstance(MineData.GIF_TYPE, "")
+                    MovieAndGifDetailFragment.newInstance(MineDataBean.GIF_TYPE, "")
                 )
                 .commit()
-        } else if (informationType == MineData.IMAGE_TYPE) {
+        } else if (informationType == MineDataBean.IMAGE_TYPE) {
             //图文
             supportFragmentManager.beginTransaction()
                 .add(
@@ -80,7 +77,7 @@ class DetailActivity : BaseActivity() {
                     PictureAndTextFragment.newInstance()
                 )
                 .commit()
-        } else if (informationType == MineData.VIDEO_TYPE) {
+        } else if (informationType == MineDataBean.VIDEO_TYPE) {
             //视频
 //            supportFragmentManager.beginTransaction()
 //                .add(
