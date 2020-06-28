@@ -4,7 +4,6 @@ import android.content.Context
 import com.facebook.stetho.Stetho
 import com.youloft.net.BaseRetrofitClient
 import com.youloft.net.ParamsInterface
-import com.youloft.net.bean.NetResponse
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -37,12 +36,12 @@ object ApiHelper : BaseRetrofitClient() {
     fun <T : Any> executeResponse(
         response: NetResponse<T>,
         successBlock: (data: T) -> Unit,
-        errorBlock: (msg: String) -> Unit
+        errorBlock: ((msg: String) -> Unit)? = null
     ) {
         if (response.isSuccess()) {
             successBlock.invoke(response.data)
         } else {
-            errorBlock.invoke(response.msg)
+            errorBlock?.invoke(response.msg)
         }
     }
 

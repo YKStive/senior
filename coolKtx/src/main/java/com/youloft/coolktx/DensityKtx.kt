@@ -1,4 +1,4 @@
-package com.youloft.senior.utils
+package com.youloft.coolktx
 
 import android.content.res.Resources
 import android.util.TypedValue

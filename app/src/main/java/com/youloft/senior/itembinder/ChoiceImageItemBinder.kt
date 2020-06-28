@@ -11,7 +11,7 @@ import com.youloft.senior.widgt.ItemViewHolder
 import kotlinx.android.synthetic.main.item_choice_image.view.*
 
 class ChoiceImageItemBinder(
-    var isSingle: Boolean = true,
+    var count: Int = 1,
     var onItemClick: (position: Int, result: ArrayList<ImageRes>) -> Unit
 ) : ItemViewBinder<ImageRes, RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(
@@ -24,7 +24,7 @@ class ChoiceImageItemBinder(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ImageRes) {
         holder.itemView.run {
             setOnClickListener {
-                if (isSingle) {
+                if (count==1) {
                     onItemClick.invoke(holder.adapterPosition, arrayListOf(item))
                 } else {
                     cb_checked.isChecked = !cb_checked.isChecked

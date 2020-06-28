@@ -12,10 +12,9 @@ import com.drakeet.multitype.ItemViewBinder
 import com.youloft.senior.R
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.Post
-import com.youloft.senior.bean.Post.Companion.multiData
 import com.youloft.senior.bean.PostType
 import com.youloft.senior.utils.ImageLoader
-import com.youloft.senior.utils.dp2px
+import com.youloft.coolktx.dp2px
 import com.youloft.senior.utils.isByUser
 import com.youloft.senior.widgt.PostItemAlbum
 import com.youloft.senior.widgt.PostItemMultiImage

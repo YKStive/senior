@@ -66,6 +66,8 @@
         <activity android:name=".web.WebActivity" />
         <activity android:name=".coin.CoinDetailActivity" />
         <activity android:name=".ui.gif.GifListActivity" />
+        <activity android:name=".ui.gif.GifPublishActivity" />
+        <activity android:name=".ui.gif.GifPreviewActivity" />
         <activity android:name=".cash.CashActivity" />
         <activity android:name=".cash.BindPhoneActivity" />
     </application>

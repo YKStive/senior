@@ -14,7 +14,7 @@ import com.youloft.senior.itembinder.InviteViewBinder
 import com.youloft.senior.itembinder.LocalAlbumViewBinder
 import com.youloft.senior.itembinder.RemotePostViewBinder
 import com.youloft.senior.itembinder.PunchViewBinder
-import com.youloft.senior.utils.dp2px
+import com.youloft.coolktx.dp2px
 import com.youloft.senior.utils.logD
 import com.youloft.senior.widgt.RecycleViewDivider
 import kotlinx.android.synthetic.main.fragment_home.*

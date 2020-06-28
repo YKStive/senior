@@ -3,19 +3,14 @@ package com.youloft.senior.widgt
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.youloft.senior.R
-import com.youloft.senior.base.App
-import com.youloft.senior.utils.dp2px
-import kotlinx.android.synthetic.main.item_post_remote_content_multi_image.view.*
+import com.youloft.coolktx.dp2px
 
 /**
  * @author you

@@ -54,4 +54,6 @@
         <item>Y</item>
         <item>Z</item>
     </array>
+    <string name="publish">发表</string>
+    <string name="input_want_say">输入想对大家说的话...</string>
 </resources>
