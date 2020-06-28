@@ -13,8 +13,8 @@ import android.widget.LinearLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import com.alibaba.fastjson.JSONObject
-import com.youloft.senior.bean.MissionResult
 import com.youloft.senior.R
+import com.youloft.senior.bean.MissionResult
 import com.youloft.senior.cash.CashActivity
 import com.youloft.senior.coin.*
 import com.youloft.senior.tuia.TuiaUtil
@@ -327,7 +327,7 @@ internal class MainCoinPage(
                                 if (isSuccess && reward) {
                                     TaskManager.instance.completeTask(
                                         bean!!.subItems[0].code,
-                                        itemView.context
+                                        itemView.context, null, null, null, null, null, uuid
                                     )
                                 } else if (!isSuccess) {
                                     ToastMaster.showShortToast(ctx, "这个任务看起来好像是迷路了,请稍候再试")
@@ -344,26 +344,32 @@ internal class MainCoinPage(
                 }
                 if (bean!!.isEmoj) {
                     //创建表情任务
+                    TaskManager.instance.completeTask(bean!!, itemView.context)
                     return@setOnClickListener
                 }
                 if (bean!!.isImageText) {
                     //创建图文任务
+                    TaskManager.instance.completeTask(bean!!, itemView.context)
                     return@setOnClickListener
                 }
                 if (bean!!.isPhoto) {
                     //创建相册的任务
+                    TaskManager.instance.completeTask(bean!!, itemView.context)
                     return@setOnClickListener
                 }
                 if (bean!!.isZanEmoj) {
                     //赞表情的任务
+                    TaskManager.instance.completeTask(bean!!, itemView.context)
                     return@setOnClickListener
                 }
                 if (bean!!.isZanImageText) {
                     //赞图文的任务
+                    TaskManager.instance.completeTask(bean!!, itemView.context)
                     return@setOnClickListener
                 }
                 if (bean!!.isZanPhoto) {
                     //赞相册的任务
+                    TaskManager.instance.completeTask(bean!!, itemView.context)
                     return@setOnClickListener
                 }
                 if (bean!!.isInvite) {

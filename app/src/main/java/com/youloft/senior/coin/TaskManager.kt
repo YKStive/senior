@@ -200,19 +200,19 @@ internal class TaskManager {
             saveComplete(doubleMode.doubleCode!!, true)
             return
         }
-        if (result.getBooleanValue("isCoinDouble")) {
-            //翻两倍
-            CoinTipsDialog(ctx, "恭喜获得", "测试", data.getIntValue("coin"), null, "翻倍奖励")
-                .setButtonListener {
-                    completeDoubleTask(ctx, doubleMode)
-                }.show()
-            return
-        }
-        if (result.getBooleanValue("isCoinThree")) {
+        if (data.getBooleanValue("isCoinThree")) {
             //翻三倍
             CoinTipsDialog(ctx, "恭喜获得", "可立即提现至微信", data.getIntValue("coin"), "0.1", "cash-double")
                 .setButtonListener {
                     doubleMode.cash = true
+                    completeDoubleTask(ctx, doubleMode)
+                }.show()
+            return
+        }
+        if (data.getBooleanValue("isCoinDouble")) {
+            //翻两倍
+            CoinTipsDialog(ctx, "恭喜获得", "测试", data.getIntValue("coin"), null, "翻倍奖励")
+                .setButtonListener {
                     completeDoubleTask(ctx, doubleMode)
                 }.show()
             return
@@ -243,7 +243,7 @@ internal class TaskManager {
                         doubleBean1.cash = doubleMode.cash
                         completeTask(
                             doubleMode.doubleCode!!,
-                            ctx, doubleBean1
+                            ctx, doubleBean1, null, null, null, null, uuid
                         )
                     } else if (!isSuccess) {
                         ToastMaster.showShortToast(ctx, "这个任务看起来好像是迷路了,请稍候再试")

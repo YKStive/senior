@@ -1,11 +1,13 @@
 package com.youloft.senior.cash
 
+import android.text.TextUtils
 import android.view.View
 import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.net.ApiHelper
+import com.youloft.util.ToastMaster
 import kotlinx.android.synthetic.main.activity_cash_layout.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -95,6 +97,7 @@ class CashActivity : BaseActivity() {
             return
         }
         GlobalScope.launch(Dispatchers.Main) {
+            val selectType = selectCashItem!!.getIntValue("type")
             val result = withContext(Dispatchers.IO) {
                 kotlin.runCatching {
                     ApiHelper.api.withDraw(
@@ -103,7 +106,47 @@ class CashActivity : BaseActivity() {
                     )
                 }.getOrNull()
             }
+            if (result == null) {
+                ToastMaster.showLongToast(this@CashActivity, "网络异常")
+                return@launch
+            }
+            if (result.getBooleanValue("success")) {
+                //提现成功
+                if (selectType == 0) {
+                    //新人专享
+                    val speedMode = result.getJSONObject("speedModel")
+                    if (speedMode != null) {
+                        val speedConfig = speedMode.getJSONObject("speedConfig")
+                        if (speedConfig != null) {
+                            showCashTips(speedConfig.getString("txMoney"))
+                        }
+                    }
+                } else {
+                    //普通提现
+                    val speedMode = result.getJSONObject("speedModel")
+                    if (speedMode != null) {
+                        val speedConfig = speedMode.getJSONObject("speedConfig")
+                        if (speedConfig != null) {
+                            showNormal(speedConfig.getString("txMoney"))
+                        }
+                    }
+                }
+                return@launch
+            }
+            if (!TextUtils.isEmpty(result.getString("msg"))) {
+                ToastMaster.showLongToast(this@CashActivity, result.getString("msg"))
+                return@launch
+            }
+            ToastMaster.showLongToast(this@CashActivity, "网络异常")
         }
+    }
+
+    private fun showCashTips(money: String) {
+        CashTipsDialog(this, {}).bindMoney(money).show()
+    }
+
+    private fun showNormal(money: String) {
+        CashTipsDialog(this, {}).bindMoney(money).show()
     }
 
     private fun bindUI(cashListResult: JSONArray) {
