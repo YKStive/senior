@@ -45,6 +45,7 @@ class ChoiceImageActivity : BaseActivity() {
         rv_images.run {
             layoutManager = GridLayoutManager(applicationContext, 4)
             adapter = mAdapter
+            itemAnimator = null
         }
     }
 
