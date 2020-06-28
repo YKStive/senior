@@ -5,136 +5,126 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <FrameLayout
+    <include layout="@layout/conmon_title" />
+
+    <com.youloft.senior.widgt.consecutivescroller.ConsecutiveScrollerLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:scrollbars="vertical">
 
-        <!--顶层详情容器-->
-        <com.youloft.senior.widgt.StickyScrollView
-            android:id="@+id/scrollView"
+
+        <FrameLayout
+            android:id="@+id/framelayout_detail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/ll_content"
+                android:id="@+id/ll_share_to_circle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_15"
+
+                android:layout_weight="1"
+                android:background="@drawable/bg_shape_share"
+                android:gravity="center_vertical|center"
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/umeng_socialize_wxcircle" />
+
+                <TextView
+                    android:id="@+id/tv_sharetoweichatcircle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="分享朋友圈" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_share_to_friend"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="@dimen/dp_15"
+                android:layout_weight="1"
+                android:background="@drawable/bg_shape_share"
+                android:gravity="center_vertical|center"
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/umeng_socialize_wechat" />
+
+                <TextView
+                    android:id="@+id/tv_sharetoweichatfriend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="分享朋友圈" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/line_color" />
+        <!--需要吸顶的tab-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_isSticky="true">
+
+            <com.flyco.tablayout.SlidingTabLayout
+                android:id="@+id/tablayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="50dp"
+                android:background="@color/white"
+                app:tl_indicator_color="#FF6B39"
+                app:tl_indicator_corner_radius="4dp"
+                app:tl_indicator_height="4dp"
+                app:tl_indicator_width="40dp"
+                app:tl_tab_space_equal="true"
+                app:tl_textSelectColor="#FF6B39"
+                app:tl_textUnselectColor="#999999" />
 
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/line_color" />
 
-                <FrameLayout
-                    android:id="@+id/framelayout_detail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/ll_share_to_circle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dp_15"
-
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_shape_share"
-                        android:gravity="center_vertical|center"
-                        android:orientation="horizontal"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/umeng_socialize_wxcircle" />
-
-                        <TextView
-                            android:id="@+id/tv_sharetoweichatcircle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-
-                            android:text="分享朋友圈" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ll_share_to_friend"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="@dimen/dp_15"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_shape_share"
-                        android:gravity="center_vertical|center"
-                        android:orientation="horizontal"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/umeng_socialize_wechat" />
-
-                        <TextView
-                            android:id="@+id/tv_sharetoweichatfriend"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="分享朋友圈" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/divider1"
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:layout_marginTop="12dp"
-                    android:background="@color/line_color" />
-                <!--需要吸顶的tab-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:tag="sticky">
-
-                    <com.flyco.tablayout.SlidingTabLayout
-                        android:id="@+id/tablayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="@color/white"
-                        app:tl_indicator_color="#FF6B39"
-                        app:tl_indicator_corner_radius="4dp"
-                        app:tl_indicator_height="4dp"
-                        app:tl_indicator_width="40dp"
-                        app:tl_tab_space_equal="true"
-                        app:tl_textSelectColor="#FF6B39"
-                        app:tl_textUnselectColor="#999999" />
-
-                    <View
-                        android:id="@+id/divider2"
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/line_color" />
-                </LinearLayout>
-
-                <FrameLayout
-                    android:id="@+id/fl_tab_containar"
+                <com.youloft.senior.widgt.consecutivescroller.ConsecutiveViewPager
+                    android:id="@+id/viewPager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-            </LinearLayout>
-        </com.youloft.senior.widgt.StickyScrollView>
-
-        <include layout="@layout/conmon_title" />
-    </FrameLayout>
+<!--        <FrameLayout-->
+<!--            android:id="@+id/frame_tabcontainer"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content" />-->
+    </com.youloft.senior.widgt.consecutivescroller.ConsecutiveScrollerLayout>
 
     <Button
         android:id="@+id/btn_share_com"

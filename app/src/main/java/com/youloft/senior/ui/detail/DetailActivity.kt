@@ -1,8 +1,6 @@
 package com.youloft.senior.ui.detail
 
 import android.content.Intent
-import android.view.ViewTreeObserver
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -50,7 +48,7 @@ class DetailActivity : BaseActivity() {
         fragments.add(ItemCommentFragment.newInstance())
         fragments.add(FavoriteFragment.newInstance())
 
-//        tablayout.setViewPager(viewpager, arrayOf("全部评论", "点赞"), this, fragments)
+        tablayout.setViewPager(viewPager, arrayOf("全部评论", "点赞"), this, fragments)
         informationId = intent.getStringExtra("informationId")
         informationType = intent.getIntExtra("informationType", 0)
         if (informationType == MineDataBean.MOVIE_TYPE) {
@@ -115,47 +113,47 @@ class DetailActivity : BaseActivity() {
 //            tablayout.getTitleView()
 
         }
-        supportFragmentManager.beginTransaction()
-            .add(R.id.fl_tab_containar, ItemCommentFragment.newInstance())
-//            .add(R.id.fl_tab_containar, FavoriteFragment.newInstance())
-            .commit()
-
-        initListeners()
+//        supportFragmentManager.beginTransaction()
+//            .add(R.id.fl_tab_containar, ItemCommentFragment.newInstance())
+////            .add(R.id.fl_tab_containar, FavoriteFragment.newInstance())
+//            .commit()
+//
+//        initListeners()
     }
 
-    private fun initListeners() {
-        //获取内容总高度
-        val vto: ViewTreeObserver = ll_content.getViewTreeObserver()
-        vto.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                stickScrollHeight = ll_content.getHeight()
-                //注意要移除
-                ll_content.getViewTreeObserver()
-                    .removeOnGlobalLayoutListener(this)
-            }
-        })
-
-//        //获取Fragment高度
-//        val viewTreeObserver: ViewTreeObserver = viewpager.getViewTreeObserver()
-//        viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+//    private fun initListeners() {
+//        //获取内容总高度
+//        val vto: ViewTreeObserver = ll_content.getViewTreeObserver()
+//        vto.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
 //            override fun onGlobalLayout() {
-//                stickScrollHeight = stickScrollHeight - viewpager.getHeight()
+//                stickScrollHeight = ll_content.getHeight()
 //                //注意要移除
-//                viewpager.getViewTreeObserver()
+//                ll_content.getViewTreeObserver()
 //                    .removeOnGlobalLayoutListener(this)
 //            }
 //        })
-
-        //获取title高度
-        val viewTreeObserver1: ViewTreeObserver = constraintlayout_title.getViewTreeObserver()
-        viewTreeObserver1.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                stickScrollHeight =
-                    stickScrollHeight - constraintlayout_title.getHeight() - getStatusHeight(this@DetailActivity) //计算滑动的总距离
-                scrollView.setStickTop(constraintlayout_title.getHeight());//设置距离多少悬浮
-            }
-        })
-    }
+//
+////        //获取Fragment高度
+////        val viewTreeObserver: ViewTreeObserver = viewpager.getViewTreeObserver()
+////        viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+////            override fun onGlobalLayout() {
+////                stickScrollHeight = stickScrollHeight - viewpager.getHeight()
+////                //注意要移除
+////                viewpager.getViewTreeObserver()
+////                    .removeOnGlobalLayoutListener(this)
+////            }
+////        })
+//
+//        //获取title高度
+//        val viewTreeObserver1: ViewTreeObserver = constraintlayout_title.getViewTreeObserver()
+//        viewTreeObserver1.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+//            override fun onGlobalLayout() {
+//                stickScrollHeight =
+//                    stickScrollHeight - constraintlayout_title.getHeight() - getStatusHeight(this@DetailActivity) //计算滑动的总距离
+//                scrollView.setStickTop(constraintlayout_title.getHeight());//设置距离多少悬浮
+//            }
+//        })
+//    }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

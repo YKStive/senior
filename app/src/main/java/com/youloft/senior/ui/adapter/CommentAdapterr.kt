@@ -1,8 +1,9 @@
 package com.youloft.senior.ui.adapter
 
+import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.youloft.net.bean.CommentData
+import com.youloft.net.bean.CommentBean
 import com.youloft.senior.R
 
 
@@ -16,14 +17,22 @@ import com.youloft.senior.R
  * @UpdateRemark:   更新说明：
  * @Version:        1.0
  */
-class CommentAdapterr(data: MutableList<CommentData>?) :
-    BaseQuickAdapter<CommentData, BaseViewHolder>(R.layout.item_comment, data) {
-    override fun convert(holder: BaseViewHolder, item: CommentData) {
+class CommentAdapterr(data: MutableList<CommentBean>?) :
+    BaseQuickAdapter<CommentBean, BaseViewHolder>(R.layout.item_comment, data) {
+    init {
+        addChildClickViewIds(R.id.ll_favorite)
+    }
+    override fun convert(holder: BaseViewHolder, item: CommentBean) {
 //        holder.setText(R.id.tv_name, item.nickname).setText(R.id.tv_content, item.content)
 //            .setText(R.id.tv_date, item.createTime)
 //
-        holder.setText(R.id.tv_name, "名字").setText(R.id.tv_content, "item.content")
-            .setText(R.id.tv_date, "item.createTime")
+        Glide.with(context).load(item.avatar).into(holder.getView(R.id.img_head))
+        holder.setText(R.id.tv_name, item.nickname).setText(R.id.tv_content, item.content)
+            .setText(R.id.tv_date, item.createTime)
+
     }
 
+//    override fun getItemCount(): Int {
+//        return 20
+//    }
 }

@@ -5,9 +5,9 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.youloft.core.base.BaseVMFragment
-import com.youloft.net.bean.MineData
 import com.youloft.senior.R
 import com.youloft.senior.bean.ItemData
+import com.youloft.senior.bean.MineDataBean
 import kotlinx.android.synthetic.main.fragment_movie_detail.*
 
 
@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_movie_detail.*
  */
 class MovieAndGifDetailFragment : BaseVMFragment() {
     private val mViewModel by viewModels<MovieViewModel>()
-    var type = MineData.GIF_TYPE;
+    var type = MineDataBean.GIF_TYPE;
 
     //单挑帖子详情 json
     var mItemInfo: String? = ""
@@ -48,11 +48,11 @@ class MovieAndGifDetailFragment : BaseVMFragment() {
 
     override fun initView() {
         arguments?.let {
-            type = it.getInt("type", MineData.GIF_TYPE)
+            type = it.getInt("type", MineDataBean.GIF_TYPE)
             mItemInfo = it.getString("itemInfo")
         }
 
-        if (type == MineData.GIF_TYPE) {
+        if (type == MineDataBean.GIF_TYPE) {
             imgeview_gif.visibility = View.VISIBLE
             web_movie.visibility = View.GONE
         } else {

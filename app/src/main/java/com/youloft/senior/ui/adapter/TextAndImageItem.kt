@@ -5,8 +5,8 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.provider.BaseItemProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.youloft.net.bean.MineData
 import com.youloft.senior.R
+import com.youloft.senior.bean.MineDataBean
 
 
 /**
@@ -25,9 +25,9 @@ class TextAndImageItem(
     val itemFavorite: (id: String, type: Int) -> Unit,
     val imageClick: (posi: Int, imgageList: List<String>?) -> Unit
 ) :
-    BaseItemProvider<MineData>() {
+    BaseItemProvider<MineDataBean>() {
     override val itemViewType: Int
-        get() = MineData.IMAGE_TYPE
+        get() = MineDataBean.IMAGE_TYPE
     override val layoutId: Int
         get() = R.layout.item_mine_img_text
 
@@ -45,7 +45,7 @@ class TextAndImageItem(
         )
     }
 
-    override fun convert(helper: BaseViewHolder, item: MineData) {
+    override fun convert(helper: BaseViewHolder, item: MineDataBean) {
         helper.setText(R.id.tv_browse_number, item.createTime).setText(
             R.id.tv_content
             , item.textContent
@@ -62,23 +62,29 @@ class TextAndImageItem(
             ivList.add(getView(R.id.iv8))
             ivList.add(getView(R.id.iv9))
         }
+        var valideIv = mutableListOf<ImageView>()
         if (item.mediaContent?.size!! < ivList.size) {
-            var more = ivList.size - item.mediaContent?.size!!
-            for (i in item.mediaContent?.size!!..ivList.lastIndex) {
-                ivList.removeAt(i)
+            for (i in 0..item.mediaContent?.lastIndex) {
+                ivList.get(i).visibility = View.VISIBLE
+                valideIv.add(ivList.get(i))
             }
         }
         for (i in 0..item.mediaContent?.lastIndex!!) {
-            Glide.with(context).load(item.mediaContent?.get(i)).into(ivList.get(i))
+            Glide.with(context).load(item.mediaContent?.get(i)).into(valideIv.get(i))
         }
     }
 
-    override fun onClick(helper: BaseViewHolder, view: View, data: MineData, position: Int) {
+    override fun onClick(helper: BaseViewHolder, view: View, data: MineDataBean, position: Int) {
         super.onClick(helper, view, data, position)
         itemClick(data.id, itemViewType)
     }
 
-    override fun onChildClick(helper: BaseViewHolder, view: View, data: MineData, position: Int) {
+    override fun onChildClick(
+        helper: BaseViewHolder,
+        view: View,
+        data: MineDataBean,
+        position: Int
+    ) {
         super.onChildClick(helper, view, data, position)
         when (view.id) {
             R.id.iv1,

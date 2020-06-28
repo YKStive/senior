@@ -1,20 +1,21 @@
 package com.youloft.senior.ui.detail
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.youloft.core.base.BaseVMFragment
-import com.youloft.net.bean.CommentData
 import com.youloft.senior.R
 import com.youloft.senior.ui.adapter.CommentAdapterr
-import com.youloft.senior.utils.TAG
-import com.youloft.senior.utils.logE
 import com.youloft.senior.widgt.CustomLinearLayoutManager
+import com.youloft.util.ToastMaster
 import kotlinx.android.synthetic.main.fragment_item_comment.*
 
 
@@ -50,43 +51,34 @@ class ItemCommentFragment : BaseVMFragment(), OnLoadMoreListener {
             refreshlayout.finishRefresh(2000 /*,false*/) //传入false表示刷新失败
         }
         refreshLayout.setOnLoadMoreListener(this)
-        var data =mutableListOf<CommentData>()
-        for(i in 0..10){
-            data.add(CommentData("","","","","",""))
-            data.add(CommentData("","","","","",""))
-            data.add(CommentData("","","","","",""))
-            data.add(CommentData("","","","","",""))
-            data.add(CommentData("","","","","",""))
-            data.add(CommentData("","","","","",""))
-        }
 
-        adapterr = CommentAdapterr(data)
-        var manager=CustomLinearLayoutManager(activity)
-        recyclerView.layoutManager =manager
+        adapterr = CommentAdapterr(null)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapterr
-//        var scrollY = recyclerView.computeVerticalScrollOffset();
-//        TAG.logE("滑动=${scrollY}")
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            var mmRvScrollY = 0 // 列表滑动距离
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                mmRvScrollY += dy
-                TAG.logE( "onScrolled: mmRvScrollY: $mmRvScrollY, dy: $dy")
-//                manager.canScroll=mmRvScrollY>100
+        adapterr.setOnItemChildClickListener(object : OnItemChildClickListener {
+            override fun onItemChildClick(
+                adapter: BaseQuickAdapter<*, *>,
+                view: View,
+                position: Int
+            ) {
+                when(view.id){
+                    R.id.ll_favorite->{
+                        ToastMaster.showShortToast(activity, "点赞")
+                    }
+                }
             }
         })
+//
     }
 
     override fun initData() {
-
+        mViewModel.getData(HashMap<String, String>())
     }
 
     override fun startObserve() {
-        mViewModel._data.observe(this, Observer {
-//            with(adapterr) { setNewInstance(it) }
+        mViewModel.resultData.observe(this, Observer {
+//            with(adapterr) { setList(it) }
+            adapterr.setList(it)
         })
     }
 

@@ -1,4 +1,4 @@
-package com.youloft.net.bean
+package com.youloft.senior.bean
 
 
 /**
@@ -12,15 +12,10 @@ package com.youloft.net.bean
  * @Version:        1.0
  */
 data class FavoriteHeadBean(
-    var `data`: List<FavoriteHeadData>,
-    var msg: String,
-    var sign: String,
-    var status: Int
-)
-
-data class FavoriteHeadData(
     var avatar: String,
     var createTime: String,
     var id: String,
+    var nickname: String,
     var userId: String
 )
+

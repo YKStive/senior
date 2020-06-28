@@ -4,9 +4,8 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.provider.BaseItemProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.youloft.net.bean.MineData
-import com.youloft.net.bean.MineDataBean
 import com.youloft.senior.R
+import com.youloft.senior.bean.MineDataBean
 
 
 /**
@@ -23,9 +22,9 @@ class GifItem(
     val itemClick: (id: String, type: Int) -> Unit,
     val itemShare: (id: String, type: Int) -> Unit,
     val itemFavorite: (id: String, type: Int) -> Unit
-) : BaseItemProvider<MineData>() {
+) : BaseItemProvider<MineDataBean>() {
     override val itemViewType: Int
-        get() = MineData.GIF_TYPE
+        get() = MineDataBean.GIF_TYPE
     override val layoutId: Int
         get() = R.layout.item_gif
 
@@ -36,7 +35,7 @@ class GifItem(
         )
     }
 
-    override fun onChildClick(helper: BaseViewHolder, view: View, data: MineData, position: Int) {
+    override fun onChildClick(helper: BaseViewHolder, view: View, data: MineDataBean, position: Int) {
         super.onChildClick(helper, view, data, position)
         when (view.id) {
             R.id.tv_share -> itemShare(data.id, itemViewType)
@@ -45,7 +44,7 @@ class GifItem(
 
     }
 
-    override fun convert(helper: BaseViewHolder, item: MineData) {
+    override fun convert(helper: BaseViewHolder, item: MineDataBean) {
         helper.setText(R.id.tv_browse_number, item.createTime).setText(
             R.id.tv_content
             , item.textContent
@@ -53,7 +52,7 @@ class GifItem(
         Glide.with(context).load(item.mediaContent?.get(0)).into(helper.getView(R.id.img_gif))
     }
 
-    override fun onClick(helper: BaseViewHolder, view: View, data: MineData, position: Int) {
+    override fun onClick(helper: BaseViewHolder, view: View, data: MineDataBean, position: Int) {
         super.onClick(helper, view, data, position)
         itemClick(data.id, itemViewType)
     }

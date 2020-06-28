@@ -2,7 +2,7 @@ package com.youloft.senior.ui.adapter
 
 import com.chad.library.adapter.base.BaseProviderMultiAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.youloft.net.bean.MineData
+import com.youloft.senior.bean.MineDataBean
 import com.youloft.senior.utils.logD
 
 
@@ -21,7 +21,7 @@ class MineItemAdapter(
     val itemShare: (id: String, type: Int) -> Unit,
     val itemFavorite: (id: String, type: Int) -> Unit,
     val imageClick: (posi: Int, imgageList: List<String>?) -> Unit
-) : BaseProviderMultiAdapter<MineData>() {
+) : BaseProviderMultiAdapter<MineDataBean>() {
     init {
         addItemProvider(TextAndImageItem(itemClick, itemShare, itemFavorite, imageClick))
         addItemProvider(VideoItem(itemClick, itemShare, itemFavorite))
@@ -29,7 +29,7 @@ class MineItemAdapter(
         addItemProvider(GifItem(itemClick, itemShare, itemFavorite))
     }
 
-    override fun getItemType(data: List<MineData>, position: Int): Int {
+    override fun getItemType(data: List<MineDataBean>, position: Int): Int {
         return data.get(position).postType
     }
 

@@ -1,12 +1,13 @@
 package com.youloft.senior.ui.home
 
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import cc.shinichi.library.ImagePreview
 import cc.shinichi.library.bean.ImageInfo
 import com.youloft.core.base.BaseVMFragment
-import com.youloft.net.bean.MineData
 import com.youloft.senior.R
+import com.youloft.senior.bean.MineDataBean
 import com.youloft.senior.ui.adapter.MineItemAdapter
 import com.youloft.senior.ui.detail.DetailActivity
 import com.youloft.util.ToastMaster
@@ -79,27 +80,29 @@ class MainFragment : BaseVMFragment() {
         recyclerView.adapter = mAdapter
         tv_browse_number.setOnClickListener {
             activity?.let { it1 ->
-                DetailActivity.start(it1, "3", MineData.MOVIE_TYPE)
+                DetailActivity.start(it1, "3", MineDataBean.MOVIE_TYPE)
             }
         }
     }
 
     override fun initData() {
-        var data = mutableListOf<MineData>()
-        for (i in 0..10) {
-            data.add(
-                MineData(
-                    "2020", "3", mutableListOf(), 2, 55, "ssss", 3, "koskofkodkodkodk"
-                    , 455, 48848
-                )
-            )
-        }
-        mAdapter.setList(data)
+//        var data = mutableListOf<MineData>()
+//        for (i in 0..10) {
+//            data.add(
+//                MineData(
+//                    "2020", "3", mutableListOf(), 2, 55, "ssss", 3, "koskofkodkodkodk"
+//                    , 455, 48848
+//                )
+//            )
+//        }
+        mViewModel.getData(1,0,10)
 //mViewModel
     }
 
     override fun startObserve() {
-
+        mViewModel.resultData.observe(this, Observer {
+            mAdapter.setList(it)
+        })
     }
 
 }
