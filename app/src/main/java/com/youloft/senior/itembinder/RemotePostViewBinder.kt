@@ -136,7 +136,10 @@ open class RemotePostViewBinder(
         private fun setSingleImage(post: Post) {
             val imageView = ImageView(App.instance())
             imageView.scaleType = ImageView.ScaleType.FIT_XY
-            val layoutParams = ViewGroup.LayoutParams(201.dp2px, 201.dp2px)
+            val layoutParams = ViewGroup.LayoutParams(
+                App.instance().resources.getDimension(R.dimen.app_post_gif_width).toInt(),
+                App.instance().resources.getDimension(R.dimen.app_post_gif_height).toInt()
+            )
             imageView.layoutParams = layoutParams
             ImageLoader.loadImage(contentContainer, post.mediaContent[0], imageView)
             contentContainer.addView(imageView)

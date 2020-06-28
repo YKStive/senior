@@ -3,4 +3,9 @@
     <dimen name="app_multi_image_item_with">104dp</dimen>
     <dimen name="dp_15">15dp</dimen>
     <dimen name="app_common_title_height">44dp</dimen>
+    <dimen name="app_post_album_width">315dp</dimen>
+    <dimen name="app_post_album_height">177dp</dimen>
+    <dimen name="app_post_gif_width">201dp</dimen>
+    <dimen name="app_post_gif_height">201dp</dimen>
+    <dimen name="app_post_padding">60dp</dimen>
 </resources>

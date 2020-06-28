@@ -17,7 +17,7 @@ class RecycleViewDivider(context: Context, orientation: Int) : ItemDecoration() 
     private var mPaint: Paint? = null
     private var mDivider: Drawable?
     private var mDividerHeight = 2
-    private val mOrientation: Int
+    private var mOrientation: Int
 
     /**
      * 自定义分割线
@@ -43,6 +43,7 @@ class RecycleViewDivider(context: Context, orientation: Int) : ItemDecoration() 
         context,
         orientation
     ) {
+        mOrientation = orientation
         mDividerHeight = dividerHeight
         mPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         mPaint!!.color = dividerColor

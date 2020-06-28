@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <include
-        layout="@layout/item_post_header_main"
+    <com.youloft.senior.widgt.PostHeaderView
+        app:hv_is_main="true"
+        android:id="@+id/header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,8 +41,8 @@
 
         <com.youloft.senior.widgt.PostItemAlbum
             android:id="@+id/album"
-            android:layout_width="315dp"
-            android:layout_height="315dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:src="@drawable/ic_placeholder_error"
             app:layout_constraintEnd_toEndOf="@id/tv_content"

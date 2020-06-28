@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.CheckBox
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
@@ -13,7 +14,8 @@ import com.youloft.core.base.BaseActivity
 import com.youloft.core.jump.JumpResult
 import com.youloft.senior.R
 import com.youloft.senior.bean.ImageRes
-import com.youloft.senior.itembinder.ChoiceImageItemBinder
+import com.youloft.senior.itembinder.ChoiceSingleImageItemBinder
+import com.youloft.senior.widgt.ItemViewHolder
 import kotlinx.android.synthetic.main.activity_choice_image.*
 
 class ChoiceImageActivity : BaseActivity() {
@@ -21,14 +23,14 @@ class ChoiceImageActivity : BaseActivity() {
     private val TAG = "ChoiceImageActivity"
     private var mItems = ArrayList<ImageRes>()
     private var mAdapter = MultiTypeAdapter(mItems)
-    private lateinit var mBinder: ChoiceImageItemBinder
+    private lateinit var mBinder: ChoiceSingleImageItemBinder
 
     override fun getLayoutResId(): Int {
         return R.layout.activity_choice_image
     }
 
     override fun initView() {
-        iv_back.setOnClickListener {
+        ic_back.setOnClickListener {
             finish()
         }
 
@@ -49,8 +51,27 @@ class ChoiceImageActivity : BaseActivity() {
     override fun initData() {
         reqPermissions()
         mBinder =
-            ChoiceImageItemBinder(mCount, onItemClick = { position, item ->
-                finishWithResult(item)
+            ChoiceSingleImageItemBinder(onItemClick = { old, new ->
+                if (old == -1) {
+                    mItems[new].isSelected = true
+                    mAdapter.notifyItemChanged(new)
+                    mBinder.lastSelectedPosition = new
+
+                } else if (old == new) {
+                    mItems[new].isSelected = !mItems[new].isSelected
+                    mAdapter.notifyItemChanged(new)
+                    if (mItems[new].isSelected) {
+                        mBinder.lastSelectedPosition = new
+                    } else {
+                        mBinder.lastSelectedPosition = -1
+                    }
+                } else {
+                    mItems[old].isSelected = false
+                    mItems[new].isSelected = true
+                    mAdapter.notifyItemChanged(old)
+                    mAdapter.notifyItemChanged(new)
+                    mBinder.lastSelectedPosition = new
+                }
             })
 
         mAdapter.run {
