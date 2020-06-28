@@ -1,9 +1,7 @@
 package com.youloft.senior.net
 
 import com.alibaba.fastjson.JSONObject
-import com.google.gson.JsonObject
 import com.youloft.net.bean.FavoriteHeadBean
-import com.youloft.net.bean.NetResponse
 import com.youloft.senior.bean.GifBean
 import com.youloft.senior.bean.ItemDetailBean
 import com.youloft.senior.bean.LoginBean
