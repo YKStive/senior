@@ -31,7 +31,7 @@ internal class ApplyProgressAdapter :
         parent: ViewGroup,
         viewType: Int
     ): BaseViewHolder {
-        if (viewType == 0) {
+        if (viewType == 1) {
             return EmptyHolder(parent)
         }
         return ViewHolder(parent)

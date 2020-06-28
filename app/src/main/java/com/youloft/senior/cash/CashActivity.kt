@@ -60,7 +60,7 @@ class CashActivity : BaseActivity() {
             short_text.text =
                 "还差${(itemCashValue - userWXMessage!!.getFloatValue("cash"))}元即可提现，快去做任务赚钱吧"
         }
-        coin_number.text = selectCashItem!!.getIntValue("price").toString()
+        coin_number.text = selectCashItem!!.getIntValue("coin").toString()
     }
 
     override fun initData() {
