@@ -156,7 +156,7 @@ class CashActivity : BaseActivity() {
                     if (speedMode != null) {
                         val speedConfig = speedMode.getJSONObject("speedConfig")
                         if (speedConfig != null) {
-                            showNormal(speedConfig.getString("txMoney"))
+                            showNormal(speedConfig.getString("txMoney"), speedMode)
                         }
                     }
                 }
@@ -171,11 +171,18 @@ class CashActivity : BaseActivity() {
     }
 
     private fun showCashTips(money: String) {
-        CashTipsDialog(this, {}).bindMoney(money).show()
+        CashTipsDialog(this) {
+            //看视频直接触发提现
+        }.bindMoney(money).show()
     }
 
-    private fun showNormal(money: String) {
-        CashTipsDialog(this, {}).bindMoney(money).show()
+    private fun showNormal(money: String, speedModel: JSONObject?) {
+        NormalTipsDialog(this) {
+            startActivity(
+                Intent(this, MoneyApplyProgressActivity::class.java)
+                    .putExtra("caid", speedModel?.getString("caid"))
+            )
+        }.bindMoney(money).show()
     }
 
     private fun bindUI() {
