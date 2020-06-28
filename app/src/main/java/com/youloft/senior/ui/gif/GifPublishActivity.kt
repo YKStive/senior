@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
+import com.youloft.coolktx.toast
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.R
@@ -25,6 +26,7 @@ import kotlinx.android.synthetic.main.activity_gif_publish.*
 class GifPublishActivity : BaseActivity() {
 
 
+    private lateinit var mGifPath: String
     override fun getLayoutResId(): Int {
         return R.layout.activity_gif_publish
     }
@@ -36,16 +38,19 @@ class GifPublishActivity : BaseActivity() {
         }
 
         tv_publish.setOnClickListener {
-
+            val content = et_content.text
+            if (content == null) {
+                toast("说点什么吧！")
+            } else {
+                //todo 发表影集 detail singleTask
+            }
         }
 
     }
 
     override fun initData() {
-        val gifPath = intent.getStringExtra(GIF_PATH)
-        gifPath?.apply {
-            ImageLoader.loadImage(this@GifPublishActivity, this, iv_gif)
-        }
+        mGifPath = intent.getStringExtra(GIF_PATH)!!
+        ImageLoader.loadImage(this@GifPublishActivity, mGifPath, iv_gif)
 
     }
 
