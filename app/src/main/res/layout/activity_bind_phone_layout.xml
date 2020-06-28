@@ -89,6 +89,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#0000"
+                android:gravity="center_vertical"
                 android:hint="输入手机号"
                 android:inputType="phone"
                 android:maxLength="11"
@@ -163,6 +164,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#0000"
+                android:gravity="center_vertical"
                 android:hint="输入验证码"
                 android:inputType="phone"
                 android:maxLength="5"
@@ -174,6 +176,7 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
                 android:background="#EAEAEA" />
 
             <FrameLayout

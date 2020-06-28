@@ -33,10 +33,10 @@ interface Api {
         @Query("otherinfo") otherinfo: String? = null,
         @Query("extData") extData: String? = null,
         @Query("JlspOrderId") jlspOrderId: String? = null
-    ): JsonObject?
+    ): JSONObject?
 
     @GET(BASE_URL + "Api/User/GetCoinDetail")
-    fun getCoinDetail(): JsonObject?
+    fun getCoinDetail(): JSONObject?
 
     @POST("/api/user/login")
     @FormUrlEncoded

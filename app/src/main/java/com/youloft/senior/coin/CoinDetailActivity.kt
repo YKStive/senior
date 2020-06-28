@@ -30,14 +30,14 @@ class CoinDetailActivity : BaseActivity() {
         //加载数据
         GlobalScope.launch(Dispatchers.Main) {
             val result = request()
-            if (result == null || !result.has("data")) {
+            if (result == null || !result.containsKey("data")) {
                 return@launch
             }
-            val list = result.getAsJsonObject("data")
-            if (list == null || !list.has("CoinLog")) {
+            val list = result.getJSONObject("data")
+            if (list == null || !list.containsKey("CoinLog")) {
                 return@launch
             }
-            adapter.refreshData(list.getAsJsonArray("CoinLog"))
+            adapter.refreshData(list.getJSONArray("CoinLog"))
         }
     }
 
