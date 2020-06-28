@@ -2,12 +2,10 @@ package com.youloft.senior.net
 
 import com.alibaba.fastjson.JSONObject
 import com.youloft.net.bean.FavoriteHeadBean
-import com.youloft.senior.bean.GifBean
-import com.youloft.senior.bean.ItemDetailBean
-import com.youloft.senior.bean.LoginBean
-import com.youloft.senior.bean.MissionResult
+import com.youloft.senior.bean.*
 import retrofit2.Call
 import retrofit2.http.*
+import rx.Observable
 
 /**
  * @author you
@@ -92,4 +90,11 @@ interface Api {
         @Query("cashtype") cashtype: Int?
     ): JSONObject?
 
+    /**
+     * 提现进度
+     *
+     * @return
+     */
+    @GET(BASE_URL + "Api/User/CashProgress")
+    fun cashProgress(@Query("caId") caId: String?): Observable<ApplyOptionResponse?>
 }

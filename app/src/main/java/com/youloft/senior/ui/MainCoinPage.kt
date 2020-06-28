@@ -73,6 +73,8 @@ internal class MainCoinPage(
                     animationing = false
                     content_group.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
                     content_group.visibility = View.GONE
+                    more.setImageResource(R.drawable.jb_pull_down)
+                    content_group_bg.setBackgroundResource(R.color.main_coin_bg_color1)
                     return@addUpdateListener
                 }
                 content_group.layoutParams.height = height - (it.animatedValue as Int)
@@ -84,7 +86,7 @@ internal class MainCoinPage(
             isClickable = true
             bottom_layout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
             var height = bottom_layout.measuredHeight
-            val maxHeight = getHeight() - top_group.height - UiUtil.dp2Px(context, 20f)
+            val maxHeight = getHeight() - top_group.height - UiUtil.dp2Px(context, 30f)
             if (height > maxHeight) {
                 height = maxHeight
             }
@@ -97,6 +99,8 @@ internal class MainCoinPage(
                     animationing = false
                     content_group.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
                     content_group.requestLayout()
+                    more.setImageResource(R.drawable.jb_pull_up)
+                    content_group_bg.setBackgroundResource(R.color.main_coin_bg_color2)
                     return@addUpdateListener
                 }
                 content_group.layoutParams.height = it.animatedValue as Int

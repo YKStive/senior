@@ -8,7 +8,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fffff2ed"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:background="#fffff2ed"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:paddingLeft="15dp"
@@ -113,14 +113,30 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <FrameLayout
+            android:id="@+id/content_group_bg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/more"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="-16dp"
+                android:layout_marginRight="-16dp"
+                android:background="@drawable/jb_pull_down" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#fffff2ed" />
 
             <ScrollView
                 android:id="@+id/content_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="30dp"
+                android:background="#fffff2ed"
                 android:scrollbars="none"
                 android:visibility="gone">
 
@@ -270,13 +286,7 @@
                 </RelativeLayout>
             </ScrollView>
 
-            <TextView
-                android:id="@+id/more"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_gravity="bottom"
-                android:background="#ff00"
-                android:text="更多" />
+
         </FrameLayout>
     </LinearLayout>
 </FrameLayout>

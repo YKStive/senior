@@ -1,5 +1,6 @@
 package com.youloft.senior.cash
 
+import android.content.Intent
 import android.text.TextUtils
 import android.view.View
 import com.alibaba.fastjson.JSONArray
@@ -26,20 +27,10 @@ class CashActivity : BaseActivity() {
 
     var selectCashItem: JSONObject? = null
     var userWXMessage: JSONObject? = null;
+    var lastCash: JSONObject? = null
+    var cashListResult: JSONArray? = null
 
     override fun initView() {
-        val array = JSONArray()
-        for (i in 0 until 7) {
-            val item = JSONObject()
-            item.put("code", "1")
-            item.put("price", "0.3")
-            item.put("txt", "0.3元")
-            item.put("type", i)
-            item.put("cash", 3)
-            array.add(item)
-        }
-        cash_list_view.refresh(array)
-
         cash_list_view.setSelectCallBack {
             selectCashItem = it
             refreshUI()
@@ -49,6 +40,12 @@ class CashActivity : BaseActivity() {
         cash_submit.setOnClickListener {
 //            PhoneDialog(this).show()
             withDraw()
+        }
+        last_cash.setOnClickListener {
+            startActivity(
+                Intent(this, MoneyApplyProgressActivity::class.java)
+                    .putExtra("caid", "111")
+            )
         }
     }
 
@@ -90,7 +87,17 @@ class CashActivity : BaseActivity() {
             }
             val cashListResult = cashList.getJSONArray("data")
             userWXMessage = userInfo
-            bindUI(cashListResult)
+            lastCash = cashRecord
+            this@CashActivity.cashListResult = cashListResult
+            bindUI()
+        }
+    }
+
+    private fun refreshUser() {
+        GlobalScope.launch(Dispatchers.Main) {
+            val userInfo = requestUserCoinInfo()
+            userWXMessage = userInfo
+            bindUI()
         }
     }
 
@@ -171,12 +178,14 @@ class CashActivity : BaseActivity() {
         CashTipsDialog(this, {}).bindMoney(money).show()
     }
 
-    private fun bindUI(cashListResult: JSONArray) {
+    private fun bindUI() {
         if (userWXMessage == null) {
             loadError()
             return
         }
-        cash_list_view.refresh(cashListResult)
+        if (cashListResult != null) {
+            cash_list_view.refresh(cashListResult)
+        }
         my_coin.text = userWXMessage!!.getIntValue("coin").toString()
         top_cash.text = userWXMessage!!.getString("cash")
         selectCashItem = cash_list_view.getSelectItem()
