@@ -23,7 +23,7 @@ data class MineDataBean(
 data class MineData(
     var createTime: String,
     var id: String,
-    var mediaContent: List<String>,
+    var mediaContent: List<String>?,
     var postType: Int,
     var praised: Int,
     var template: String,

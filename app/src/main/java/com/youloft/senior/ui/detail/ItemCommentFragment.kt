@@ -9,6 +9,7 @@ import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.youloft.core.base.BaseVMFragment
+import com.youloft.net.bean.CommentData
 import com.youloft.senior.R
 import com.youloft.senior.ui.adapter.CommentAdapterr
 import kotlinx.android.synthetic.main.fragment_item_comment.*
@@ -25,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_item_comment.*
  * @Version:        1.0
  */
 class ItemCommentFragment : BaseVMFragment(), OnLoadMoreListener {
-    companion object{
+    companion object {
         fun newInstance(): ItemCommentFragment {
             val args = Bundle()
             val fragment = ItemCommentFragment()
@@ -46,7 +47,17 @@ class ItemCommentFragment : BaseVMFragment(), OnLoadMoreListener {
             refreshlayout.finishRefresh(2000 /*,false*/) //传入false表示刷新失败
         }
         refreshLayout.setOnLoadMoreListener(this)
-        adapterr = CommentAdapterr(null)
+        var data =mutableListOf<CommentData>()
+        for(i in 0..10){
+            data.add(CommentData("","","","","",""))
+            data.add(CommentData("","","","","",""))
+            data.add(CommentData("","","","","",""))
+            data.add(CommentData("","","","","",""))
+            data.add(CommentData("","","","","",""))
+            data.add(CommentData("","","","","",""))
+        }
+
+        adapterr = CommentAdapterr(data)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapterr
 

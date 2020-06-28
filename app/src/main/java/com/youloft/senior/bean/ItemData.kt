@@ -27,12 +27,12 @@ package com.youloft.senior.bean
 // "praised": 0,//点赞次数
 // "createTime": "2020-06-18T15:25:40.865+08:00",//创建时间
 //}
- data class ItemDetailBean(
-    var `data`: ItemData?,
-    var msg: String,
-    var sign: String,
-    var status: Int
-)
+// data class ItemDetailBean(
+//    var `data`: ItemData?,
+//    var msg: String,
+//    var sign: String,
+//    var status: Int
+//)
 
 data class ItemData(
     var avatar: String,

@@ -1,16 +1,12 @@
 package com.youloft.senior.ui.detail
 
-import android.content.Context
 import android.content.Intent
-import android.hardware.camera2.params.MandatoryStreamCombination
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.youloft.core.base.BaseActivity
 import com.youloft.net.bean.MineData
-import com.youloft.net.bean.MineDataBean
 import com.youloft.senior.R
-import com.youloft.senior.tuia.TuiaWebActivity
 import com.youloft.socialize.SOC_MEDIA
 import com.youloft.socialize.share.ShareImage
 import com.youloft.socialize.share.ShareWeb
@@ -43,6 +39,11 @@ class DetailActivity : BaseActivity() {
     override fun getLayoutResId(): Int = R.layout.activity_video_detail
 
     override fun initView() {
+        var fragments = ArrayList<Fragment>()
+        fragments.add(ItemCommentFragment.newInstance())
+        fragments.add(FavoriteFragment.newInstance())
+
+        tablayout.setViewPager(viewpager, arrayOf("全部评论", "点赞"), this, fragments)
         informationId = intent.getStringExtra("informationId")
         informationType = intent.getIntExtra("informationType", 0)
         if (informationType == MineData.MOVIE_TYPE) {
@@ -50,18 +51,18 @@ class DetailActivity : BaseActivity() {
             supportFragmentManager.beginTransaction()
                 .add(
                     R.id.framelayout_detail,
-                    MovieDetailFragment.newInstance(MovieDetailFragment.isMovie)
+                    MovieAndGifDetailFragment.newInstance(MineData.MOVIE_TYPE, "")
                 )
                 .commit()
         } else if (informationType == MineData.GIF_TYPE) {
-            //影集
+            //gif
             supportFragmentManager.beginTransaction()
                 .add(
                     R.id.framelayout_detail,
-                    MovieDetailFragment.newInstance(MovieDetailFragment.isMovie)
+                    MovieAndGifDetailFragment.newInstance(MineData.GIF_TYPE, "")
                 )
                 .commit()
-        }else if (informationType == MineData.IMAGE_TYPE) {
+        } else if (informationType == MineData.IMAGE_TYPE) {
             //图文
             supportFragmentManager.beginTransaction()
                 .add(
@@ -69,7 +70,7 @@ class DetailActivity : BaseActivity() {
                     PictureAndTextFragment.newInstance()
                 )
                 .commit()
-        }else if (informationType == MineData.VIDEO_TYPE) {
+        } else if (informationType == MineData.VIDEO_TYPE) {
             //视频
 //            supportFragmentManager.beginTransaction()
 //                .add(
@@ -103,11 +104,7 @@ class DetailActivity : BaseActivity() {
 //                    .setDescription("内容").setTitle("标题")
 //            )
 //            board.shareWithUI()
-            var fragments = ArrayList<Fragment>()
-            fragments.add(ItemCommentFragment.newInstance())
-            fragments.add(FavoriteFragment.newInstance())
 
-            tablayout.setViewPager(viewpager, arrayOf("全部评论", "点赞"), this, fragments)
 //            tablayout.getTitleView()
         }
     }

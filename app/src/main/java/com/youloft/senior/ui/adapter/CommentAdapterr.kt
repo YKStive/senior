@@ -19,7 +19,11 @@ import com.youloft.senior.R
 class CommentAdapterr(data: MutableList<CommentData>?) :
     BaseQuickAdapter<CommentData, BaseViewHolder>(R.layout.item_comment, data) {
     override fun convert(holder: BaseViewHolder, item: CommentData) {
-        holder.setText(R.id.tv_name, item.nickname).setText(R.id.tv_content, item.content)
-            .setText(R.id.tv_date, item.createTime)
+//        holder.setText(R.id.tv_name, item.nickname).setText(R.id.tv_content, item.content)
+//            .setText(R.id.tv_date, item.createTime)
+//
+        holder.setText(R.id.tv_name, "名字").setText(R.id.tv_content, "item.content")
+            .setText(R.id.tv_date, "item.createTime")
     }
+
 }

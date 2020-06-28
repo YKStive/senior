@@ -4,10 +4,7 @@ import android.view.View
 import com.chad.library.adapter.base.provider.BaseItemProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.youloft.net.bean.MineData
-import com.youloft.net.bean.MineDataBean
 import com.youloft.senior.R
-import com.youloft.senior.ui.detail.DetailActivity
-import com.youloft.senior.utils.logD
 
 
 /**
@@ -20,31 +17,36 @@ import com.youloft.senior.utils.logD
  * @UpdateRemark:   更新说明：
  * @Version:        1.0
  */
-class MovieItem( params: (String) -> Unit) : BaseItemProvider<MineData>() {
+class MovieItem(
+    val itemClick: (id: String,type:Int) -> Unit,
+    val itemShare: (id: String,type:Int) -> Unit,
+    val itemFavorite: (id: String,type:Int) -> Unit
+) : BaseItemProvider<MineData>() {
     override val itemViewType: Int
         get() = MineData.MOVIE_TYPE
     override val layoutId: Int
         get() = R.layout.item_movie
-    val wapper = params
-    init {
-        "MovieItem".logD()
-        println("MovieItem CB ${   params.hashCode().toString()}")
-        wapper.hashCode().toString().logD()
-        println("raw:"+this.hashCode())
-    }
+init {
+    addChildClickViewIds(R.id.tv_share,R.id.tv_praise)
+}
 
     override fun convert(helper: BaseViewHolder, item: MineData) {
-        helper.setText(R.id.tv_content, item.textContent)
+        helper.setText(R.id.tv_browse_number, item.createTime).setText(
+            R.id.tv_content
+            , item.textContent
+        ).setText(R.id.tv_praise, item.praised.toString())
+    }
+
+    override fun onChildClick(helper: BaseViewHolder, view: View, data: MineData, position: Int) {
+        when (view.id) {
+            R.id.tv_share -> itemShare(data.id,itemViewType)
+            R.id.tv_praise -> itemFavorite(data.id,itemViewType)
+        }
+
     }
 
     override fun onClick(helper: BaseViewHolder, view: View, data: MineData, position: Int) {
-        super.onClick(helper, view, data, position)
-        "ssss".logD()
-        println("click:"+this.hashCode())
-        wapper.hashCode().toString().logD()
-        wapper(data.id)
-        println("MovieItem Click CB ${   wapper.hashCode().toString()}")
+        itemClick(data.id,itemViewType)
 
-//        DetailActivity.start()
     }
 }

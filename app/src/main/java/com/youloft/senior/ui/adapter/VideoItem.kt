@@ -18,21 +18,42 @@ import com.youloft.senior.R
  * @UpdateRemark:   更新说明：
  * @Version:        1.0
  */
-class VideoItem(params: (String) -> Unit) : BaseItemProvider<MineData>() {
+class VideoItem(
+    val itemClick: (id: String, type: Int) -> Unit,
+    val itemShare: (id: String, type: Int) -> Unit,
+    val itemFavorite: (id: String, type: Int) -> Unit
+) : BaseItemProvider<MineData>() {
     override val itemViewType: Int
         get() = MineData.VIDEO_TYPE
     override val layoutId: Int
         get() = R.layout.item_video
 
+    init {
+        addChildClickViewIds(
+            R.id.tv_share, R.id.tv_praise
+
+        )
+    }
+
     override fun convert(helper: BaseViewHolder, item: MineData) {
+        helper.setText(R.id.tv_browse_number, item.createTime).setText(
+            R.id.tv_content
+            , item.textContent
+        ).setText(R.id.tv_praise, item.praised.toString())
     }
 
     override fun onChildClick(helper: BaseViewHolder, view: View, data: MineData, position: Int) {
         super.onChildClick(helper, view, data, position)
+        when (view.id) {
+            R.id.tv_share -> itemShare(data.id, itemViewType)
+            R.id.tv_praise -> itemFavorite(data.id, itemViewType)
+        }
+
     }
 
     override fun onClick(helper: BaseViewHolder, view: View, data: MineData, position: Int) {
         super.onClick(helper, view, data, position)
+        itemClick(data.id, itemViewType)
     }
 
 
