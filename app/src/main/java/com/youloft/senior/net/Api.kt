@@ -3,7 +3,6 @@ package com.youloft.senior.net
 import com.alibaba.fastjson.JSONObject
 import com.youloft.net.bean.FavoriteHeadBean
 import com.youloft.senior.bean.GifBean
-import com.youloft.senior.bean.ItemDetailBean
 import com.youloft.senior.bean.LoginBean
 import com.youloft.senior.bean.MissionResult
 import com.youloft.senior.bean.*

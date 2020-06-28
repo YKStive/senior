@@ -3,7 +3,7 @@ package com.youloft.senior.ui.detail
 import android.os.Bundle
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -12,6 +12,9 @@ import com.youloft.core.base.BaseVMFragment
 import com.youloft.net.bean.CommentData
 import com.youloft.senior.R
 import com.youloft.senior.ui.adapter.CommentAdapterr
+import com.youloft.senior.utils.TAG
+import com.youloft.senior.utils.logE
+import com.youloft.senior.widgt.CustomLinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_item_comment.*
 
 
@@ -58,9 +61,23 @@ class ItemCommentFragment : BaseVMFragment(), OnLoadMoreListener {
         }
 
         adapterr = CommentAdapterr(data)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        var manager=CustomLinearLayoutManager(activity)
+        recyclerView.layoutManager =manager
         recyclerView.adapter = adapterr
+//        var scrollY = recyclerView.computeVerticalScrollOffset();
+//        TAG.logE("滑动=${scrollY}")
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            var mmRvScrollY = 0 // 列表滑动距离
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
 
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                mmRvScrollY += dy
+                TAG.logE( "onScrolled: mmRvScrollY: $mmRvScrollY, dy: $dy")
+//                manager.canScroll=mmRvScrollY>100
+            }
+        })
     }
 
     override fun initData() {

@@ -13,7 +13,11 @@
         <attr name="hv_desc" format="string" />
         <attr name="hv_is_main" format="boolean" />
     </declare-styleable>
-
+    <!-- 吸顶 -->
+    <declare-styleable name="StickyScrollView">
+        <attr name="stuckShadowHeight" format="dimension" />
+        <attr name="stuckShadowDrawable" format="reference" />
+    </declare-styleable>
 
 
 </resources>
