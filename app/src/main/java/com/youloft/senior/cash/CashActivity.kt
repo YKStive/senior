@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONObject
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.net.ApiHelper
+import com.youloft.senior.widgt.ProgressHUD
 import com.youloft.util.ToastMaster
 import kotlinx.android.synthetic.main.activity_cash_layout.*
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +35,7 @@ class CashActivity : BaseActivity() {
             item.put("price", "0.3")
             item.put("txt", "0.3元")
             item.put("type", i)
+            item.put("cash", 3)
             array.add(item)
         }
         cash_list_view.refresh(array)
@@ -45,7 +47,7 @@ class CashActivity : BaseActivity() {
         ic_back.setOnClickListener { finish() }
         selectCashItem = cash_list_view.getSelectItem()
         cash_submit.setOnClickListener {
-            PhoneDialog(this).show()
+//            PhoneDialog(this).show()
             withDraw()
         }
     }
@@ -66,18 +68,18 @@ class CashActivity : BaseActivity() {
 
     override fun initData() {
         GlobalScope.launch(Dispatchers.Main) {
-            var userInfo = requestUserCoinInfo()
+            val userInfo = requestUserCoinInfo()
             val cashList = requestCoinList()
             val cashRecord = requestUserRecord()
-            if (userInfo == null) {
-                loadError()
-                return@launch
-            }
-            if (userInfo.getIntValue("status") != 200 || userInfo.getJSONObject("data") == null) {
-                loadError()
-                return@launch
-            }
-            userInfo = userInfo.getJSONObject("data")
+//            if (userInfo == null) {
+//                loadError()
+//                return@launch
+//            }
+//            if (userInfo.getIntValue("status") != 200 || userInfo.getJSONObject("data") == null) {
+//                loadError()
+//                return@launch
+//            }
+//            userInfo = userInfo.getJSONObject("data")
             if (cashList == null) {
                 loadError()
                 return@launch
@@ -92,20 +94,40 @@ class CashActivity : BaseActivity() {
         }
     }
 
+    private fun showProcess(s: String) {
+        if (isFinishing) return
+        if (progressHUD != null && progressHUD!!.isShowing()) {
+            progressHUD!!.dismiss()
+        }
+        progressHUD = ProgressHUD.show(this, s)
+    }
+
+
+    var progressHUD: ProgressHUD? = null
+
+    private fun closeProgressHUD() {
+        if (isFinishing) return
+        if (progressHUD != null && progressHUD!!.isShowing()) {
+            progressHUD!!.dismiss()
+        }
+    }
+
     fun withDraw() {
         if (selectCashItem == null) {
             return
         }
+        showProcess("申请提交中")
         GlobalScope.launch(Dispatchers.Main) {
             val selectType = selectCashItem!!.getIntValue("type")
             val result = withContext(Dispatchers.IO) {
                 kotlin.runCatching {
                     ApiHelper.api.withDraw(
-                        selectCashItem!!.getString("price"),
+                        selectCashItem!!.getIntValue("cash"),
                         0, selectCashItem!!.getIntValue("type")
                     )
                 }.getOrNull()
             }
+            closeProgressHUD()
             if (result == null) {
                 ToastMaster.showLongToast(this@CashActivity, "网络异常")
                 return@launch
@@ -182,7 +204,7 @@ class CashActivity : BaseActivity() {
 
     suspend fun requestUserRecord() = withContext(Dispatchers.IO) {
         kotlin.runCatching {
-            ApiHelper.api.getCashRecord()
+            ApiHelper.api.getLastCash()
         }.getOrNull()
     }
 }

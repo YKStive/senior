@@ -58,8 +58,14 @@ interface Api {
     /**
      * 获取提现进度
      */
-    @GET(BASE_URL + "api/user/CashProgress?Uid=phone20190924111851417523&caid=24&cid=Youloft_Android")
+    @GET(BASE_URL + "api/user/CashProgress")
     fun getCashRecord(): JSONObject?
+
+    /**
+     * 获取提现进度
+     */
+    @GET(BASE_URL + "Api/User/GetIsExistsCashingOrder")
+    fun getLastCash(): JSONObject?
 
     /**
      * 获取用户金币信息
@@ -81,7 +87,7 @@ interface Api {
      */
     @GET(BASE_URL + "Api/User/WithDraw")
     fun withDraw(
-        @Query("cash") cash: String?,
+        @Query("cash") cash: Int?,
         @Query("type") type: Int?,
         @Query("cashtype") cashtype: Int?
     ): JSONObject?
