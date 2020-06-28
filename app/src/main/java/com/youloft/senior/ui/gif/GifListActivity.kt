@@ -15,6 +15,7 @@ import com.youloft.senior.base.App
 import com.youloft.senior.bean.GifBean
 import com.youloft.senior.itembinder.GifListViewBinder
 import com.youloft.coolktx.dp2px
+import com.youloft.senior.net.NetResponse
 import com.youloft.senior.utils.logD
 import com.youloft.senior.widgt.RecycleViewDivider
 import kotlinx.android.synthetic.main.activity_gif_list.*
@@ -66,8 +67,8 @@ class GifListActivity : BaseActivity() {
         lifecycleScope.launchIOWhenCreated({
             it.message?.logD()
         }, {
-            val stickers = ApiHelper.api.getStickers()
-//            val stickers = NetResponse<List<GifBean>>(getMock(), "", "", 200)
+//            val stickers = ApiHelper.api.getStickers()
+            val stickers = NetResponse<List<GifBean>>(getMock(), "", "", 200)
             withContext(Dispatchers.Main) {
                 ApiHelper.executeResponse(stickers, {
                     mAdapter.items = it
