@@ -1,8 +1,11 @@
 package com.youloft.senior.net
 
 import com.alibaba.fastjson.JSONObject
-import com.google.gson.JsonObject
 import com.youloft.net.bean.FavoriteHeadBean
+import com.youloft.senior.bean.GifBean
+import com.youloft.senior.bean.ItemDetailBean
+import com.youloft.senior.bean.LoginBean
+import com.youloft.senior.bean.MissionResult
 import com.youloft.senior.bean.*
 import retrofit2.Call
 import retrofit2.http.*
@@ -29,10 +32,10 @@ interface Api {
         @Query("otherinfo") otherinfo: String? = null,
         @Query("extData") extData: String? = null,
         @Query("JlspOrderId") jlspOrderId: String? = null
-    ): JsonObject?
+    ): JSONObject?
 
     @GET(BASE_URL + "Api/User/GetCoinDetail")
-    fun getCoinDetail(): JsonObject?
+    fun getCoinDetail(): JSONObject?
 
     @POST("/api/user/login")
     @FormUrlEncoded

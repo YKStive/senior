@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.text.TextUtils
 import android.widget.Toast
 import com.alibaba.fastjson.JSONObject
-import com.google.gson.JsonObject
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.bean.MissionResult.DataBean.MissionsBean
 import com.youloft.senior.base.App
@@ -92,7 +91,7 @@ internal class TaskManager {
         }
         completeing = true
         Observable
-            .unsafeCreate { subscriber: Subscriber<in JsonObject?> ->
+            .unsafeCreate { subscriber: Subscriber<in JSONObject?> ->
                 try {
                     val time: Long = System.currentTimeMillis()
                     val sn: String =
@@ -120,7 +119,7 @@ internal class TaskManager {
             }
             .onErrorResumeNext(Observable.empty())
             .onExceptionResumeNext(Observable.empty())
-            .subscribe { result: JsonObject? ->
+            .subscribe { result: JSONObject? ->
                 parseResult(
                     context,
                     result,
@@ -134,7 +133,7 @@ internal class TaskManager {
 
     private fun parseResult(
         ctx: Context,
-        result: JsonObject?,
+        result: JSONObject?,
         code: String,
         doubleMode: DoubleBean?, success: (() -> Unit)? = null
         , failed: (() -> Unit)? = null
@@ -145,18 +144,18 @@ internal class TaskManager {
             failed?.invoke()
             return
         }
-        if (!result.has("data")) {
+        if (!result.containsKey("data")) {
             ToastMaster.showLongToast(ctx, "网络异常")
             failed?.invoke()
             return
         }
-        val data: JsonObject = result.getAsJsonObject("data") ?: return
-        if (!data.has("coin") || data.get("coin").asInt <= 0) {
+        val data: JSONObject = result.getJSONObject("data") ?: return
+        if (!data.containsKey("coin") || data.getIntValue("coin") <= 0) {
             failed?.invoke()
-            if (data.has("msg") && !TextUtils.isEmpty(data.get("msg").asString)) {
+            if (data.containsKey("msg") && !TextUtils.isEmpty(data.getString("msg"))) {
                 ToastMaster.showShortToast(
                     App.instance(),
-                    data.get("msg").asString,
+                    data.getString("msg"),
                     Toast.LENGTH_SHORT
                 )
                 return
@@ -172,12 +171,12 @@ internal class TaskManager {
 
     }
 
-    fun handleDoubleMode(ctx: Context, doubleMode: DoubleBean?, result: JsonObject) {
-        val data: JsonObject = result.getAsJsonObject("data") ?: return
+    fun handleDoubleMode(ctx: Context, doubleMode: DoubleBean?, result: JSONObject) {
+        val data: JSONObject = result.getJSONObject("data") ?: return
         if (doubleMode == null || TextUtils.isEmpty(doubleMode.doubleCode)) {
             //没有双倍
             //弹普通获取弹窗
-            CoinTipsDialog(ctx, "恭喜获得", "测试", data.get("coin").asInt, null, null).show()
+            CoinTipsDialog(ctx, "恭喜获得", "测试", data.getIntValue("coin"), null, null).show()
             return
         }
         if (TextUtils.isEmpty(
@@ -186,7 +185,7 @@ internal class TaskManager {
         ) {
             if (doubleMode.cash) {
                 //三倍后的结果
-                CoinTipsDialog(ctx, "恭喜获得", "可立即提现至微信", data.get("coin").asInt, "0.3", "立即提现")
+                CoinTipsDialog(ctx, "恭喜获得", "可立即提现至微信", data.getIntValue("coin"), "0.3", "立即提现")
                     .setButtonListener {
                         //跳转至提现
                     }.show()
@@ -194,24 +193,24 @@ internal class TaskManager {
                 return
             }
             //双倍任务完成后保存值
-            CoinTipsDialog(ctx, "获得翻倍奖励", "测试", data.get("coin").asInt, null, null)
+            CoinTipsDialog(ctx, "获得翻倍奖励", "测试", data.getIntValue("coin"), null, null)
                 .setButtonListener {
 
                 }.show()
             saveComplete(doubleMode.doubleCode!!, true)
             return
         }
-        if (result.has("isCoinDouble") && result.get("isCoinDouble").asBoolean) {
+        if (result.getBooleanValue("isCoinDouble")) {
             //翻两倍
-            CoinTipsDialog(ctx, "恭喜获得", "测试", data.get("coin").asInt, null, "翻倍奖励")
+            CoinTipsDialog(ctx, "恭喜获得", "测试", data.getIntValue("coin"), null, "翻倍奖励")
                 .setButtonListener {
                     completeDoubleTask(ctx, doubleMode)
                 }.show()
             return
         }
-        if (result.has("isCoinThree") && result.get("isCoinThree").asBoolean) {
+        if (result.getBooleanValue("isCoinThree")) {
             //翻三倍
-            CoinTipsDialog(ctx, "恭喜获得", "可立即提现至微信", data.get("coin").asInt, "0.1", "cash-double")
+            CoinTipsDialog(ctx, "恭喜获得", "可立即提现至微信", data.getIntValue("coin"), "0.1", "cash-double")
                 .setButtonListener {
                     doubleMode.cash = true
                     completeDoubleTask(ctx, doubleMode)

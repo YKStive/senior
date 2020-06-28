@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
+import com.alibaba.fastjson.JSONArray
+import com.alibaba.fastjson.JSONObject
 import com.youloft.senior.R
 import kotlinx.android.synthetic.main.coin_detail_item_layout.view.*
 import java.text.SimpleDateFormat
@@ -18,8 +18,8 @@ import java.util.*
  */
 class CoinDetailAdapter :
     RecyclerView.Adapter<CoinDetailAdapter.ViewHolder>() {
-    var datas: JsonArray? = null
-    fun refreshData(array: JsonArray?) {
+    var datas: JSONArray? = null
+    fun refreshData(array: JSONArray?) {
         datas = array
         notifyDataSetChanged()
     }
@@ -38,20 +38,20 @@ class CoinDetailAdapter :
         holder.bindView(getItemData(position), getItemData(position - 1), getItemData(position + 1))
     }
 
-    private fun getItemData(position: Int): JsonObject? {
+    private fun getItemData(position: Int): JSONObject? {
         if (datas == null) {
             return null
         }
-        if (datas!!.size() <= position) {
+        if (datas!!.size <= position) {
             return null
         }
         return if (position < 0) {
             null
-        } else datas!![position].asJsonObject
+        } else datas!!.getJSONObject(position)
     }
 
     override fun getItemCount(): Int {
-        return if (datas == null) 0 else datas!!.size()
+        return if (datas == null) 0 else datas!!.size
     }
 
     inner class ViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
@@ -59,9 +59,9 @@ class CoinDetailAdapter :
             .inflate(R.layout.coin_detail_item_layout, parent, false)
     ) {
         fun bindView(
-            item: JsonObject?,
-            lastItem: JsonObject?,
-            nextItem: JsonObject?
+            item: JSONObject?,
+            lastItem: JSONObject?,
+            nextItem: JSONObject?
         ) {
             if (item == null) {
                 return
@@ -101,8 +101,8 @@ class CoinDetailAdapter :
         }
 
         private fun showFoot(
-            item: JsonObject,
-            nextItem: JsonObject?
+            item: JSONObject,
+            nextItem: JSONObject?
         ): Boolean {
             if (nextItem == null) {
                 return true
@@ -129,8 +129,8 @@ class CoinDetailAdapter :
         }
 
         private fun showHeader(
-            item: JsonObject,
-            lastItem: JsonObject?
+            item: JSONObject,
+            lastItem: JSONObject?
         ): Boolean {
             if (lastItem == null) {
                 return true
@@ -157,21 +157,21 @@ class CoinDetailAdapter :
         }
 
         private fun getItemValueForString(
-            item: JsonObject?,
+            item: JSONObject?,
             key: String,
             otherKey: String?
         ): String {
             if (item == null) {
                 return ""
             }
-            if (item.has(key)) {
-                return item.get(key).asString
+            if (item.containsKey(key)) {
+                return item.getString(key)
             }
             if (TextUtils.isEmpty(otherKey)) {
                 return ""
             }
-            if (item.has(otherKey)) {
-                return item.get(otherKey).asString
+            if (item.containsKey(otherKey)) {
+                return item.getString(otherKey)
             }
             return ""
         }
