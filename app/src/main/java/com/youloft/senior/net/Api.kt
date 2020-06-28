@@ -2,12 +2,10 @@ package com.youloft.senior.net
 
 import com.alibaba.fastjson.JSONObject
 import com.youloft.net.bean.FavoriteHeadBean
-import com.youloft.senior.bean.GifBean
-import com.youloft.senior.bean.LoginBean
-import com.youloft.senior.bean.MissionResult
 import com.youloft.senior.bean.*
 import retrofit2.Call
 import retrofit2.http.*
+import rx.Observable
 
 /**
  * @author you
@@ -16,8 +14,8 @@ import retrofit2.http.*
  */
 interface Api {
     companion object {
-        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
-//        const val BASE_URL = "https://shequ.51wnl-cq.com/"
+        //        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
+        const val BASE_URL = "https://shequ.51wnl-cq.com/"
     }
 
     @GET(BASE_URL + "api/Coin_Activity/GetMissions")
@@ -58,8 +56,14 @@ interface Api {
     /**
      * 获取提现进度
      */
-    @GET(BASE_URL + "api/user/CashProgress?Uid=phone20190924111851417523&caid=24&cid=Youloft_Android")
+    @GET(BASE_URL + "api/user/CashProgress")
     fun getCashRecord(): JSONObject?
+
+    /**
+     * 获取提现进度
+     */
+    @GET(BASE_URL + "Api/User/GetIsExistsCashingOrder")
+    fun getLastCash(): JSONObject?
 
     /**
      * 获取用户金币信息
@@ -81,9 +85,16 @@ interface Api {
      */
     @GET(BASE_URL + "Api/User/WithDraw")
     fun withDraw(
-        @Query("cash") cash: String?,
+        @Query("cash") cash: Int?,
         @Query("type") type: Int?,
         @Query("cashtype") cashtype: Int?
     ): JSONObject?
 
+    /**
+     * 提现进度
+     *
+     * @return
+     */
+    @GET(BASE_URL + "Api/User/CashProgress")
+    fun cashProgress(@Query("caId") caId: String?): Observable<ApplyOptionResponse?>
 }

@@ -22,8 +22,9 @@ data class Post(
             "https://pic-bucket.ws.126.net/photo/0009/2019-04-19/ED4HKOFA0AI20009NOS.jpg"
         val gifPath =
             "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/200px-Rotating_earth_%28large%29.gif"
+        var avatar = "https://pic4.zhimg.com/v2-5fd62f20577029e9418233411e3ef24f_b.jpg"
         val multiData: Post = Post(
-            "",
+            avatar,
             "1992-11-25",
             "999",
             listOf(
@@ -45,7 +46,7 @@ data class Post(
         )
 
         val albumData: Post = Post(
-            "",
+            avatar,
             "1992-11-25",
             "999",
             listOf(
@@ -67,7 +68,7 @@ data class Post(
         )
 
         val singleData: Post = Post(
-            "",
+            avatar,
             "1992-11-25",
             "999",
             listOf(
@@ -84,7 +85,7 @@ data class Post(
         )
 
         val gifData: Post = Post(
-            "",
+            avatar,
             "1992-11-25",
             "999",
             listOf(
@@ -101,7 +102,7 @@ data class Post(
         )
 
         val localAlbumData: Post = Post(
-            "", "", "", listOf(
+            avatar, "", "", listOf(
                 imagePath,
                 imagePath,
                 imagePath,
@@ -113,12 +114,12 @@ data class Post(
         )
 
         val inviteData: Post = Post(
-            "", "", "", listOf(""), "", PostType.INVITE, 0,
+            avatar, "", "", listOf(""), "", PostType.INVITE, 0,
             "", 0, "", "", 0
         )
 
         val punchData: Post = Post(
-            "", "", "", listOf(""), "", PostType.PUNCH, 0,
+            avatar, "", "", listOf(""), "", PostType.PUNCH, 0,
             "", 0, "", "", 0
         )
     }

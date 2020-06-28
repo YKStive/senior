@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintAttribute
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.youloft.senior.R
-import kotlinx.android.synthetic.main.activity_choice_image.view.*
 import kotlinx.android.synthetic.main.item_common_title.view.*
 
 /**

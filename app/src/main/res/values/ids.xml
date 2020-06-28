@@ -2,4 +2,7 @@
 <resources>
     <item name="unique_tag_store" type="id" />
 
+    <item name="tag_value" type="id" />
+    <item name="tag_value1" type="id" />
+    <item name="tag_value2" type="id" />
 </resources>

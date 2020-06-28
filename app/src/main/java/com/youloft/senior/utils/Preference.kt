@@ -2,8 +2,12 @@ package com.youloft.senior.utils
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
+import android.os.Parcelable
 import androidx.preference.PreferenceManager;
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.youloft.senior.base.App
+import kotlinx.android.parcel.Parcelize
 import java.io.*
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -53,6 +57,7 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
         }.apply()
     }
 
+
     @Suppress("UNCHECKED_CAST")
     fun <T> getValue(name: String, default: T): T = with(prefs) {
         val res: Any = when (default) {
@@ -61,7 +66,7 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
             is Int -> getInt(name, default)
             is Boolean -> getBoolean(name, default)
             is Float -> getFloat(name, default)
-            else -> deSerialization(name)
+            else -> deSerialization(getString(name, serialize(default))!!)
         }!!
         return res as T
     }
@@ -92,8 +97,7 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
     private fun <A> serialize(obj: A): String {
         val byteArrayOutputStream = ByteArrayOutputStream()
         val objectOutputStream = ObjectOutputStream(
-            byteArrayOutputStream
-        )
+            byteArrayOutputStream)
         objectOutputStream.writeObject(obj)
         var serStr = byteArrayOutputStream.toString("ISO-8859-1")
         serStr = java.net.URLEncoder.encode(serStr, "UTF-8")
@@ -117,11 +121,9 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
     private fun <A> deSerialization(str: String): A {
         val redStr = java.net.URLDecoder.decode(str, "UTF-8")
         val byteArrayInputStream = ByteArrayInputStream(
-            redStr.toByteArray(charset("ISO-8859-1"))
-        )
+            redStr.toByteArray(charset("ISO-8859-1")))
         val objectInputStream = ObjectInputStream(
-            byteArrayInputStream
-        )
+            byteArrayInputStream)
         val obj = objectInputStream.readObject() as A
         objectInputStream.close()
         byteArrayInputStream.close()
@@ -138,7 +140,6 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
     fun contains(key: String): Boolean {
         return prefs.contains(key)
     }
-
 
     /**
      * 返回所有的键值对

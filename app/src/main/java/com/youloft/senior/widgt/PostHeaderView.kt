@@ -24,6 +24,10 @@ class PostHeaderView(context: Context, attributeSet: AttributeSet?) :
     private var tvTitle: TextView
     private var tvDesc: TextView
 
+    constructor(context: Context, main: Boolean) : this(context, null) {
+        isMy = main
+    }
+
     init {
         attributeSet?.apply {
             val types = context.obtainStyledAttributes(attributeSet, R.styleable.PostHeaderView)

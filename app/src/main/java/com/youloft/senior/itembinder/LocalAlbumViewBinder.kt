@@ -12,6 +12,7 @@ import com.drakeet.multitype.ItemViewBinder
 import com.youloft.senior.R
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.Post
+import com.youloft.senior.utils.Preference
 import com.youloft.senior.utils.isByUser
 import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.item_post_bottom_share.view.*
@@ -43,6 +44,12 @@ open class LocalAlbumViewBinder(
     ) {
 
         holder.itemView.run {
+
+            header.setAvatar(App.instance().user.avatar)
+            header.setTitle(App.instance().user.nickname)
+            header.setDesc(item.createTime)
+
+
             album.setData(item.mediaContent)
 
             //条目

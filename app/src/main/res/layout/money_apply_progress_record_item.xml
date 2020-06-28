@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:background="#FFFFFF">
+
+    <ImageView
+        android:id="@+id/txIcon"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginLeft="15dp"
+        android:src="@drawable/jsjl_video_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/historyTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
+        android:includeFontPadding="false"
+        android:text="观看视频"
+        android:textColor="#333333"
+        android:textSize="22sp"
+        app:layout_constraintLeft_toRightOf="@+id/txIcon"
+        app:layout_constraintTop_toBottomOf="@+id/historyDate"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
+
+    <TextView
+        android:id="@+id/historyDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:includeFontPadding="false"
+        android:text="11-16 11:11"
+        android:textColor="#999999"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/historyTitle"
+        app:layout_constraintTop_toBottomOf="@+id/historyTitle" />
+
+    <TextView
+        android:id="@+id/historyDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dp"
+        android:text="+1天"
+        android:textColor="#F7612C"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/historyLine"
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:background="@color/line_color"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <View
+        android:id="@+id/historyLine2"
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:layout_marginLeft="45dp"
+        android:background="@color/line_color"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,6 +35,7 @@ class GifViewModel : BaseViewModel() {
             val tempGifDrawable = submit.get()
             val resBitmap = fixRes(resPath, tempGifDrawable.intrinsicWidth)
 
+
             GifMaker().makeNeGif(this, App.instance(), tempGifDrawable, resBitmap) {
                 resultData.value = it
             }
@@ -52,10 +53,32 @@ class GifViewModel : BaseViewModel() {
     private fun fixRes(resPath: String, targetWith: Int): Bitmap {
         //压缩
         val compressPath = Luban.with(App.instance()).load(resPath).get()[0].absolutePath
+        val src = BitmapFactory.decodeFile(compressPath)
+        val short = if (src.width >= src.height) src.height else src.width
+        val scaleRatio = targetWith.toFloat() / short.toFloat()
+        val srcBmp = Bitmap.createScaledBitmap(
+            src,
+            (src.width * scaleRatio).toInt(), (src.height * scaleRatio).toInt(), false
+        )
+        return if (srcBmp.width >= srcBmp.height) {
+            Bitmap.createBitmap(
+                srcBmp,
+                srcBmp.width / 2 - srcBmp.height / 2,
+                0,
+                srcBmp.height,
+                srcBmp.height
+            )
 
-        val compressBitmap = BitmapFactory.decodeFile(compressPath)
+        } else {
+            Bitmap.createBitmap(
+                srcBmp,
+                0,
+                srcBmp.height / 2 - srcBmp.width / 2,
+                srcBmp.width,
+                srcBmp.width
+            )
+        }
 
-        return compressBitmap
 
     }
 

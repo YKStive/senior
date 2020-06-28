@@ -45,7 +45,7 @@ class GifMaker {
      * @param resource Bitmap 选择的图片
      * @param onSuccess Function1<[@kotlin.ParameterName] String, Unit> 成功回调新gif路径
      */
-      fun makeNeGif(
+    fun makeNeGif(
         scope: CoroutineScope,
         context: Context,
         template: GifDrawable,
@@ -63,19 +63,33 @@ class GifMaker {
                 animatedGIFWriter.prepareForWrite(os, -1, -1)
 
                 val bitmap: Bitmap = Bitmap.createBitmap(
-                    200,
-                    200,
-                    Bitmap.Config.RGB_565
+                    template.intrinsicWidth,
+                    template.intrinsicHeight,
+                    Bitmap.Config.ARGB_8888
                 )
                 val canvas = Canvas(bitmap)
                 for (i in 0..template.frameCount) {
                     val nextFrame = nextFrame
                     nextFrame?.let {
                         val resourceDrawable = BitmapDrawable(context.resources, resource)
-                        val templateFrameDrawable = BitmapDrawable(context.resources, it)
+                        resourceDrawable.apply {
+                            setBounds(
+                                0,
+                                0,
+                                intrinsicWidth,
+                                intrinsicHeight
+                            )
+                        }
 
-                        resourceDrawable.setBounds(0, 0, 200, 200)
-                        templateFrameDrawable.setBounds(0, 0, 200, 200)
+                        val templateFrameDrawable = BitmapDrawable(context.resources, it)
+                        templateFrameDrawable.apply {
+                            setBounds(
+                                0,
+                                0,
+                                intrinsicWidth,
+                                intrinsicHeight
+                            )
+                        }
 
                         resourceDrawable.draw(canvas)
                         templateFrameDrawable.draw(canvas)

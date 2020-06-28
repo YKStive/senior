@@ -70,6 +70,7 @@
         <activity android:name=".ui.gif.GifPreviewActivity" />
         <activity android:name=".cash.CashActivity" />
         <activity android:name=".cash.BindPhoneActivity" />
+        <activity android:name=".cash.MoneyApplyProgressActivity" />
     </application>
 
 

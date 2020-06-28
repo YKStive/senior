@@ -1,5 +1,6 @@
 package com.youloft.senior.coin
 
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
@@ -38,6 +39,7 @@ class CoinDetailActivity : BaseActivity() {
                 return@launch
             }
             adapter.refreshData(list.getJSONArray("CoinLog"))
+            empty_view.visibility = if (adapter.itemCount > 0) View.GONE else View.VISIBLE
         }
     }
 

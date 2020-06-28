@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.activity_gif_preview.*
  */
 class GifPreviewActivity : BaseActivity() {
 
+    private lateinit var mResultGif: String
     private val mViewModel by viewModels<GifViewModel>()
     override fun getLayoutResId(): Int {
         return R.layout.activity_gif_preview
@@ -40,11 +41,13 @@ class GifPreviewActivity : BaseActivity() {
         }
 
         tv_publish.setOnClickListener {
-
+            GifPublishActivity.start(this, mResultGif)
         }
 
         tv_photo.setOnClickListener {
-
+            ChoiceImageActivity.start(this, 1) {
+                mViewModel.getData(it[0].path, mTempPath)
+            }
         }
 
     }
@@ -55,6 +58,7 @@ class GifPreviewActivity : BaseActivity() {
             mViewModel.getData(mResourcesPath, mTempPath)
             mViewModel.resultData.observe(this, Observer {
                 ImageLoader.loadImage(this, it, iv_gif)
+                mResultGif = it
             })
 
         }

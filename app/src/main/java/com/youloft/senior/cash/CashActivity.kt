@@ -1,11 +1,15 @@
 package com.youloft.senior.cash
 
+import android.content.Intent
+import android.text.TextUtils
 import android.view.View
 import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.net.ApiHelper
+import com.youloft.senior.widgt.ProgressHUD
+import com.youloft.util.ToastMaster
 import kotlinx.android.synthetic.main.activity_cash_layout.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -23,19 +27,10 @@ class CashActivity : BaseActivity() {
 
     var selectCashItem: JSONObject? = null
     var userWXMessage: JSONObject? = null;
+    var lastCash: JSONObject? = null
+    var cashListResult: JSONArray? = null
 
     override fun initView() {
-        val array = JSONArray()
-        for (i in 0 until 7) {
-            val item = JSONObject()
-            item.put("code", "1")
-            item.put("price", "0.3")
-            item.put("txt", "0.3元")
-            item.put("type", i)
-            array.add(item)
-        }
-        cash_list_view.refresh(array)
-
         cash_list_view.setSelectCallBack {
             selectCashItem = it
             refreshUI()
@@ -43,8 +38,14 @@ class CashActivity : BaseActivity() {
         ic_back.setOnClickListener { finish() }
         selectCashItem = cash_list_view.getSelectItem()
         cash_submit.setOnClickListener {
-            PhoneDialog(this).show()
+//            PhoneDialog(this).show()
             withDraw()
+        }
+        last_cash.setOnClickListener {
+            startActivity(
+                Intent(this, MoneyApplyProgressActivity::class.java)
+                    .putExtra("caid", "111")
+            )
         }
     }
 
@@ -59,23 +60,23 @@ class CashActivity : BaseActivity() {
             short_text.text =
                 "还差${(itemCashValue - userWXMessage!!.getFloatValue("cash"))}元即可提现，快去做任务赚钱吧"
         }
-        coin_number.text = selectCashItem!!.getIntValue("price").toString()
+        coin_number.text = selectCashItem!!.getIntValue("coin").toString()
     }
 
     override fun initData() {
         GlobalScope.launch(Dispatchers.Main) {
-            var userInfo = requestUserCoinInfo()
+            val userInfo = requestUserCoinInfo()
             val cashList = requestCoinList()
             val cashRecord = requestUserRecord()
-            if (userInfo == null) {
-                loadError()
-                return@launch
-            }
-            if (userInfo.getIntValue("status") != 200 || userInfo.getJSONObject("data") == null) {
-                loadError()
-                return@launch
-            }
-            userInfo = userInfo.getJSONObject("data")
+//            if (userInfo == null) {
+//                loadError()
+//                return@launch
+//            }
+//            if (userInfo.getIntValue("status") != 200 || userInfo.getJSONObject("data") == null) {
+//                loadError()
+//                return@launch
+//            }
+//            userInfo = userInfo.getJSONObject("data")
             if (cashList == null) {
                 loadError()
                 return@launch
@@ -86,7 +87,35 @@ class CashActivity : BaseActivity() {
             }
             val cashListResult = cashList.getJSONArray("data")
             userWXMessage = userInfo
-            bindUI(cashListResult)
+            lastCash = cashRecord
+            this@CashActivity.cashListResult = cashListResult
+            bindUI()
+        }
+    }
+
+    private fun refreshUser() {
+        GlobalScope.launch(Dispatchers.Main) {
+            val userInfo = requestUserCoinInfo()
+            userWXMessage = userInfo
+            bindUI()
+        }
+    }
+
+    private fun showProcess(s: String) {
+        if (isFinishing) return
+        if (progressHUD != null && progressHUD!!.isShowing()) {
+            progressHUD!!.dismiss()
+        }
+        progressHUD = ProgressHUD.show(this, s)
+    }
+
+
+    var progressHUD: ProgressHUD? = null
+
+    private fun closeProgressHUD() {
+        if (isFinishing) return
+        if (progressHUD != null && progressHUD!!.isShowing()) {
+            progressHUD!!.dismiss()
         }
     }
 
@@ -94,24 +123,76 @@ class CashActivity : BaseActivity() {
         if (selectCashItem == null) {
             return
         }
+        showProcess("申请提交中")
         GlobalScope.launch(Dispatchers.Main) {
+            val selectType = selectCashItem!!.getIntValue("type")
             val result = withContext(Dispatchers.IO) {
                 kotlin.runCatching {
                     ApiHelper.api.withDraw(
-                        selectCashItem!!.getString("price"),
+                        selectCashItem!!.getIntValue("cash"),
                         0, selectCashItem!!.getIntValue("type")
                     )
                 }.getOrNull()
             }
+            closeProgressHUD()
+            if (result == null) {
+                ToastMaster.showLongToast(this@CashActivity, "网络异常")
+                return@launch
+            }
+            if (result.getBooleanValue("success")) {
+                //提现成功
+                if (selectType == 0) {
+                    //新人专享
+                    val speedMode = result.getJSONObject("speedModel")
+                    if (speedMode != null) {
+                        val speedConfig = speedMode.getJSONObject("speedConfig")
+                        if (speedConfig != null) {
+                            showCashTips(speedConfig.getString("txMoney"))
+                        }
+                    }
+                } else {
+                    //普通提现
+                    val speedMode = result.getJSONObject("speedModel")
+                    if (speedMode != null) {
+                        val speedConfig = speedMode.getJSONObject("speedConfig")
+                        if (speedConfig != null) {
+                            showNormal(speedConfig.getString("txMoney"), speedMode)
+                        }
+                    }
+                }
+                return@launch
+            }
+            if (!TextUtils.isEmpty(result.getString("msg"))) {
+                ToastMaster.showLongToast(this@CashActivity, result.getString("msg"))
+                return@launch
+            }
+            ToastMaster.showLongToast(this@CashActivity, "网络异常")
         }
     }
 
-    private fun bindUI(cashListResult: JSONArray) {
+    private fun showCashTips(money: String) {
+        CashTipsDialog(this) {
+            //看视频直接触发提现
+        }.bindMoney(money).show()
+    }
+
+    private fun showNormal(money: String, speedModel: JSONObject?) {
+        NormalTipsDialog(this) {
+            startActivity(
+                Intent(this, MoneyApplyProgressActivity::class.java)
+                    .putExtra("caid", speedModel?.getString("caid"))
+            )
+        }.bindMoney(money).show()
+    }
+
+    private fun bindUI() {
         if (userWXMessage == null) {
             loadError()
             return
         }
-        cash_list_view.refresh(cashListResult)
+        if (cashListResult != null) {
+            cash_list_view.refresh(cashListResult)
+        }
         my_coin.text = userWXMessage!!.getIntValue("coin").toString()
         top_cash.text = userWXMessage!!.getString("cash")
         selectCashItem = cash_list_view.getSelectItem()
@@ -139,7 +220,7 @@ class CashActivity : BaseActivity() {
 
     suspend fun requestUserRecord() = withContext(Dispatchers.IO) {
         kotlin.runCatching {
-            ApiHelper.api.getCashRecord()
+            ApiHelper.api.getLastCash()
         }.getOrNull()
     }
 }

@@ -6,7 +6,6 @@ import android.util.Log
 internal class TaskTime {
 
 
-
     private var start = 0L
 
     val MIL_SECOND = 1000F
