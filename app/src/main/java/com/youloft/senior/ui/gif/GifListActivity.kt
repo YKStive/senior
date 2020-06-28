@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
 import com.youloft.coolktx.launchIOWhenCreated
 import com.youloft.core.base.BaseActivity
-import com.youloft.net.bean.NetResponse
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.R
 import com.youloft.senior.base.App
@@ -67,8 +66,8 @@ class GifListActivity : BaseActivity() {
         lifecycleScope.launchIOWhenCreated({
             it.message?.logD()
         }, {
-//            val stickers = ApiHelper.api.getStickers()
-            val stickers = NetResponse<List<GifBean>>(getMock(), "", "", 200)
+            val stickers = ApiHelper.api.getStickers()
+//            val stickers = NetResponse<List<GifBean>>(getMock(), "", "", 200)
             withContext(Dispatchers.Main) {
                 ApiHelper.executeResponse(stickers, {
                     mAdapter.items = it

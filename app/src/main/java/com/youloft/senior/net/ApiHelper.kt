@@ -4,7 +4,6 @@ import android.content.Context
 import com.facebook.stetho.Stetho
 import com.youloft.net.BaseRetrofitClient
 import com.youloft.net.ParamsInterface
-import com.youloft.net.bean.NetResponse
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request

@@ -1,4 +1,4 @@
-package com.youloft.net.bean
+package com.youloft.senior.net
 
 /**
  * @author you
@@ -9,4 +9,5 @@ data class NetResponse<out T>(val data: T, val sign: String, val msg: String, va
     fun isSuccess(): Boolean {
         return status == 200
     }
+
 }

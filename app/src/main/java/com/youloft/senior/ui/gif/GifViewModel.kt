@@ -29,6 +29,7 @@ class GifViewModel : BaseViewModel() {
      */
     fun getData(resPath: String, tempPath: String) {
         viewModelScope.launch(Dispatchers.IO) {
+
             val submit =
                 Glide.with(App.instance()).asGif().load(tempPath).submit()
             val tempGifDrawable = submit.get()
