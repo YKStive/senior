@@ -18,7 +18,6 @@ import com.youloft.socialize.share.ShareWeb
 import com.youloft.socialize.share.UmengShareActionImpl
 import com.youloft.util.StatusBarUtils.getStatusHeight
 import kotlinx.android.synthetic.main.activity_video_detail.*
-import kotlinx.android.synthetic.main.activity_video_detail.recyclerView
 import kotlinx.android.synthetic.main.conmon_title.*
 import kotlinx.android.synthetic.main.fragment_item_comment.*
 
@@ -33,7 +32,7 @@ import kotlinx.android.synthetic.main.fragment_item_comment.*
  * @Version:        1.0
  */
 class DetailActivity : BaseActivity() {
-    private var stickScrollHeight=0
+    private var stickScrollHeight = 0
     lateinit var informationId: String
     var informationType: Int = 0
     lateinit var adapterr: CommentAdapterr
@@ -117,24 +116,16 @@ class DetailActivity : BaseActivity() {
 //            board.shareWithUI()
 
 //            tablayout.getTitleView()
-        }
 
-        var data =mutableListOf<CommentData>()
-        for(i in 0..10){
-            data.add(CommentData("","","","","",""))
-            data.add(CommentData("","","","","",""))
-            data.add(CommentData("","","","","",""))
-            data.add(CommentData("","","","","",""))
-            data.add(CommentData("","","","","",""))
-            data.add(CommentData("","","","","",""))
         }
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fl_tab_containar, ItemCommentFragment.newInstance())
+//            .add(R.id.fl_tab_containar, FavoriteFragment.newInstance())
+            .commit()
 
-        adapterr = CommentAdapterr(data)
-        var manager= CustomLinearLayoutManager(this)
-        recyclerView.layoutManager =manager
-        recyclerView.adapter = adapterr
         initListeners()
     }
+
     private fun initListeners() {
         //获取内容总高度
         val vto: ViewTreeObserver = ll_content.getViewTreeObserver()
@@ -162,8 +153,9 @@ class DetailActivity : BaseActivity() {
         val viewTreeObserver1: ViewTreeObserver = constraintlayout_title.getViewTreeObserver()
         viewTreeObserver1.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
             override fun onGlobalLayout() {
-                stickScrollHeight = stickScrollHeight - constraintlayout_title.getHeight() - getStatusHeight(this@DetailActivity) //计算滑动的总距离
-                //                stickyScrollView.setStickTop(llTitle.getHeight() + getStatusHeight());//设置距离多少悬浮
+                stickScrollHeight =
+                    stickScrollHeight - constraintlayout_title.getHeight() - getStatusHeight(this@DetailActivity) //计算滑动的总距离
+                scrollView.setStickTop(constraintlayout_title.getHeight());//设置距离多少悬浮
             }
         })
     }
