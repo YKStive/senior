@@ -5,12 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.fastjson.JSONObject
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
-import com.youloft.senior.net.ApiHelper
 import kotlinx.android.synthetic.main.money_apply_progress.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MoneyApplyProgressActivity : BaseActivity() {
     val dd = "{\n" +
@@ -23,8 +21,8 @@ class MoneyApplyProgressActivity : BaseActivity() {
             "            \"txMoney\":1,//体现金额\n" +
             "            \"tipSpeedBtnTxt\":\"立即加速\",//弹窗加速按钮文字\n" +
             "            \"infoSpeedBtnTxt\":\"立即加速1天\",//详情加速按钮文字\n" +
-            "            \"tipSpeedBtnContent\":\"您的提现预计会在6天后到账，请耐心等候。\",//弹窗加速文案\n" +
-            "            \"txjd\": 3,//提现进度\n" +
+            "            \"tipSpeedBtnContent\":\"您的提现预计\",//弹窗加速文案\n" +
+            "            \"txjd\": 6,//提现进度\n" +
             "            \"toDayOverBtnTxt\": \"今日加速已达上线\",//当天提现加速完后按钮提示文本\n" +
             "            \"toDayIsSpeed\": true,//当天是否可以加速\n" +
             "        },\n" +
@@ -60,6 +58,7 @@ class MoneyApplyProgressActivity : BaseActivity() {
         speed_history.layoutManager = LinearLayoutManager(this)
         speed_history.itemAnimator = null
         speed_history.adapter = adapter
+        ic_back.setOnClickListener { finish() }
     }
 
     override fun initData() {
