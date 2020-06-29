@@ -3,6 +3,7 @@ package com.youloft.senior.itembinder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.drakeet.multitype.ItemViewBinder
@@ -14,10 +15,12 @@ import com.youloft.senior.widgt.ItemViewHolder
 import com.youloft.util.UiUtil
 import kotlinx.android.synthetic.main.item_choice_image.view.*
 
-class ChoiceSingleImageItemBinder(
+class ChoiceMultiImageItemBinder(
     private val mItems: MutableList<ImageRes>
 ) : ItemViewBinder<ImageRes, RecyclerView.ViewHolder>() {
-    var lastSelectedPosition: Int = -1
+
+
+    val selectedCount: MutableLiveData<Int> = MutableLiveData()
 
     override fun onCreateViewHolder(
         inflater: LayoutInflater,
@@ -43,33 +46,22 @@ class ChoiceSingleImageItemBinder(
                 iv_check.setImageResource(R.drawable.ic_image_uncheck)
             }
             setOnClickListener {
-                val new = holder.layoutPosition
-                if (lastSelectedPosition == -1) {
-                    mItems[new].isSelected = true
-                    adapter.notifyItemChanged(new)
-                    lastSelectedPosition = new
+                item.isSelected = !item.isSelected
+                adapter.notifyItemChanged(holder.layoutPosition)
+                selectedCount.value = getSelectedCount()
 
-                } else if (lastSelectedPosition == new) {
-                    mItems[new].isSelected = !mItems[new].isSelected
-                    adapter.notifyItemChanged(new)
-                    if (mItems[new].isSelected) {
-                        lastSelectedPosition = new
-                    } else {
-                        lastSelectedPosition = -1
-                    }
-                } else {
-                    mItems[lastSelectedPosition].isSelected = false
-                    mItems[new].isSelected = true
-                    adapter.notifyItemChanged(lastSelectedPosition)
-                    adapter.notifyItemChanged(new)
-                    lastSelectedPosition = new
-                }
             }
 
             Glide.with(context)
                 .load(item.path)
                 .into(iv_clover)
         }
+    }
+
+    fun getSelectedCount(): Int {
+        return mItems.filter {
+            it.isSelected
+        }.size
     }
 
 }

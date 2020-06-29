@@ -1,4 +1,4 @@
-package com.youloft.net.bean
+package com.youloft.senior.bean
 
 
 /**
@@ -12,15 +12,7 @@ package com.youloft.net.bean
  * @Version:        1.0
  */
 
-
 data class MineDataBean(
-    var `data`: List<MineData>,
-    var msg: String,
-    var sign: String,
-    var status: Int
-)
-
-data class MineData(
     var createTime: String,
     var id: String,
     var mediaContent: List<String>,

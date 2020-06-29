@@ -11,4 +11,5 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class ImageRes(var path: String) : Parcelable {
     var isSelected = false
+    var isAddIcon = false
 }

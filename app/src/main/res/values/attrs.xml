@@ -13,7 +13,23 @@
         <attr name="hv_desc" format="string" />
         <attr name="hv_is_main" format="boolean" />
     </declare-styleable>
-
-
+    <!-- 吸顶 -->
+    <declare-styleable name="StickyScrollView">
+        <attr name="stuckShadowHeight" format="dimension" />
+        <attr name="stuckShadowDrawable" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="ConsecutiveScrollerLayout_Layout">
+        <attr name="layout_isConsecutive" format="boolean"/>
+        <attr name="layout_isNestedScroll" format="boolean"/>
+        <attr name="layout_isSticky" format="boolean"/>
+        <attr name="layout_align" format="enum">
+            <enum name="LEFT" value="1" />
+            <enum name="RIGHT" value="2" />
+            <enum name="CENTER" value="3" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="ConsecutiveScrollerLayout">
+        <attr name="isPermanent" format="boolean"/>
+    </declare-styleable>
 
 </resources>

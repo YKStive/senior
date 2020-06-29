@@ -34,7 +34,7 @@ class FavoriteFragment : BaseVMFragment(), OnLoadMoreListener {
         }
     }
 
-    private val mViewModel by viewModels<ItemCommnetViewModel>()
+    private val mViewModel by viewModels<ItemFavoriteViewModel>()
     lateinit var adapterr: FavoriteAdapter
     override fun getLayoutResId(): Int = R.layout.fragment_item_comment
 
@@ -53,12 +53,12 @@ class FavoriteFragment : BaseVMFragment(), OnLoadMoreListener {
     }
 
     override fun initData() {
-
+        mViewModel.getData(HashMap<String, String>())
     }
 
     override fun startObserve() {
-        mViewModel._data.observe(this, Observer {
-//            with(adapterr) { setNewInstance(it) }
+        mViewModel.resultData.observe(this, Observer {
+            with(adapterr) { setList(it) }
         })
     }
 

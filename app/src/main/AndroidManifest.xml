@@ -71,6 +71,7 @@
         <activity android:name=".cash.CashActivity" />
         <activity android:name=".cash.BindPhoneActivity" />
         <activity android:name=".cash.MoneyApplyProgressActivity" />
+        <activity android:name=".ui.graphic.ContentPublishActivity" />
     </application>
 
 

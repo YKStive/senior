@@ -1,9 +1,10 @@
-package com.youloft.senior.ui.home
+package com.youloft.senior.ui.detail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.youloft.core.base.BaseViewModel
-import com.youloft.senior.bean.MineDataBean
+import com.youloft.net.bean.CommentBean
+import com.youloft.senior.bean.FavoriteHeadBean
 import com.youloft.senior.net.ApiHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,37 +15,28 @@ import kotlinx.coroutines.withContext
  *
  * @Description:
  * @Author:         slh
- * @CreateDate:     2020/6/23 13:24
+ * @CreateDate:     2020/6/22 18:06
  * @UpdateUser:     更新者：
- * @UpdateDate:     2020/6/23 13:24
+ * @UpdateDate:     2020/6/22 18:06
  * @UpdateRemark:   更新说明：
  * @Version:        1.0
  */
-class MainViewModel : BaseViewModel() {
+class ItemFavoriteViewModel : BaseViewModel() {
+
     //结果
-    var resultData = MutableLiveData<List<MineDataBean>>()
+    var resultData = MutableLiveData<List<FavoriteHeadBean>>()
     fun getData(
-        index: Int,
-        direction: Int,
-        limit: Int
+        params: Map<String, String>
     ) {
         viewModelScope.launch(Dispatchers.IO) {
 //            val listData = ApiHelper.api.getMineList(index, direction, limit)
-            val listData = ApiHelper.api.getMineList()
-            withContext(Dispatchers.Main){
+            val listData = ApiHelper.api.getFavoritetList(params)
+            withContext(Dispatchers.Main) {
                 ApiHelper.executeResponse(listData, {
                     resultData.value = it
                 })
             }
 
-//            withContext(Dispatchers.Main) {
-//                ApiHelper.executeResponse(stickers, {
-//                    mAdapter.items = it
-//                    mAdapter.notifyDataSetChanged()
-//                })
-//            }
         }
     }
-
-
 }

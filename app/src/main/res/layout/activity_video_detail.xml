@@ -1,188 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/framelayout_detail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <include layout="@layout/conmon_title" />
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="18dp"
-        android:background="@color/line_color"
-        app:layout_constraintTop_toBottomOf="@id/framelayout_detail" />
-
-
-    <LinearLayout
-        android:id="@+id/ll_share_to_circle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_15"
-        android:background="@drawable/bg_shape_share"
-        android:gravity="center_vertical|center"
-        android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        app:layout_constraintEnd_toStartOf="@id/ll_share_to_friend"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider">
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="25dp"
-            android:src="@drawable/umeng_socialize_wxcircle" />
-
-        <TextView
-            android:id="@+id/tv_sharetoweichatcircle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="分享朋友圈" />
-
-    </LinearLayout>
-
-    <View
-        android:id="@+id/divider1"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_marginTop="12dp"
-        android:background="@color/line_color"
-        app:layout_constraintTop_toBottomOf="@id/ll_share_to_circle" />
-
-    <com.flyco.tablayout.SlidingTabLayout
-        android:id="@+id/tablayout"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider1"
-        app:tl_indicator_color="#FF6B39"
-        app:tl_indicator_corner_radius="4dp"
-        app:tl_indicator_height="4dp"
-        app:tl_indicator_width="40dp"
-        app:tl_textSelectColor="#FF6B39"
-        app:tl_textUnselectColor="#999999" />
-
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="18dp"
-        android:background="@color/line_color"
-        app:layout_constraintTop_toBottomOf="@id/tablayout" />
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewpager"
+    <com.youloft.senior.widgt.consecutivescroller.ConsecutiveScrollerLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/ll_bottom"
-        app:layout_constraintTop_toBottomOf="@id/divider2" />
+        android:layout_weight="1"
+        android:scrollbars="vertical">
 
-    <LinearLayout
-        android:id="@+id/ll_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
 
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <View
+        <FrameLayout
+            android:id="@+id/framelayout_detail"
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/line_color"
-            app:layout_constraintTop_toBottomOf="@id/ll_share_to_circle" />
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_marginStart="@dimen/dp_15"
-            android:layout_marginEnd="@dimen/dp_15"
-            android:orientation="horizontal"
-            android:paddingTop="7dp"
-
-            android:paddingBottom="25dp">
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/ll_share_to_circle"
                 android:layout_width="0dp"
-                android:layout_height="41dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_15"
+
                 android:layout_weight="1"
-                android:background="@drawable/bg_edit_comment"
-                android:orientation="horizontal">
+                android:background="@drawable/bg_shape_share"
+                android:gravity="center_vertical|center"
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
 
-<!--                <ImageView-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content" />-->
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/umeng_socialize_wxcircle" />
 
-                <EditText
-                    android:id="@+id/edt_comment"
+                <TextView
+                    android:id="@+id/tv_sharetoweichatcircle"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:hint="点击发表评论"
-                    android:background="#ffefefef"
-                    android:textColor="#ff777777"
-                    android:textSize="20sp" />
+                    android:layout_height="wrap_content"
+
+                    android:text="分享朋友圈" />
+
             </LinearLayout>
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="22dp"
-                android:layout_marginStart="23dp"
-                android:src="@drawable/icon_un_favorite">
+            <LinearLayout
+                android:id="@+id/ll_share_to_friend"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="@dimen/dp_15"
+                android:layout_weight="1"
+                android:background="@drawable/bg_shape_share"
+                android:gravity="center_vertical|center"
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
 
-            </ImageView>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/umeng_socialize_wechat" />
 
-            <TextView
-                android:layout_width="19dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="6dp"
-                android:gravity="center_vertical"
-                android:text="赞"
-                android:textColor="#ff333333"
-                android:textSize="19sp" />
+                <TextView
+                    android:id="@+id/tv_sharetoweichatfriend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="分享朋友圈" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/line_color" />
+        <!--需要吸顶的tab-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_isSticky="true">
+
+            <com.flyco.tablayout.SlidingTabLayout
+                android:id="@+id/tablayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                app:tl_indicator_color="#FF6B39"
+                app:tl_indicator_corner_radius="4dp"
+                app:tl_indicator_height="4dp"
+                app:tl_indicator_width="40dp"
+                app:tl_tab_space_equal="true"
+                app:tl_textSelectColor="#FF6B39"
+                app:tl_textUnselectColor="#999999" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/line_color" />
 
         </LinearLayout>
 
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_share_to_friend"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="@dimen/dp_15"
-        android:background="@drawable/bg_shape_share"
-        android:gravity="center_vertical|center"
-        android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/ll_share_to_circle"
-        app:layout_constraintTop_toBottomOf="@id/divider">
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="25dp"
-            android:src="@drawable/umeng_socialize_wechat" />
-
-        <TextView
-            android:id="@+id/tv_sharetoweichatfriend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="分享朋友圈" />
-    </LinearLayout>
+                <com.youloft.senior.widgt.consecutivescroller.ConsecutiveViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+<!--        <FrameLayout-->
+<!--            android:id="@+id/frame_tabcontainer"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content" />-->
+    </com.youloft.senior.widgt.consecutivescroller.ConsecutiveScrollerLayout>
 
     <Button
         android:id="@+id/btn_share_com"
@@ -203,4 +145,56 @@
 
         app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--        </LinearLayout>-->
+    <!--    </androidx.core.widget.NestedScrollView>-->
+    <!--底部评论输入框-->
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="7dp"
+
+        android:paddingBottom="25dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="41dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_edit_comment"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edt_comment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="25dp"
+                android:background="#ffefefef"
+                android:hint="点击发表评论"
+                android:textColor="#ff777777"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="23dp"
+            android:src="@drawable/icon_un_favorite">
+
+        </ImageView>
+
+        <TextView
+            android:layout_width="19dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="6dp"
+            android:gravity="center_vertical"
+            android:text="赞"
+            android:textColor="#ff333333"
+            android:textSize="19sp" />
+
+    </LinearLayout>
+</LinearLayout>

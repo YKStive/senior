@@ -1,7 +1,10 @@
 package com.youloft.senior.net
 
 import com.alibaba.fastjson.JSONObject
-import com.youloft.net.bean.FavoriteHeadBean
+import com.youloft.net.bean.CommentBean
+import com.youloft.senior.bean.GifBean
+import com.youloft.senior.bean.LoginBean
+import com.youloft.senior.bean.MissionResult
 import com.youloft.senior.bean.*
 import retrofit2.Call
 import retrofit2.http.*
@@ -14,8 +17,8 @@ import rx.Observable
  */
 interface Api {
     companion object {
-        //        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
-        const val BASE_URL = "https://shequ.51wnl-cq.com/"
+        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
+//        const val BASE_URL = "https://shequ.51wnl-cq.com/"
     }
 
     @GET(BASE_URL + "api/Coin_Activity/GetMissions")
@@ -38,14 +41,17 @@ interface Api {
     @FormUrlEncoded
     fun login(@FieldMap params: Map<String, String>): Call<LoginBean>
 
-    @GET("/api/post/comment")
-    fun getCommentList(@QueryMap params: Map<String, String>): Call<ItemDetailBean>
+    /**
+     * 获取帖子评论列表
+     */
+    @GET("api/post/comment")
+    fun getCommentList(@QueryMap params: Map<String, String>): NetResponse<List<CommentBean>>
 
-    @GET("/api/post/praise")
-    fun getFavoritetList(@QueryMap params: Map<String, String>): Call<FavoriteHeadBean>
+    @GET("api/post/praise")
+    fun getFavoritetList(@QueryMap params: Map<String, String>): NetResponse<List<FavoriteHeadBean>>
 
-    @GET("/api/post/{id}")
-    fun getItem(@Path("id") id: String): Call<ItemDetailBean>
+    @GET("api/post/{id}")
+    fun getItem(@Path("id") id: String): NetResponse<ItemData>
 
     /**
      * 获取提现金额列表
@@ -89,6 +95,17 @@ interface Api {
         @Query("type") type: Int?,
         @Query("cashtype") cashtype: Int?
     ): JSONObject?
+
+    //    @GET("/api/post/user/list")
+//    fun getMineList(  方向up:0|down:1
+//        @Query("index") index: Int,
+//        @Query("direction") direction: Int,
+//        @Query("limit") limit: Int
+//    ): NetResponse<List<MineDataBean>>
+    @GET("api/post/user/list")
+    fun getMineList(
+    ): NetResponse<List<MineDataBean>>
+
 
     /**
      * 提现进度

@@ -12,17 +12,13 @@ package com.youloft.net.bean
  * @Version:        1.0
  */
 data class CommentBean(
-    var `data`: List<CommentData>,
-    var msg: String,
-    var sign: String,
-    var status: Int
-)
-
-data class CommentData(
     var avatar: String,
     var content: String,
     var createTime: String,
     var id: String,
+    var isPraised: Boolean,
     var nickname: String,
+    var praised: Int,
     var userId: String
 )
+

@@ -6,24 +6,28 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.CheckBox
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
+import com.youloft.coolktx.dp2px
 import com.youloft.core.base.BaseActivity
 import com.youloft.core.jump.JumpResult
 import com.youloft.senior.R
 import com.youloft.senior.bean.ImageRes
+import com.youloft.senior.itembinder.ChoiceMultiImageItemBinder
 import com.youloft.senior.itembinder.ChoiceSingleImageItemBinder
+import com.youloft.senior.widgt.GridSpaceItemDecoration
 import com.youloft.senior.widgt.ItemViewHolder
 import kotlinx.android.synthetic.main.activity_choice_image.*
+import kotlinx.android.synthetic.main.activity_content_publish.*
 
 class ChoiceImageActivity : BaseActivity() {
 
     private val TAG = "ChoiceImageActivity"
     private var mItems = ArrayList<ImageRes>()
     private var mAdapter = MultiTypeAdapter(mItems)
-    private lateinit var mBinder: ChoiceSingleImageItemBinder
 
     override fun getLayoutResId(): Int {
         return R.layout.activity_choice_image
@@ -43,42 +47,34 @@ class ChoiceImageActivity : BaseActivity() {
 
 
         rv_images.run {
-            layoutManager = GridLayoutManager(applicationContext, 4)
+            layoutManager = GridLayoutManager(applicationContext, 3)
+            addItemDecoration(GridSpaceItemDecoration(3, 2.dp2px, 2.dp2px))
             adapter = mAdapter
+            itemAnimator = null
+
         }
     }
 
     override fun initData() {
         reqPermissions()
-        mBinder =
-            ChoiceSingleImageItemBinder(onItemClick = { old, new ->
-                if (old == -1) {
-                    mItems[new].isSelected = true
-                    mAdapter.notifyItemChanged(new)
-                    mBinder.lastSelectedPosition = new
-
-                } else if (old == new) {
-                    mItems[new].isSelected = !mItems[new].isSelected
-                    mAdapter.notifyItemChanged(new)
-                    if (mItems[new].isSelected) {
-                        mBinder.lastSelectedPosition = new
-                    } else {
-                        mBinder.lastSelectedPosition = -1
-                    }
-                } else {
-                    mItems[old].isSelected = false
-                    mItems[new].isSelected = true
-                    mAdapter.notifyItemChanged(old)
-                    mAdapter.notifyItemChanged(new)
-                    mBinder.lastSelectedPosition = new
-                }
-            })
-
         mAdapter.run {
-            register(
-                ImageRes::class,
-                mBinder
-            )
+            if (mCount == 1) {
+                register(
+                    ImageRes::class,
+                    ChoiceSingleImageItemBinder(mItems)
+                )
+            } else {
+                val choiceMultiImageItemBinder = ChoiceMultiImageItemBinder(mItems)
+                choiceMultiImageItemBinder.selectedCount.observe(
+                    this@ChoiceImageActivity,
+                    Observer {
+                        btn_confirm.text = "完成(${it})"
+                    })
+                register(
+                    ImageRes::class,
+                    choiceMultiImageItemBinder
+                )
+            }
         }
     }
 

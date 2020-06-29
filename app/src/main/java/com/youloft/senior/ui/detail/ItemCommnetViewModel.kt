@@ -3,8 +3,11 @@ package com.youloft.senior.ui.detail
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.youloft.core.base.BaseViewModel
-import com.youloft.net.bean.CommentData
+import com.youloft.net.bean.CommentBean
+import com.youloft.senior.net.ApiHelper
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 /**
@@ -18,12 +21,20 @@ import kotlinx.coroutines.launch
  * @Version:        1.0
  */
 class ItemCommnetViewModel : BaseViewModel() {
-    private val comment: MutableLiveData<MutableList<CommentData>> = MutableLiveData()
-    val _data: MutableLiveData<MutableList<CommentData>>
-        get() = comment
 
-    fun getData() {
-        viewModelScope.launch {
+    //结果
+    var resultData = MutableLiveData<List<CommentBean>>()
+    fun getData(
+        params: Map<String, String>
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+//            val listData = ApiHelper.api.getMineList(index, direction, limit)
+            val listData = ApiHelper.api.getCommentList(params)
+            withContext(Dispatchers.Main) {
+                ApiHelper.executeResponse(listData, {
+                    resultData.value = it
+                })
+            }
 
         }
     }

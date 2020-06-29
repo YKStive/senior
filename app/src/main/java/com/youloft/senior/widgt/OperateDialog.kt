@@ -12,6 +12,7 @@ import com.youloft.core.base.BaseDialog
 import com.youloft.senior.R
 import com.youloft.senior.ui.gif.GifActivity
 import com.youloft.senior.ui.gif.GifListActivity
+import com.youloft.senior.ui.graphic.ContentPublishActivity
 import com.youloft.senior.utils.logD
 import kotlinx.android.synthetic.main.dialog_operate.*
 
@@ -33,7 +34,8 @@ class OperateDialog(val context: FragmentActivity) : BaseDialog(context) {
         container.setOnClickListener { "--".logD() }
 
         btn_image_text.setOnClickListener {
-
+            ContentPublishActivity.start(context)
+            dismiss()
         }
 
         btn_album.setOnClickListener {

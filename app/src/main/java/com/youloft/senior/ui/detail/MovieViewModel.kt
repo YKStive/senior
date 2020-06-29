@@ -29,9 +29,9 @@ class MovieViewModel : BaseViewModel() {
 
     private val item = MutableLiveData<String>()
 
-    val itemData = Transformations.switchMap(item) { id ->
-        Repository.getItem(id)
-    }
+//    val itemData = Transformations.switchMap(item) { id ->
+//        Repository.getItem(id)
+//    }
 
     fun getItem(id: String) {
         item.value = id

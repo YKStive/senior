@@ -1,21 +1,20 @@
 package com.youloft.senior.ui.detail
 
-import android.content.Context
 import android.content.Intent
-import android.hardware.camera2.params.MandatoryStreamCombination
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.youloft.core.base.BaseActivity
-import com.youloft.net.bean.MineData
-import com.youloft.net.bean.MineDataBean
 import com.youloft.senior.R
-import com.youloft.senior.tuia.TuiaWebActivity
+import com.youloft.senior.bean.MineDataBean
+import com.youloft.senior.ui.adapter.CommentAdapterr
 import com.youloft.socialize.SOC_MEDIA
 import com.youloft.socialize.share.ShareImage
 import com.youloft.socialize.share.ShareWeb
 import com.youloft.socialize.share.UmengShareActionImpl
+import com.youloft.util.StatusBarUtils.getStatusHeight
 import kotlinx.android.synthetic.main.activity_video_detail.*
+import kotlinx.android.synthetic.main.conmon_title.*
 
 /**
  *
@@ -28,8 +27,10 @@ import kotlinx.android.synthetic.main.activity_video_detail.*
  * @Version:        1.0
  */
 class DetailActivity : BaseActivity() {
+    private var stickScrollHeight = 0
     lateinit var informationId: String
     var informationType: Int = 0
+    lateinit var adapterr: CommentAdapterr
 
     companion object {
         fun start(context: FragmentActivity, informationId: String, informationType: Int) {
@@ -43,25 +44,30 @@ class DetailActivity : BaseActivity() {
     override fun getLayoutResId(): Int = R.layout.activity_video_detail
 
     override fun initView() {
+        var fragments = ArrayList<Fragment>()
+        fragments.add(ItemCommentFragment.newInstance())
+        fragments.add(FavoriteFragment.newInstance())
+
+        tablayout.setViewPager(viewPager, arrayOf("全部评论", "点赞"), this, fragments)
         informationId = intent.getStringExtra("informationId")
         informationType = intent.getIntExtra("informationType", 0)
-        if (informationType == MineData.MOVIE_TYPE) {
+        if (informationType == MineDataBean.MOVIE_TYPE) {
             //影集
             supportFragmentManager.beginTransaction()
                 .add(
                     R.id.framelayout_detail,
-                    MovieDetailFragment.newInstance(MovieDetailFragment.isMovie)
+                    MovieAndGifDetailFragment.newInstance(MineDataBean.MOVIE_TYPE, "")
                 )
                 .commit()
-        } else if (informationType == MineData.GIF_TYPE) {
-            //影集
+        } else if (informationType == MineDataBean.GIF_TYPE) {
+            //gif
             supportFragmentManager.beginTransaction()
                 .add(
                     R.id.framelayout_detail,
-                    MovieDetailFragment.newInstance(MovieDetailFragment.isMovie)
+                    MovieAndGifDetailFragment.newInstance(MineDataBean.GIF_TYPE, "")
                 )
                 .commit()
-        }else if (informationType == MineData.IMAGE_TYPE) {
+        } else if (informationType == MineDataBean.IMAGE_TYPE) {
             //图文
             supportFragmentManager.beginTransaction()
                 .add(
@@ -69,7 +75,7 @@ class DetailActivity : BaseActivity() {
                     PictureAndTextFragment.newInstance()
                 )
                 .commit()
-        }else if (informationType == MineData.VIDEO_TYPE) {
+        } else if (informationType == MineDataBean.VIDEO_TYPE) {
             //视频
 //            supportFragmentManager.beginTransaction()
 //                .add(
@@ -103,14 +109,52 @@ class DetailActivity : BaseActivity() {
 //                    .setDescription("内容").setTitle("标题")
 //            )
 //            board.shareWithUI()
-            var fragments = ArrayList<Fragment>()
-            fragments.add(ItemCommentFragment.newInstance())
-            fragments.add(FavoriteFragment.newInstance())
 
-            tablayout.setViewPager(viewpager, arrayOf("全部评论", "点赞"), this, fragments)
 //            tablayout.getTitleView()
+
         }
+//        supportFragmentManager.beginTransaction()
+//            .add(R.id.fl_tab_containar, ItemCommentFragment.newInstance())
+////            .add(R.id.fl_tab_containar, FavoriteFragment.newInstance())
+//            .commit()
+//
+//        initListeners()
     }
+
+//    private fun initListeners() {
+//        //获取内容总高度
+//        val vto: ViewTreeObserver = ll_content.getViewTreeObserver()
+//        vto.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+//            override fun onGlobalLayout() {
+//                stickScrollHeight = ll_content.getHeight()
+//                //注意要移除
+//                ll_content.getViewTreeObserver()
+//                    .removeOnGlobalLayoutListener(this)
+//            }
+//        })
+//
+////        //获取Fragment高度
+////        val viewTreeObserver: ViewTreeObserver = viewpager.getViewTreeObserver()
+////        viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+////            override fun onGlobalLayout() {
+////                stickScrollHeight = stickScrollHeight - viewpager.getHeight()
+////                //注意要移除
+////                viewpager.getViewTreeObserver()
+////                    .removeOnGlobalLayoutListener(this)
+////            }
+////        })
+//
+//        //获取title高度
+//        val viewTreeObserver1: ViewTreeObserver = constraintlayout_title.getViewTreeObserver()
+//        viewTreeObserver1.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+//            override fun onGlobalLayout() {
+//                stickScrollHeight =
+//                    stickScrollHeight - constraintlayout_title.getHeight() - getStatusHeight(this@DetailActivity) //计算滑动的总距离
+//                scrollView.setStickTop(constraintlayout_title.getHeight());//设置距离多少悬浮
+//            }
+//        })
+//    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

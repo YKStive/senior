@@ -1,9 +1,12 @@
 package com.youloft.senior.ui.detail
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -11,6 +14,8 @@ import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.youloft.core.base.BaseVMFragment
 import com.youloft.senior.R
 import com.youloft.senior.ui.adapter.CommentAdapterr
+import com.youloft.senior.widgt.CustomLinearLayoutManager
+import com.youloft.util.ToastMaster
 import kotlinx.android.synthetic.main.fragment_item_comment.*
 
 
@@ -25,7 +30,7 @@ import kotlinx.android.synthetic.main.fragment_item_comment.*
  * @Version:        1.0
  */
 class ItemCommentFragment : BaseVMFragment(), OnLoadMoreListener {
-    companion object{
+    companion object {
         fun newInstance(): ItemCommentFragment {
             val args = Bundle()
             val fragment = ItemCommentFragment()
@@ -46,19 +51,34 @@ class ItemCommentFragment : BaseVMFragment(), OnLoadMoreListener {
             refreshlayout.finishRefresh(2000 /*,false*/) //传入false表示刷新失败
         }
         refreshLayout.setOnLoadMoreListener(this)
+
         adapterr = CommentAdapterr(null)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapterr
-
+        adapterr.setOnItemChildClickListener(object : OnItemChildClickListener {
+            override fun onItemChildClick(
+                adapter: BaseQuickAdapter<*, *>,
+                view: View,
+                position: Int
+            ) {
+                when(view.id){
+                    R.id.ll_favorite->{
+                        ToastMaster.showShortToast(activity, "点赞")
+                    }
+                }
+            }
+        })
+//
     }
 
     override fun initData() {
-
+        mViewModel.getData(HashMap<String, String>())
     }
 
     override fun startObserve() {
-        mViewModel._data.observe(this, Observer {
-//            with(adapterr) { setNewInstance(it) }
+        mViewModel.resultData.observe(this, Observer {
+//            with(adapterr) { setList(it) }
+            adapterr.setList(it)
         })
     }
 
