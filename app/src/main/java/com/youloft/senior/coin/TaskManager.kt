@@ -204,7 +204,14 @@ internal class TaskManager {
         ) {
             if (doubleMode.cash) {
                 //三倍后的结果
-                CoinTipsDialog(ctx, "恭喜获得", "可立即提现至微信", data.getIntValue("coin"), "0.3", "立即提现")
+                CoinTipsDialog(
+                    ctx,
+                    "恭喜获得",
+                    "可立即提现至微信",
+                    data.getIntValue("coin"),
+                    data.getString("cash").stringToInt(),
+                    "立即提现"
+                )
                     .setButtonListener {
                         //跳转至提现
                     }.show()
@@ -223,7 +230,14 @@ internal class TaskManager {
         }
         if (data.getBooleanValue("isCoinThree")) {
             //翻三倍
-            CoinTipsDialog(ctx, "恭喜获得", "可立即提现至微信", data.getIntValue("coin"), "0.1", "cash-double")
+            CoinTipsDialog(
+                ctx,
+                "恭喜获得",
+                "可立即提现至微信",
+                data.getIntValue("coin"),
+                data.getString("cash").stringToInt(),
+                "cash-double"
+            )
                 .setButtonListener {
                     doubleMode.cash = true
                     completeDoubleTask(ctx, doubleMode)
