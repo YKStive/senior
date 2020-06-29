@@ -18,10 +18,9 @@ import com.youloft.util.UiUtil
 import kotlinx.android.synthetic.main.item_choice_image.view.*
 import kotlinx.android.synthetic.main.item_context_image.view.*
 
-class ContextImageItemBinder(
+class ContextVideoItemBinder(
     private val mItems: MutableList<ImageRes>,
-    private val onItemClick: (isAddImage: Boolean, position: Int) -> Unit,
-    private val onEmpty: () -> Unit
+    private val onItemClick: (imageRes: ImageRes) -> Unit
 ) : ItemViewBinder<ImageRes, RecyclerView.ViewHolder>() {
 
     init {
@@ -49,16 +48,13 @@ class ContextImageItemBinder(
 
         holder.itemView.run {
             iv_image.setOnClickListener {
-                onItemClick.invoke(item.isAddIcon, holder.layoutPosition)
+                onItemClick.invoke(item)
             }
 
             iv_delete_image.setOnClickListener {
                 if (!item.isAddIcon) {
                     mItems.removeAt(holder.layoutPosition)
                     adapter.notifyItemRemoved(holder.layoutPosition)
-                    if (mItems.size == 1) {
-                        onEmpty.invoke()
-                    }
                 }
             }
             iv_delete_image.visibility = if (!item.isAddIcon) View.VISIBLE else View.INVISIBLE

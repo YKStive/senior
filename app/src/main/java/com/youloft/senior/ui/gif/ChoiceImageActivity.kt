@@ -20,6 +20,7 @@ import com.youloft.senior.R
 import com.youloft.senior.bean.ImageRes
 import com.youloft.senior.itembinder.ChoiceMultiImageItemBinder
 import com.youloft.senior.itembinder.ChoiceSingleImageItemBinder
+import com.youloft.senior.utils.logD
 import com.youloft.senior.widgt.GridSpaceItemDecoration
 import kotlinx.android.synthetic.main.activity_choice_image.*
 import kotlinx.coroutines.Dispatchers
@@ -41,9 +42,11 @@ class ChoiceImageActivity : BaseActivity() {
         }
 
         btn_confirm.setOnClickListener {
-            finishWithResult((mItems.filter {
+            val filter = mItems.filter {
                 it.isSelected
-            }) as ArrayList<ImageRes>)
+            }
+            filter.toString().logD()
+            finishWithResult(filter as ArrayList<ImageRes>)
 
         }
 
@@ -60,13 +63,13 @@ class ChoiceImageActivity : BaseActivity() {
     override fun initData() {
         reqPermissions()
         mAdapter.run {
-            if (mCount == 1) {
+            if (mCountLimit == 1) {
                 register(
                     ImageRes::class,
                     ChoiceSingleImageItemBinder(mItems)
                 )
             } else {
-                val choiceMultiImageItemBinder = ChoiceMultiImageItemBinder(mItems)
+                val choiceMultiImageItemBinder = ChoiceMultiImageItemBinder(mCountLimit, mItems)
                 choiceMultiImageItemBinder.selectedCount.observe(
                     this@ChoiceImageActivity,
                     Observer {
@@ -113,13 +116,38 @@ class ChoiceImageActivity : BaseActivity() {
                 TYPE_ALL -> {
                     val images = getImages()
                     val video = getVideo()
+                    sortByTime(result, images, video)
 
                 }
                 TYPE_IMAGE -> {
                     val images = getImages()
-
+                    result.addAll(images)
                 }
             }
+
+            withContext(Dispatchers.Main) {
+                mItems.clear()
+                mItems.addAll(result)
+                mAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    /**
+     * 视频、相片按时间排序
+     * @param result MutableList<ImageRes> 结果
+     * @param images List<ImageRes> 相片
+     * @param video List<ImageRes> 视频
+     * @return List<ImageRes> 结果
+     */
+    private fun sortByTime(
+        result: MutableList<ImageRes>,
+        images: List<ImageRes>,
+        video: List<ImageRes>
+    ): MutableList<ImageRes> {
+        return result.apply {
+            result.addAll(video)
+            result.addAll(images)
         }
     }
 
@@ -164,6 +192,8 @@ class ChoiceImageActivity : BaseActivity() {
                     mCursor.getLong(mCursor.getColumnIndex(MediaStore.Video.Media.SIZE)) / 1024
                 val videoDisplayName =
                     mCursor.getString(mCursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME))
+                val videoUpdateTime =
+                    mCursor.getLong(mCursor.getColumnIndex(MediaStore.Video.Media.DATE_MODIFIED))
 
                 //提前获取缩略图
                 MediaStore.Video.Thumbnails.getThumbnail(
@@ -194,11 +224,12 @@ class ChoiceImageActivity : BaseActivity() {
                     }
                     thumbCursor.close()
                     thumbPath?.apply {
-                        ImageRes(videoPath).run {
-                            previewPath = thumbPath
+                        ImageRes(this).run {
+                            previewPath = videoPath
                             duration = videoDuration
                             type = ImageRes.TYPE_VIDEO
                             displayName = videoDisplayName
+                            time = videoUpdateTime
                             result.add(this)
 
                         }
@@ -223,7 +254,8 @@ class ChoiceImageActivity : BaseActivity() {
             MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
             MediaStore.Images.Media.DATA,
             MediaStore.Images.Media.DISPLAY_NAME,
-            MediaStore.Images.Media.SIZE
+            MediaStore.Images.Media.SIZE,
+            MediaStore.Images.Media.DATE_MODIFIED
         )
 
         val where =
@@ -243,9 +275,12 @@ class ChoiceImageActivity : BaseActivity() {
             var path: String?
             while (cursor.moveToNext()) {
                 path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
+                val imageUpdateTime =
+                    cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED))
                 if (path.isNullOrEmpty()) continue
                 ImageRes(path).run {
                     type = ImageRes.TYPE_IMAGE
+                    time = imageUpdateTime
                     result.add(this)
                 }
             }
@@ -256,11 +291,11 @@ class ChoiceImageActivity : BaseActivity() {
     }
 
     companion object {
-        private var mCount: Int = 1
+        private var mCountLimit: Int = 1
         private var mType: Int = -1
         private const val KEY_RESULT: String = "images"
-        private const val TYPE_ALL: Int = 1
-        private const val TYPE_IMAGE: Int = 2
+        const val TYPE_ALL: Int = 1
+        const val TYPE_IMAGE: Int = 2
         fun start(
             context: FragmentActivity,
             count: Int = 1,
@@ -269,7 +304,7 @@ class ChoiceImageActivity : BaseActivity() {
                 bean: ArrayList<ImageRes>
             ) -> Unit
         ) {
-            this.mCount = count
+            this.mCountLimit = count
             this.mType = type
             JumpResult(context).startForResult(ChoiceImageActivity::class.java) { requestCode, data ->
                 data?.apply {
