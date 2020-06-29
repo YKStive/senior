@@ -1,6 +1,7 @@
 package com.youloft.senior.ui.detail
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -12,9 +13,7 @@ import com.youloft.socialize.SOC_MEDIA
 import com.youloft.socialize.share.ShareImage
 import com.youloft.socialize.share.ShareWeb
 import com.youloft.socialize.share.UmengShareActionImpl
-import com.youloft.util.StatusBarUtils.getStatusHeight
 import kotlinx.android.synthetic.main.activity_video_detail.*
-import kotlinx.android.synthetic.main.conmon_title.*
 
 /**
  *
@@ -27,10 +26,10 @@ import kotlinx.android.synthetic.main.conmon_title.*
  * @Version:        1.0
  */
 class DetailActivity : BaseActivity() {
-    private var stickScrollHeight = 0
     lateinit var informationId: String
     var informationType: Int = 0
     lateinit var adapterr: CommentAdapterr
+    lateinit var videoFragment: GIFDetailFragment
 
     companion object {
         fun start(context: FragmentActivity, informationId: String, informationType: Int) {
@@ -56,7 +55,7 @@ class DetailActivity : BaseActivity() {
             supportFragmentManager.beginTransaction()
                 .add(
                     R.id.framelayout_detail,
-                    MovieAndGifDetailFragment.newInstance(MineDataBean.MOVIE_TYPE, "")
+                    MovieAndGifDetailFragment.newInstance(MineDataBean.MOVIE_TYPE, "",informationId)
                 )
                 .commit()
         } else if (informationType == MineDataBean.GIF_TYPE) {
@@ -64,7 +63,7 @@ class DetailActivity : BaseActivity() {
             supportFragmentManager.beginTransaction()
                 .add(
                     R.id.framelayout_detail,
-                    MovieAndGifDetailFragment.newInstance(MineDataBean.GIF_TYPE, "")
+                    MovieAndGifDetailFragment.newInstance(MineDataBean.GIF_TYPE, "",informationId)
                 )
                 .commit()
         } else if (informationType == MineDataBean.IMAGE_TYPE) {
@@ -72,17 +71,18 @@ class DetailActivity : BaseActivity() {
             supportFragmentManager.beginTransaction()
                 .add(
                     R.id.framelayout_detail,
-                    PictureAndTextFragment.newInstance()
+                    PictureAndTextFragment.newInstance(informationId)
                 )
                 .commit()
         } else if (informationType == MineDataBean.VIDEO_TYPE) {
             //视频
-//            supportFragmentManager.beginTransaction()
-//                .add(
-//                    R.id.framelayout_detail,
-//                    VideoD.newInstance(MovieDetailFragment.isMovie)
-//                )
-//                .commit()
+            videoFragment = GIFDetailFragment.newInstance(informationId)
+            supportFragmentManager.beginTransaction()
+                .add(
+                    R.id.framelayout_detail,
+                    videoFragment
+                )
+                .commit()
         }
         btn_share_com.setOnClickListener {
             Toast.makeText(this@DetailActivity, "点击", Toast.LENGTH_SHORT).show()
@@ -163,5 +163,17 @@ class DetailActivity : BaseActivity() {
     override fun initData() {
 
     }
+
+    override fun onBackPressed() {
+        if (informationType == MineDataBean.VIDEO_TYPE) {
+            if (videoFragment.onBackPressed()) {
+                return
+            }
+        }
+        super.onBackPressed()
+//        finish()
+    }
+
+
 }
 

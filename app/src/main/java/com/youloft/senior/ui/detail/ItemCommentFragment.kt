@@ -7,14 +7,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
-import com.scwang.smart.refresh.footer.ClassicsFooter
-import com.scwang.smart.refresh.header.ClassicsHeader
-import com.scwang.smart.refresh.layout.api.RefreshLayout
-import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
+import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.youloft.core.base.BaseVMFragment
 import com.youloft.senior.R
 import com.youloft.senior.ui.adapter.CommentAdapterr
-import com.youloft.senior.widgt.CustomLinearLayoutManager
 import com.youloft.util.ToastMaster
 import kotlinx.android.synthetic.main.fragment_item_comment.*
 
@@ -29,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_item_comment.*
  * @UpdateRemark:   更新说明：
  * @Version:        1.0
  */
-class ItemCommentFragment : BaseVMFragment(), OnLoadMoreListener {
+class ItemCommentFragment : BaseVMFragment() {
     companion object {
         fun newInstance(): ItemCommentFragment {
             val args = Bundle()
@@ -45,12 +41,12 @@ class ItemCommentFragment : BaseVMFragment(), OnLoadMoreListener {
 
 
     override fun initView() {
-        refreshLayout.setRefreshHeader(ClassicsHeader(activity))
-        refreshLayout.setRefreshFooter(ClassicsFooter(activity))
-        refreshLayout.setOnRefreshListener { refreshlayout ->
-            refreshlayout.finishRefresh(2000 /*,false*/) //传入false表示刷新失败
-        }
-        refreshLayout.setOnLoadMoreListener(this)
+//        refreshLayout.setRefreshHeader(ClassicsHeader(activity))
+//        refreshLayout.setRefreshFooter(ClassicsFooter(activity))
+//        refreshLayout.setOnRefreshListener { refreshlayout ->
+//            refreshlayout.finishRefresh(2000 /*,false*/) //传入false表示刷新失败
+//        }
+//        refreshLayout.setOnLoadMoreListener(this)
 
         adapterr = CommentAdapterr(null)
         recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -68,6 +64,7 @@ class ItemCommentFragment : BaseVMFragment(), OnLoadMoreListener {
                 }
             }
         })
+        initLoadMore()
 //
     }
 
@@ -82,7 +79,16 @@ class ItemCommentFragment : BaseVMFragment(), OnLoadMoreListener {
         })
     }
 
-    override fun onLoadMore(refreshLayout: RefreshLayout) {
-        refreshLayout.finishLoadMore(2000 /*,false*/) //传入false表示加载失败
+//    override fun onLoadMore(refreshLayout: RefreshLayout) {
+//        refreshLayout.finishLoadMore(2000 /*,false*/) //传入false表示加载失败
+//    }
+
+    fun initLoadMore(){
+        adapterr.loadMoreModule.setOnLoadMoreListener(OnLoadMoreListener {
+            //TODO
+        })
+        adapterr.loadMoreModule.isAutoLoadMore=true
+        //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
+//        adapterr.loadMoreModule.isEnableLoadMore(false)
     }
 }

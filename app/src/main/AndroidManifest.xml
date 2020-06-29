@@ -37,7 +37,10 @@
 
         <activity android:name=".ui.gif.ChoiceImageActivity" />
         <activity android:name=".ui.gif.GifActivity" />
-        <activity android:name=".ui.detail.DetailActivity" />
+        <activity
+            android:name=".ui.detail.DetailActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name="com.youloft.calendar.MeizuMessageReceiver"
