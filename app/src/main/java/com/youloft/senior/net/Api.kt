@@ -39,7 +39,7 @@ interface Api {
 
     @POST("/api/user/login")
     @FormUrlEncoded
-    fun login(@FieldMap params: Map<String, String>): Call<LoginBean>
+    fun login(@FieldMap params: Map<String, String>): NetResponse<LoginBean>
 
     /**
      * 获取帖子评论列表

@@ -6,6 +6,7 @@
     <color name="white">#FFFFFF</color>
     <color name="background">#FFFFFF</color>
     <color name="line_color">#EAEAEA</color>
+    <color name="edt_cursor_colr">#FF6734</color>
     <color name="main_coin_bg_color1">#00000000</color>
     <color name="main_coin_bg_color2">#fffbfbfb</color>
 </resources>

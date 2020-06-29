@@ -12,15 +12,9 @@ package com.youloft.senior.bean
  * @Version:        1.0
  */
 data class LoginBean(
-    val `data`: Data,
-    val msg: String,
-    val sign: String,
-    val status: Int
-)
-
-data class Data(
     val accessToken: String,
     val expiration: Int,
     val refreshToken: String,
     val userId: String
 )
+

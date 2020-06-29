@@ -21,8 +21,8 @@ import kotlin.coroutines.suspendCoroutine
  */
 object NetWork {
 
-    suspend fun getLogin(params: Map<String, String>) =
-        ApiHelper.api.login(params).await()
+//    suspend fun getLogin(params: Map<String, String>) =
+//        ApiHelper.api.login(params).await()
 
 //    suspend fun getComent(params: Map<String, String>) =
 //        ApiHelper.api.getCommentList(params).await()
