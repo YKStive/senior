@@ -2,6 +2,7 @@ package com.youloft.senior.coin
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.text.TextUtils
 import android.widget.Toast
@@ -9,6 +10,7 @@ import com.alibaba.fastjson.JSONObject
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.DoubleBean
 import com.youloft.senior.bean.MissionResult.DataBean.MissionsBean
+import com.youloft.senior.cash.CashActivity
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.widgt.ProgressHUD
 import com.youloft.util.MD5
@@ -214,6 +216,7 @@ internal class TaskManager {
                 )
                     .setButtonListener {
                         //跳转至提现
+                        ctx.startActivity(Intent(ctx, CashActivity::class.java))
                     }.show()
                 saveComplete(doubleMode.doubleCode!!, true)
                 return
