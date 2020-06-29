@@ -63,13 +63,13 @@ public class PushWrapper {
         });
 
         //        //注册小米推送
-        MiPushRegistar.register(context, "2882303761517138370", "5311713861370");
+        MiPushRegistar.register(context, "2882303761518452186", "5671845243186");
 //        //注册华为推送
         HuaWeiRegister.register(context);
 //        //注册魅族推送
-        MeizuRegister.register(context, "113855", "95933be55b5c4a2582aef8351b7bd2d4");
+//        MeizuRegister.register(context, "113855", "95933be55b5c4a2582aef8351b7bd2d4");
 
-        OppoRegister.register(context, "9or4i5V2178ckkS48sc4S4448", "9717bac8553DCad275cf60794187d6b4");
+        OppoRegister.register(context, "cf3c82536f01416699d220c7503bb9f0", "17840f84c5134bcea37a0b335642db08");
 
         //vivo 通道
         VivoRegister.register(context);

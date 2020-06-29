@@ -1,18 +1,20 @@
 package com.youloft.senior.bean
 
+import com.youloft.senior.base.App
+
 data class Post(
-    val avatar: String,
-    val createTime: String,
-    val id: String,
+    val avatar: String = App.instance().avatar,
+    val createTime: String = "",
+    val id: String = App.instance().userId,
     var mediaContent: List<String>,
-    val nickname: String,
+    val nickname: String = App.instance().nickName,
     val postType: Int,
-    val praised: Int,
-    val template: String,
-    val templateId: Int,
-    val textContent: String,
-    val userId: String,
-    val viewed: Int
+    val praised: Int = 0,
+    val template: String = "",
+    val templateId: Int = 0,
+    val textContent: String = "",
+    val userId: String = "",
+    val viewed: Int = 0
 ) {
 
 

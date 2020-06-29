@@ -2,6 +2,7 @@ package com.youloft.senior.coin
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.text.TextUtils
 import android.widget.Toast
@@ -9,6 +10,7 @@ import com.alibaba.fastjson.JSONObject
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.DoubleBean
 import com.youloft.senior.bean.MissionResult.DataBean.MissionsBean
+import com.youloft.senior.cash.CashActivity
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.widgt.ProgressHUD
 import com.youloft.util.MD5
@@ -194,7 +196,8 @@ internal class TaskManager {
         if (doubleMode == null || TextUtils.isEmpty(doubleMode.doubleCode)) {
             //没有双倍
             //弹普通获取弹窗
-            CoinTipsDialog(ctx, "恭喜获得", "测试", data.getIntValue("coin"), null, null).show()
+            CoinTipsDialog(ctx, "恭喜获得", "", data.getIntValue("coin"), null, null)
+                .bindCoinCash(data.getIntValue("useCoin"), data.getString("useCash")).show()
             return
         }
         if (TextUtils.isEmpty(
@@ -203,24 +206,41 @@ internal class TaskManager {
         ) {
             if (doubleMode.cash) {
                 //三倍后的结果
-                CoinTipsDialog(ctx, "恭喜获得", "可立即提现至微信", data.getIntValue("coin"), "0.3", "立即提现")
+                CoinTipsDialog(
+                    ctx,
+                    "恭喜获得",
+                    "可立即提现至微信",
+                    data.getIntValue("coin"),
+                    data.getString("cash").stringToInt(),
+                    "立即提现"
+                )
                     .setButtonListener {
                         //跳转至提现
+                        ctx.startActivity(Intent(ctx, CashActivity::class.java))
                     }.show()
                 saveComplete(doubleMode.doubleCode!!, true)
                 return
             }
             //双倍任务完成后保存值
-            CoinTipsDialog(ctx, "获得翻倍奖励", "测试", data.getIntValue("coin"), null, null)
+            CoinTipsDialog(ctx, "获得翻倍奖励", "", data.getIntValue("coin"), null, null)
                 .setButtonListener {
 
-                }.show()
+                }
+                .bindCoinCash(data.getIntValue("useCoin"), data.getString("useCash"))
+                .show()
             saveComplete(doubleMode.doubleCode!!, true)
             return
         }
         if (data.getBooleanValue("isCoinThree")) {
             //翻三倍
-            CoinTipsDialog(ctx, "恭喜获得", "可立即提现至微信", data.getIntValue("coin"), "0.1", "cash-double")
+            CoinTipsDialog(
+                ctx,
+                "恭喜获得",
+                "可立即提现至微信",
+                data.getIntValue("coin"),
+                data.getString("cash").stringToInt(),
+                "cash-double"
+            )
                 .setButtonListener {
                     doubleMode.cash = true
                     completeDoubleTask(ctx, doubleMode)
@@ -229,17 +249,21 @@ internal class TaskManager {
         }
         if (data.getBooleanValue("isCoinDouble")) {
             //翻两倍
-            CoinTipsDialog(ctx, "恭喜获得", "测试", data.getIntValue("coin"), null, "翻倍奖励")
+            CoinTipsDialog(ctx, "恭喜获得", "", data.getIntValue("coin"), null, "翻倍奖励")
                 .setButtonListener {
                     completeDoubleTask(ctx, doubleMode)
-                }.show()
+                }
+                .bindCoinCash(data.getIntValue("useCoin"), data.getString("useCash"))
+                .show()
             return
         }
         //默认有两倍的code参数，翻两倍
-        CoinTipsDialog(ctx, "恭喜获得", "测试", data.getIntValue("coin"), null, "翻倍奖励")
+        CoinTipsDialog(ctx, "恭喜获得", "", data.getIntValue("coin"), null, "翻倍奖励")
             .setButtonListener {
                 completeDoubleTask(ctx, doubleMode)
-            }.show()
+            }
+            .bindCoinCash(data.getIntValue("useCoin"), data.getString("useCash"))
+            .show()
     }
 
     /**

@@ -114,4 +114,12 @@ interface Api {
      */
     @GET(BASE_URL + "Api/User/CashProgress")
     fun cashProgress(@Query("caId") caId: String?): Observable<ApplyOptionResponse?>
+
+    /**
+     * 发布帖子
+     * @param caId String?
+     * @return NetResponse<Any>
+     */
+    @POST("/api/post")
+    fun publishPost(post: Post): NetResponse<Any>
 }

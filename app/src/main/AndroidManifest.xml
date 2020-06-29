@@ -75,6 +75,17 @@
         <activity android:name=".cash.BindPhoneActivity" />
         <activity android:name=".cash.MoneyApplyProgressActivity" />
         <activity android:name=".ui.graphic.ContentPublishActivity" />
+
+        <meta-data
+            android:name="com.huawei.hms.client.appid"
+            android:value="appid=102477185" />
+
+        <meta-data
+            android:name="com.vivo.push.api_key"
+            android:value="d64917a258eba5f571d62b75656e8436" />
+        <meta-data
+            android:name="com.vivo.push.app_id"
+            android:value="103912731" />
     </application>
 
 

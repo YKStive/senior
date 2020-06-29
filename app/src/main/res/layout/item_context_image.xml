@@ -5,7 +5,7 @@
 
 
     <com.noober.background.view.BLImageView
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:id="@+id/iv_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

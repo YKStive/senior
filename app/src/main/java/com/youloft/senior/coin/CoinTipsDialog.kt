@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.coin_tips_dialog_layout.*
 class CoinTipsDialog(
     ctx: Context,
     val title: String,
-    val content: String,
+    var content: String,
     val coin: Int,
     val cash: String?,
     val button: String?
@@ -29,6 +29,13 @@ class CoinTipsDialog(
         bindUI()
     }
 
+    fun bindCoinCash(coin: Int, cash: String): CoinTipsDialog {
+        if (TextUtils.isEmpty(content)) {
+            content = "我的金币:" + coin + "≈" + cash.stringToInt() + "元"
+        }
+        return this
+    }
+
     fun setButtonListener(buttonListener: (() -> Unit)): CoinTipsDialog {
         this.buttonListener = buttonListener
         return this
@@ -38,14 +45,17 @@ class CoinTipsDialog(
         top_title.text = title
         coin_text.text = if (TextUtils.isEmpty(cash)) "+${coin}" else "+${cash}"
         coin_place.text = if (TextUtils.isEmpty(cash)) "金币" else "元"
-        content_text.text = content
-        if (content.length > 4) {
+        if (title.length > 4) {
             title_bg.setBackgroundResource(R.drawable.theme_jl_pop_gx_title2)
+        }
+        if (TextUtils.isEmpty(content)) {
+        } else {
+            content_text.text = content
         }
         if (TextUtils.isEmpty(button)) {
             button_text_group.visibility = View.GONE
         } else {
-            if (button.equals("")) {
+            if (button.equals("cash-double")) {
                 button_text.visibility = View.GONE
                 cash_button.visibility = View.VISIBLE
                 try {
