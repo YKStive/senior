@@ -7,6 +7,9 @@ import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
+import com.youloft.senior.coin.RewardListener
+import com.youloft.senior.coin.TTRewardManager
+import com.youloft.senior.coin.stringToInt
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.widgt.ProgressHUD
 import com.youloft.util.ToastMaster
@@ -15,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 
 /**
  * @author xll
@@ -47,7 +51,10 @@ class CashActivity : BaseActivity() {
             }
             if (lastCash!!.getIntValue("type") == 2) {
                 //0.3元的类型
-                showCashTips(lastCash!!.getString("cash"))
+                showCashTips(
+                    lastCash!!.getString("cash"),
+                    lastCash!!.getString("caId").stringToInt()
+                )
                 return@setOnClickListener
             }
             startActivity(
@@ -115,7 +122,6 @@ class CashActivity : BaseActivity() {
     }
 
     private fun showProcess(s: String) {
-        if (isFinishing) return
         if (progressHUD != null && progressHUD!!.isShowing()) {
             progressHUD!!.dismiss()
         }
@@ -126,10 +132,65 @@ class CashActivity : BaseActivity() {
     var progressHUD: ProgressHUD? = null
 
     private fun closeProgressHUD() {
-        if (isFinishing) return
         if (progressHUD != null && progressHUD!!.isShowing()) {
             progressHUD!!.dismiss()
         }
+    }
+
+    /**
+     * 立即提现0.3元
+     */
+    fun cashComplete(caid: String, speedModel: JSONObject?) {
+        if (TextUtils.isEmpty(caid)) {
+            return
+        }
+        if (speedModel != null) {
+            requestReword(caid, speedModel)
+            return
+        }
+        showProcess("请稍后")
+        GlobalScope.launch(Dispatchers.Main) {
+            val cashRecord = withContext(Dispatchers.IO) {
+                kotlin.runCatching {
+                    ApiHelper.api.getCashRecord(caid!!)
+                }.getOrNull()
+            }
+            closeProgressHUD()
+            if (cashRecord == null) {
+                return@launch
+            }
+            if (!cashRecord.getBooleanValue("success")) {
+                return@launch
+            }
+            if (cashRecord.getJSONObject("data") == null) {
+                return@launch
+            }
+            requestReword(caid, cashRecord.getJSONObject("data"))
+        }
+    }
+
+    private fun requestReword(caid: String, speedModel: JSONObject) {
+        if (speedModel.getJSONObject("video") == null) {
+            return
+        }
+        val uuid = UUID.randomUUID().toString()
+        val extra = JSONObject()
+        extra["uuid"] = uuid
+        extra["code"] = caid
+        TTRewardManager.requestReword(
+            this,
+            speedModel.getJSONObject("video").getString("posId"),
+            object : RewardListener() {
+                override fun onRewardResult(
+                    isSuccess: Boolean,
+                    reward: Boolean,
+                    args: JSONObject?
+                ) {
+                    initData()
+                }
+            },
+            extra
+        )
     }
 
     fun withDraw() {
@@ -153,19 +214,35 @@ class CashActivity : BaseActivity() {
                 return@launch
             }
             if (result.getBooleanValue("success")) {
+                val speedMode = result.getJSONObject("speedModel")
+                if (speedMode == null) {
+                    ToastMaster.showLongToast(this@CashActivity, "网络异常")
+                    return@launch
+                }
+                last_cash.visibility = View.VISIBLE
+                lastCash = JSONObject()
+                lastCash!!.put("isExists", true)
+                lastCash!!.put("caId", speedMode.getString("caId"))
+                lastCash!!.put(
+                    "cash",
+                    speedMode.getJSONObject("speedConfig")?.getString("txMoney") ?: 0
+                )
+                lastCash!!.put("type", if (selectType == 0) 2 else 1)
                 //提现成功
                 if (selectType == 0) {
                     //新人专享
-                    val speedMode = result.getJSONObject("speedModel")
                     if (speedMode != null) {
                         val speedConfig = speedMode.getJSONObject("speedConfig")
                         if (speedConfig != null) {
-                            showCashTips(speedConfig.getString("txMoney"))
+                            showCashTips(
+                                speedConfig.getString("txMoney"),
+                                speedMode.getString("caId").stringToInt(),
+                                speedMode
+                            )
                         }
                     }
                 } else {
                     //普通提现
-                    val speedMode = result.getJSONObject("speedModel")
                     if (speedMode != null) {
                         val speedConfig = speedMode.getJSONObject("speedConfig")
                         if (speedConfig != null) {
@@ -183,9 +260,10 @@ class CashActivity : BaseActivity() {
         }
     }
 
-    private fun showCashTips(money: String) {
+    private fun showCashTips(money: String, caid: String, speedModel: JSONObject? = null) {
         CashTipsDialog(this) {
             //看视频直接触发提现
+            cashComplete(caid, speedModel)
         }.bindMoney(money).show()
     }
 
