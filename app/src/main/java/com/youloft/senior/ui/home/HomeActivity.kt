@@ -3,7 +3,10 @@ package com.youloft.senior.ui.home
 import android.content.Intent
 import android.os.Handler
 import android.os.Message
+import android.util.Log
 import android.view.View
+import com.yanzhenjie.permission.AndPermission
+import com.yanzhenjie.permission.runtime.Permission
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.ui.gif.GifActivity
@@ -39,6 +42,7 @@ class HomeActivity : BaseActivity() {
     }
 
     override fun initView() {
+        reqPermissions()
         val mainFragment = MainFragment()
         val homeFragment = HomeFragment()
 
@@ -93,6 +97,23 @@ class HomeActivity : BaseActivity() {
     }
 
     override fun initData() {
+
+    }
+
+
+    private fun reqPermissions() {
+        AndPermission.with(this)
+            .runtime()
+            .permission(
+                Permission.READ_EXTERNAL_STORAGE,
+                Permission.WRITE_EXTERNAL_STORAGE
+            )
+            .onGranted {
+            }
+            .onDenied {
+                finish()
+            }
+            .start()
     }
 
 }
