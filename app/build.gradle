@@ -4,19 +4,32 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
+    signingConfigs {
+        myConfig rootProject.ext.signingConfigs.release
+    }
     defaultConfig {
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
+        signingConfig signingConfigs.myConfig
         versionName rootProject.ext.android.versionName
     }
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
 
+    }
 
     buildTypes {
-
+        release {
+            zipAlignEnabled true
+            signingConfig signingConfigs.myConfig
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
         debug {
             minifyEnabled false
+            signingConfig signingConfigs.myConfig
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

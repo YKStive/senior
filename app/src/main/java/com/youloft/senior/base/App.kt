@@ -26,12 +26,12 @@ class App : Application() {
         instance = this
 
 //        初始化友盟分享
-//        UMConfigure.init(this, "kasjdlkjslakj", "", UMConfigure.DEVICE_TYPE_PHONE, "")
+        UMConfigure.init(this, "5ef993fbdbc2ec08212b6815", "", UMConfigure.DEVICE_TYPE_PHONE, "")
 //        UMConfigure.setLogEnabled(true)
-//        PlatformConfig.setWeixin(
-//            "wx5f3a0d4653cd3485",
-//            "af16a3c2d7b39dd4e8022e04ca1baa3f"
-//        )
+        PlatformConfig.setWeixin(
+            "wx7b54fe6514eaefa9",
+            "2db37220946d12f00d77f3185d3000eb"
+        )
 //        PushWrapper.init(this)
 
 

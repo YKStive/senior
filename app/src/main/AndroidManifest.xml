@@ -18,7 +18,7 @@
         tools:replace="android:allowBackup">
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5b581241b27b0a497c00003a" />
+            android:value="5ef993fbdbc2ec08212b6815" />
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
             android:value="621594bd4985f96707e1213e41e3b27a" /> <!-- 黄历详情 -->

@@ -2,6 +2,8 @@ package com.youloft.senior.ui.detail
 
 import android.content.Intent
 import android.content.res.Configuration
+import android.view.Gravity
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -9,6 +11,7 @@ import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.bean.MineDataBean
 import com.youloft.senior.ui.adapter.CommentAdapterr
+import com.youloft.senior.widgt.LoginPopup
 import com.youloft.socialize.SOC_MEDIA
 import com.youloft.socialize.share.ShareImage
 import com.youloft.socialize.share.ShareWeb
@@ -55,7 +58,11 @@ class DetailActivity : BaseActivity() {
             supportFragmentManager.beginTransaction()
                 .add(
                     R.id.framelayout_detail,
-                    MovieAndGifDetailFragment.newInstance(MineDataBean.MOVIE_TYPE, "",informationId)
+                    MovieAndGifDetailFragment.newInstance(
+                        MineDataBean.MOVIE_TYPE,
+                        "",
+                        informationId
+                    )
                 )
                 .commit()
         } else if (informationType == MineDataBean.GIF_TYPE) {
@@ -63,7 +70,7 @@ class DetailActivity : BaseActivity() {
             supportFragmentManager.beginTransaction()
                 .add(
                     R.id.framelayout_detail,
-                    MovieAndGifDetailFragment.newInstance(MineDataBean.GIF_TYPE, "",informationId)
+                    MovieAndGifDetailFragment.newInstance(MineDataBean.GIF_TYPE, "", informationId)
                 )
                 .commit()
         } else if (informationType == MineDataBean.IMAGE_TYPE) {
@@ -119,6 +126,15 @@ class DetailActivity : BaseActivity() {
 //            .commit()
 //
 //        initListeners()
+        var click = View.OnClickListener {
+
+        }
+
+        ll_share_to_circle.setOnClickListener(View.OnClickListener {
+
+            var pupup = LoginPopup(this,click)
+            pupup.showAtLocation(ll_bottom,Gravity.CENTER,0,0)
+        })
     }
 
 //    private fun initListeners() {

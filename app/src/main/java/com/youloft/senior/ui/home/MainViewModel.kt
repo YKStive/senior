@@ -27,17 +27,18 @@ class MainViewModel : BaseViewModel() {
     fun getData(
         index: Int,
         direction: Int,
-        limit: Int
+        limit: Int,
+        userId: String
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val listData = ApiHelper.api.getMineList()
+//            val listData = ApiHelper.api.getMineList(index, direction, limit)
+                val listData = ApiHelper.api.getMineList(userId)
                 withContext(Dispatchers.Main) {
                     ApiHelper.executeResponse(listData, {
                         resultData.value = it
                     })
                 }
-
             } catch (e: Exception) {
             }
 
