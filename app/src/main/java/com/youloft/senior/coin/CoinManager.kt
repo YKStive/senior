@@ -1,5 +1,6 @@
 package com.youloft.senior.coin
 
+import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alibaba.fastjson.JSONObject
@@ -162,14 +163,17 @@ class CoinManager private constructor() {
 /**
  * 金额显示处理
  */
-fun String.stringToInt(): String {
+fun String?.stringToInt(): String {
     try {
-        val doubleValue = this.toDouble()
-        if (doubleValue == doubleValue.toInt().toDouble()) {
-            return doubleValue.toInt().toString()
+        if (TextUtils.isEmpty(this)) {
+            return ""
         }
-        return this
+        val doubleValue = this?.toDouble()
+        if (doubleValue == doubleValue?.toInt()?.toDouble()) {
+            return doubleValue?.toInt().toString()
+        }
+        return this ?: ""
     } catch (e: Exception) {
-        return this
+        return this ?: ""
     }
 }

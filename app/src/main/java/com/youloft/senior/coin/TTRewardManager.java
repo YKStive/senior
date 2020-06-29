@@ -40,7 +40,7 @@ public class TTRewardManager {
                 .setImageAcceptedSize(1080, 1920);
 
         if (extra != null) {
-            String extraValue = "qq20180530134654683#" + extra.getString("code") + "#Youloft_Android#" + extra.getString("uuid");
+            String extraValue = "qq20180530134654687#" + extra.getString("code") + "#Youloft_Android#" + extra.getString("uuid");
             builder.setRewardName("")
                     .setRewardAmount(1)
                     .setUserID(extra.getString("uid"))

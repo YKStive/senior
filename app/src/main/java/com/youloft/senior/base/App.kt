@@ -46,7 +46,7 @@ class App : Application() {
 
     private fun bindParams1(urlBuilder: HttpUrl.Builder, params: Set<String>?) {
         if (!hasKey(params, "uid")) {
-            urlBuilder.addEncodedQueryParameter("uid", "qq20180530134654683")
+            urlBuilder.addEncodedQueryParameter("uid", "qq20180530134654687")
         }
 
         if (!hasKey(params, "cid")) {

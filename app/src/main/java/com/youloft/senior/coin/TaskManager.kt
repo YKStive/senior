@@ -194,7 +194,8 @@ internal class TaskManager {
         if (doubleMode == null || TextUtils.isEmpty(doubleMode.doubleCode)) {
             //没有双倍
             //弹普通获取弹窗
-            CoinTipsDialog(ctx, "恭喜获得", "测试", data.getIntValue("coin"), null, null).show()
+            CoinTipsDialog(ctx, "恭喜获得", "", data.getIntValue("coin"), null, null)
+                .bindCoinCash(data.getIntValue("useCoin"), data.getString("useCash")).show()
             return
         }
         if (TextUtils.isEmpty(
@@ -211,10 +212,12 @@ internal class TaskManager {
                 return
             }
             //双倍任务完成后保存值
-            CoinTipsDialog(ctx, "获得翻倍奖励", "测试", data.getIntValue("coin"), null, null)
+            CoinTipsDialog(ctx, "获得翻倍奖励", "", data.getIntValue("coin"), null, null)
                 .setButtonListener {
 
-                }.show()
+                }
+                .bindCoinCash(data.getIntValue("useCoin"), data.getString("useCash"))
+                .show()
             saveComplete(doubleMode.doubleCode!!, true)
             return
         }
@@ -229,17 +232,21 @@ internal class TaskManager {
         }
         if (data.getBooleanValue("isCoinDouble")) {
             //翻两倍
-            CoinTipsDialog(ctx, "恭喜获得", "测试", data.getIntValue("coin"), null, "翻倍奖励")
+            CoinTipsDialog(ctx, "恭喜获得", "", data.getIntValue("coin"), null, "翻倍奖励")
                 .setButtonListener {
                     completeDoubleTask(ctx, doubleMode)
-                }.show()
+                }
+                .bindCoinCash(data.getIntValue("useCoin"), data.getString("useCash"))
+                .show()
             return
         }
         //默认有两倍的code参数，翻两倍
-        CoinTipsDialog(ctx, "恭喜获得", "测试", data.getIntValue("coin"), null, "翻倍奖励")
+        CoinTipsDialog(ctx, "恭喜获得", "", data.getIntValue("coin"), null, "翻倍奖励")
             .setButtonListener {
                 completeDoubleTask(ctx, doubleMode)
-            }.show()
+            }
+            .bindCoinCash(data.getIntValue("useCoin"), data.getString("useCash"))
+            .show()
     }
 
     /**
