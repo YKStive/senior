@@ -26,8 +26,9 @@ class App : Application() {
         instance = this
 
 //        初始化友盟分享
-        UMConfigure.init(this, "5ef993fbdbc2ec08212b6815", "", UMConfigure.DEVICE_TYPE_PHONE, "")
+        UMConfigure.init(this, "5ef993fbdbc2ec08212b6815", "", UMConfigure.DEVICE_TYPE_PHONE, "2438c7b5bd38b294f4ceb1f9c0f8c796")
 //        UMConfigure.setLogEnabled(true)
+        PushWrapper.init(this)
         PlatformConfig.setWeixin(
             "wx7b54fe6514eaefa9",
             "2db37220946d12f00d77f3185d3000eb"
@@ -45,7 +46,7 @@ class App : Application() {
 
     private fun bindParams1(urlBuilder: HttpUrl.Builder, params: Set<String>?) {
         if (!hasKey(params, "uid")) {
-            urlBuilder.addEncodedQueryParameter("uid", "qq20180530134654682")
+            urlBuilder.addEncodedQueryParameter("uid", "qq20180530134654683")
         }
 
         if (!hasKey(params, "cid")) {
