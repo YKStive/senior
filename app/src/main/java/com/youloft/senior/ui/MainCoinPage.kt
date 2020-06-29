@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,6 +55,14 @@ internal class MainCoinPage(
         }
     }
 
+    fun onBack(): Boolean {
+        if (content_group.visibility == View.VISIBLE) {
+            openOrCloseMore()
+            return true
+        }
+        return false
+    }
+
     var animationing: Boolean = false
 
     private fun openOrCloseMore() {
@@ -85,11 +94,7 @@ internal class MainCoinPage(
             //打开
             isClickable = true
             bottom_layout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-            var height = bottom_layout.measuredHeight
-            val maxHeight = getHeight() - top_group.height - UiUtil.dp2Px(context, 30f)
-            if (height > maxHeight) {
-                height = maxHeight
-            }
+            val height = getHeight() - top_group.height - UiUtil.dp2Px(context, 30f)
             val animation: ValueAnimator = ValueAnimator.ofInt(height)
             animation.duration = 300
             content_group.visibility = View.VISIBLE
@@ -97,7 +102,7 @@ internal class MainCoinPage(
             animation.addUpdateListener {
                 if (it.animatedValue as Int >= height) {
                     animationing = false
-                    content_group.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+//                    content_group.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
                     content_group.requestLayout()
                     more.setImageResource(R.drawable.jb_pull_up)
                     content_group_bg.setBackgroundResource(R.color.main_coin_bg_color2)
@@ -223,27 +228,70 @@ internal class MainCoinPage(
 
         fun bindItem(value: Int, position: Int, con: Int, toadySign: Boolean) {
             itemView.item_day.text = "第${position + 1}天"
-            itemView.item_coin.text = "+${value}"
 
             //修改整当前item状态
             var state = 0
-            if (!toadySign && position == con) {
+            if (toadySign && position == (con - 1)) {
+                //今天已签到
+                val signInfo: MissionResult.DataBean? = CoinManager.instance.signInfo
+                if (signInfo != null) {
+                    //已签到
+                    if (signInfo.coinSigninContentsDoublecode != null && signInfo.coinSigninContentsDoublecode.size > signInfo.continued) {
+                        val doubleCode =
+                            signInfo.coinSigninContentsDoublecode[signInfo.continued - 1]
+                        if (!TextUtils.isEmpty(doubleCode) && !TaskManager.instance.isComplete(
+                                doubleCode
+                            )
+                        ) {
+                            //有双倍
+                            state = 3;
+                        }
+                    }
+                }
+            } else if (!toadySign && position == con) {
                 //当前是今天，但是今天么有签到的情况
                 state = 1;
-                itemView.isSelected = true
-                itemView.setOnClickListener({
-                    TaskManager.instance.sign(itemView.context)
-                })
             } else if (position >= con) {
                 //未签到的天
                 state = 2
-                itemView.setOnClickListener(null)
-                itemView.isSelected = false
             } else {
                 //已签到
                 state = 0
-                itemView.setOnClickListener(null)
-                itemView.isSelected = true
+            }
+
+            when {
+                state == 0 -> {
+                    itemView.setOnClickListener(null)
+                    itemView.isSelected = true
+                    itemView.item_icon.setImageResource(R.drawable.qd_jbcheck_icon_sign)
+                    itemView.item_coin.text = "已签"
+                    itemView.item_coin.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17f)
+                }
+                state == 1 -> {
+                    itemView.isSelected = true
+                    itemView.setOnClickListener {
+                        TaskManager.instance.sign(itemView.context)
+                    }
+                    itemView.item_icon.setImageResource(R.drawable.qd_jb_sel_icon)
+                    itemView.item_coin.text = "+${value}"
+                    itemView.item_coin.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19f)
+                }
+                state == 2 -> {
+                    itemView.setOnClickListener(null)
+                    itemView.isSelected = false
+                    itemView.item_icon.setImageResource(R.drawable.qd_jb_unsel_icon)
+                    itemView.item_coin.text = "+${value}"
+                    itemView.item_coin.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19f)
+                }
+                state == 3 -> {
+                    itemView.isSelected = true
+                    itemView.setOnClickListener {
+                        TaskManager.instance.sign(itemView.context)
+                    }
+                    itemView.item_icon.setImageResource(R.drawable.js_buttun_video_sign)
+                    itemView.item_coin.text = "可翻倍"
+                    itemView.item_coin.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+                }
             }
         }
     }
@@ -427,6 +475,8 @@ internal class MainCoinPage(
                         itemView.item_button.text = "立即播放"
                     }
                 }
+            } else {
+
             }
         }
 

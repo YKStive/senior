@@ -6,10 +6,11 @@ import android.content.SharedPreferences
 import android.text.TextUtils
 import android.widget.Toast
 import com.alibaba.fastjson.JSONObject
-import com.youloft.senior.net.ApiHelper
-import com.youloft.senior.bean.MissionResult.DataBean.MissionsBean
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.DoubleBean
+import com.youloft.senior.bean.MissionResult.DataBean.MissionsBean
+import com.youloft.senior.net.ApiHelper
+import com.youloft.senior.widgt.ProgressHUD
 import com.youloft.util.MD5
 import com.youloft.util.ToastMaster
 import rx.Observable
@@ -76,6 +77,20 @@ internal class TaskManager {
 
     var completeing = false
 
+    var progressHUD: ProgressHUD? = null
+    fun showProgress(ctx: Context) {
+        if (progressHUD != null) {
+            progressHUD!!.dismiss()
+        }
+        progressHUD = ProgressHUD.show(ctx, "提交中")
+    }
+
+    fun hideProgress() {
+        if (progressHUD != null) {
+            progressHUD!!.dismiss()
+        }
+    }
+
     /**
      * 完成任务
      */
@@ -89,6 +104,7 @@ internal class TaskManager {
         if (completeing) {
             return
         }
+        showProgress(context)
         completeing = true
         Observable
             .unsafeCreate { subscriber: Subscriber<in JSONObject?> ->
@@ -116,10 +132,12 @@ internal class TaskManager {
                 ToastMaster.showLongToast(context, "网络异常")
                 failed?.invoke()
                 completeing = false
+                hideProgress()
             }
             .onErrorResumeNext(Observable.empty())
             .onExceptionResumeNext(Observable.empty())
             .subscribe { result: JSONObject? ->
+                hideProgress()
                 parseResult(
                     context,
                     result,
@@ -217,6 +235,11 @@ internal class TaskManager {
                 }.show()
             return
         }
+        //默认有两倍的code参数，翻两倍
+        CoinTipsDialog(ctx, "恭喜获得", "测试", data.getIntValue("coin"), null, "翻倍奖励")
+            .setButtonListener {
+                completeDoubleTask(ctx, doubleMode)
+            }.show()
     }
 
     /**

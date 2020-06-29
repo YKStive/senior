@@ -14,11 +14,11 @@
             android:id="@+id/top_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:background="#fffff2ed"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:paddingLeft="15dp"
+            android:paddingTop="10dp"
             android:paddingRight="15dp">
 
             <TextView
@@ -44,9 +44,12 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="27dp"
+                android:layout_height="28dp"
+                android:background="@drawable/main_page_coin_bg"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:paddingLeft="9dp"
+                android:paddingRight="9dp"
                 app:layout_constraintBottom_toBottomOf="@+id/today_task_title"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/today_task_title">
@@ -54,12 +57,14 @@
                 <ImageView
                     android:layout_width="22dp"
                     android:layout_height="22dp"
-                    android:src="@drawable/ic_launcher_foreground" />
+                    android:src="@drawable/qd_jb_sel_icon" />
 
                 <TextView
                     android:id="@+id/coin_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:includeFontPadding="false"
                     android:text="5465"
                     android:textColor="#fff47c37"
                     android:textSize="24dp" />
@@ -76,14 +81,12 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/today_task_title" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/next_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
-                android:text="下个任务"
-                android:textColor="#ff957350"
-                android:textSize="21dp"
+                android:src="@drawable/jb_xgrw"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/coin_process" />
 

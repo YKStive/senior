@@ -92,6 +92,13 @@ class HomeActivity : BaseActivity() {
         main_coin_page.onActivityResult(requestCode, resultCode, data)
     }
 
+    override fun onBackPressed() {
+        if (main_coin_page.onBack()) {
+            return
+        }
+        super.onBackPressed()
+    }
+
     override fun initData() {
     }
 

@@ -18,9 +18,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
+            android:maxLines="1"
+            android:singleLine="true"
             android:text="2020年5月19日"
             android:textColor="#ff999999"
-            android:textSize="18sp" />
+            android:textSize="18dp" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -42,7 +44,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="16dp"
-            android:layout_marginRight="87dp"
+            android:layout_marginRight="90dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
             android:text="首次邀请好友赚金币"
             android:textColor="#ff333333"
             android:textSize="22dp"
@@ -68,7 +73,7 @@
             android:layout_height="22dp"
             android:layout_marginLeft="15dp"
             android:layout_marginBottom="15dp"
-            android:src="@drawable/qd_jbcheck_icon"
+            android:src="@drawable/qd_jb_sel_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
 
@@ -83,5 +88,15 @@
             app:layout_constraintBottom_toBottomOf="@+id/item_coin_icon"
             app:layout_constraintLeft_toRightOf="@+id/item_coin_icon"
             app:layout_constraintTop_toTopOf="@+id/item_coin_icon" />
+
+        <View
+            android:id="@+id/line"
+            style="@style/line_horizontal"
+            android:layout_width="0dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

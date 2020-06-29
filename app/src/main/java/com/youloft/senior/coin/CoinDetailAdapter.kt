@@ -68,7 +68,7 @@ class CoinDetailAdapter :
             }
             itemView.item_content.text = getItemValueForString(item, "content", "codeDesc")
             itemView.item_time.text = getItemValueForString(item, "createTime", null)
-            itemView.item_coin.text = getItemValueForString(item, "coin", null)
+            itemView.item_coin.text = item.getIntValue("coin").toString()
 
             val head = showHeader(item, lastItem)
             val foot = showFoot(item, nextItem)
@@ -78,7 +78,7 @@ class CoinDetailAdapter :
                     format.parse(getItemValueForString(item, "createTime", null))!!.time
                 val cCalendar = Calendar.getInstance()
                 cCalendar.timeInMillis = time
-                val format2 = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val format2 = SimpleDateFormat("yyyy年MM月dd日", Locale.getDefault())
                 val format3 = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
                 itemView.item_top_date.text = format2.format(cCalendar.timeInMillis)
                 itemView.item_time.text = format3.format(cCalendar.timeInMillis)
@@ -86,16 +86,20 @@ class CoinDetailAdapter :
 
             }
             if (head && !foot) {
+                itemView.line.visibility = View.VISIBLE
                 itemView.top_group.visibility = View.VISIBLE
                 itemView.content_group.setBackgroundResource(R.drawable.coin_detail_item_top_bg)
             } else if (!head && foot) {
                 itemView.top_group.visibility = View.GONE
+                itemView.line.visibility = View.GONE
                 itemView.content_group.setBackgroundResource(R.drawable.coin_detail_item_bottom_bg)
             } else if (!head && !foot) {
                 itemView.top_group.visibility = View.GONE
+                itemView.line.visibility = View.VISIBLE
                 itemView.content_group.setBackgroundResource(R.drawable.coin_detail_item_center_bg)
             } else {
-                itemView.top_group.visibility = View.GONE
+                itemView.line.visibility = View.GONE
+                itemView.top_group.visibility = View.VISIBLE
                 itemView.content_group.setBackgroundResource(R.drawable.coin_detail_item_all_bg)
             }
         }
@@ -111,7 +115,8 @@ class CoinDetailAdapter :
                 val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                 val time: Long =
                     format.parse(getItemValueForString(item, "createTime", null))!!.time
-                val lastTime = format.parse(getItemValueForString(item, "createTime", null))!!.time
+                val lastTime =
+                    format.parse(getItemValueForString(nextItem, "createTime", null))!!.time
                 val cCalendar = Calendar.getInstance()
                 cCalendar.timeInMillis = time
                 val lCalendar = Calendar.getInstance()
@@ -139,7 +144,8 @@ class CoinDetailAdapter :
                 val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                 val time: Long =
                     format.parse(getItemValueForString(item, "createTime", null))!!.time
-                val lastTime = format.parse(getItemValueForString(item, "createTime", null))!!.time
+                val lastTime =
+                    format.parse(getItemValueForString(lastItem, "createTime", null))!!.time
                 val cCalendar = Calendar.getInstance()
                 cCalendar.timeInMillis = time
                 val lCalendar = Calendar.getInstance()

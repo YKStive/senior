@@ -37,7 +37,7 @@ class CoinTipsDialog(
     private fun bindUI() {
         top_title.text = title
         coin_text.text = if (TextUtils.isEmpty(cash)) "+${coin}" else "+${cash}"
-        coin_place.text = if (TextUtils.isEmpty(cash)) "+金币" else "元"
+        coin_place.text = if (TextUtils.isEmpty(cash)) "金币" else "元"
         content_text.text = content
         if (content.length > 4) {
             title_bg.setBackgroundResource(R.drawable.theme_jl_pop_gx_title2)

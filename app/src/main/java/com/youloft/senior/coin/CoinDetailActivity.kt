@@ -35,10 +35,10 @@ class CoinDetailActivity : BaseActivity() {
                 return@launch
             }
             val list = result.getJSONObject("data")
-            if (list == null || !list.containsKey("CoinLog")) {
+            if (list == null || !list.containsKey("coinLog")) {
                 return@launch
             }
-            adapter.refreshData(list.getJSONArray("CoinLog"))
+            adapter.refreshData(list.getJSONArray("coinLog"))
             empty_view.visibility = if (adapter.itemCount > 0) View.GONE else View.VISIBLE
         }
     }
