@@ -132,7 +132,7 @@ internal class MainCoinPage(
         if (tasks.isNotEmpty()) {
             for (i in 0 until tasks.size) {
                 if (tasks[i].subItems != null && tasks[i].subItems.isNotEmpty()) {
-                    allCoin += tasks[i].subItems[0].coin
+                    allCoin += tasks[i].subItems[0].coin * tasks[i].subItems[0].dayCount
                     if (maxTask == null || tasks[i].subItems[0].coin > maxTask.subItems[0].coin) {
                         maxTask = tasks[i]
                     }

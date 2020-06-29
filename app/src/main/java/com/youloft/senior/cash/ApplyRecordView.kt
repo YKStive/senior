@@ -1,9 +1,12 @@
 package com.youloft.senior.cash
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
@@ -13,10 +16,16 @@ import java.text.SimpleDateFormat
 
 /**
  * @author xll
- * @date 2020/6/28 16:36
+ * @date 2020/6/29 15:10
  */
-internal class ApplyProgressAdapter :
-    RecyclerView.Adapter<ApplyProgressAdapter.BaseViewHolder>() {
+internal class ApplyRecordView(
+    context: Context?,
+    attrs: AttributeSet?
+) : LinearLayout(context, attrs) {
+    init {
+        orientation = VERTICAL
+    }
+
     val datas = JSONArray()
 
     fun refreshData(datas: JSONArray?) {
@@ -27,39 +36,26 @@ internal class ApplyProgressAdapter :
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): BaseViewHolder {
-        if (viewType == 1) {
-            return EmptyHolder(parent)
-        }
-        return ViewHolder(parent)
-    }
-
-    override fun onBindViewHolder(
-        holder: BaseViewHolder,
-        position: Int
-    ) {
-        if (holder is EmptyHolder) {
+    private fun notifyDataSetChanged() {
+        removeAllViews()
+        if (this.datas.isEmpty()) {
+            bindEmpty()
             return
         }
-        holder.bindItem(datas.getJSONObject(position), position == itemCount - 1)
-    }
-
-    override fun getItemCount(): Int {
-        return if (datas.size == 0) 1 else datas.size
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        if (position == 0 && !hasData()) {
-            return 1;
+        for (i in 0 until datas.size) {
+            bindItem(datas.getJSONObject(i), i == datas.size - 1)
         }
-        return 0
     }
 
-    fun hasData(): Boolean {
-        return !datas.isEmpty()
+    private fun bindItem(itemData: JSONObject, last: Boolean) {
+        val holder = ViewHolder(this)
+        holder.bindItem(itemData, last)
+        addView(holder.itemView)
+    }
+
+    private fun bindEmpty() {
+        val holder = EmptyHolder(this)
+        addView(holder.itemView)
     }
 
     abstract class BaseViewHolder(parent: ViewGroup, layout: Int) : RecyclerView.ViewHolder(
@@ -107,4 +103,5 @@ internal class ApplyProgressAdapter :
                 SimpleDateFormat(outFmt).format(SimpleDateFormat(infmt).parse(it))
             }
         }.getOrNull()
+
 }

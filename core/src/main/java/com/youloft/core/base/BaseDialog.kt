@@ -8,6 +8,6 @@ import com.youloft.core.R
  * @author xll
  * @date 2020/6/23 13:30
  */
-abstract class BaseDialog(ctx: Context) : Dialog(ctx, R.style.DialogTheme) {
+abstract class BaseDialog(ctx: Context, style: Int = R.style.DialogTheme) : Dialog(ctx, style) {
 
 }

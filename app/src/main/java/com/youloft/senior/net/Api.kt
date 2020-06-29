@@ -17,8 +17,8 @@ import rx.Observable
  */
 interface Api {
     companion object {
-        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
-//        const val BASE_URL = "https://shequ.51wnl-cq.com/"
+        //        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
+        const val BASE_URL = "https://shequ.51wnl-cq.com/"
     }
 
     @GET(BASE_URL + "api/Coin_Activity/GetMissions")
@@ -63,7 +63,7 @@ interface Api {
      * 获取提现进度
      */
     @GET(BASE_URL + "api/user/CashProgress")
-    fun getCashRecord(): JSONObject?
+    fun getCashRecord(@Query("caid") caid: String): JSONObject?
 
     /**
      * 获取提现进度

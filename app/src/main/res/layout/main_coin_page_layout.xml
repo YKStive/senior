@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
                     android:includeFontPadding="false"
-                    android:text="5465"
+                    android:text="0"
                     android:textColor="#fff47c37"
                     android:textSize="24dp" />
 
@@ -107,7 +107,7 @@
                 android:layout_marginLeft="5dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="邀请好友赚金币+10000"
+                android:text=""
                 android:textColor="#B3743C1C"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="@+id/coin_divider"

@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
  * @author xll
  * @date 2020/6/23 13:47
  */
-internal class InviteDialog(ctx: Context) : BaseDialog(ctx) {
+internal class InviteDialog(ctx: Context) : BaseDialog(ctx, R.style.DialogThemeResize) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_invite_dialog)

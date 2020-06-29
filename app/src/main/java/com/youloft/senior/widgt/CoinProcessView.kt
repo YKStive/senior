@@ -19,7 +19,7 @@ internal class CoinProcessView(
     attrs: AttributeSet?
 ) : View(context, attrs) {
     var max = 100
-    var progress = 50
+    var progress = 0
     var processIcon: Drawable
     var processDrawable: Drawable
     var paint: Paint

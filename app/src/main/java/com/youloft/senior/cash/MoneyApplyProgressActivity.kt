@@ -1,14 +1,20 @@
 package com.youloft.senior.cash
 
+import android.text.TextUtils
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.fastjson.JSONObject
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
+import com.youloft.senior.coin.RewardListener
+import com.youloft.senior.coin.TTRewardManager
+import com.youloft.senior.net.ApiHelper
+import com.youloft.util.ToastMaster
 import kotlinx.android.synthetic.main.money_apply_progress.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.*
 
 class MoneyApplyProgressActivity : BaseActivity() {
     val dd = "{\n" +
@@ -46,30 +52,63 @@ class MoneyApplyProgressActivity : BaseActivity() {
             "    }\n" +
             "}"
     private var lastCashData: JSONObject? = null
-    private val adapter: ApplyProgressAdapter by lazy {
-        ApplyProgressAdapter()
-    }
+    private var caid: String? = ""
 
     override fun getLayoutResId(): Int {
         return R.layout.money_apply_progress
     }
 
     override fun initView() {
-        speed_history.layoutManager = LinearLayoutManager(this)
-        speed_history.itemAnimator = null
-        speed_history.adapter = adapter
         ic_back.setOnClickListener { finish() }
+        speed_button_text.setOnClickListener {
+            if (lastCashData == null || lastCashData!!.getJSONObject("video") == null) {
+                return@setOnClickListener
+            }
+            val speedConfig = lastCashData!!.getJSONObject("speedConfig")
+            //当天可以加速
+            if (speedConfig == null || !speedConfig.getBooleanValue("toDayIsSpeed")) {
+                ToastMaster.showLongToast(this@MoneyApplyProgressActivity, "今天加速用完了，明天再试")
+                return@setOnClickListener
+            }
+            val video = lastCashData!!.getJSONObject("video")
+            val uuid = UUID.randomUUID().toString()
+            val extra = JSONObject()
+            extra["uuid"] = uuid
+            extra["code"] = lastCashData!!.getIntValue("caId").toString()
+            TTRewardManager.requestReword(
+                this,
+                video.getString("posId"),
+                object : RewardListener() {
+                    override fun onRewardResult(
+                        isSuccess: Boolean,
+                        reward: Boolean,
+                        args: JSONObject?
+                    ) {
+                        initData()
+                    }
+                },
+                extra
+            )
+        }
     }
 
     override fun initData() {
+        if (TextUtils.isEmpty(caid) && intent != null) {
+            caid = intent.getStringExtra("caid")
+        }
+        if (TextUtils.isEmpty(caid)) {
+            ToastMaster.showLongToast(this, "错误的订单号")
+            finish()
+            return
+        }
         GlobalScope.launch(Dispatchers.Main) {
-//            val lastCash = withContext(Dispatchers.IO) {
-//                kotlin.runCatching {
-//                    ApiHelper.api.getLastCash()
-//                }.getOrNull()
-//            }
-            val lastCash = JSONObject.parseObject(dd)
-            lastCashData = if (lastCash != null) {
+            val lastCash = withContext(Dispatchers.IO) {
+                kotlin.runCatching {
+                    ApiHelper.api.getCashRecord(caid!!)
+                }.getOrNull()
+            }
+//            val lastCash = JSONObject.parseObject(dd)
+            lastCashData = if (lastCash != null && lastCash.getBooleanValue("success")) {
                 lastCash.getJSONObject("data")
             } else {
                 null
@@ -83,7 +122,7 @@ class MoneyApplyProgressActivity : BaseActivity() {
             //加载失败页面
             return
         }
-        adapter.refreshData(lastCashData!!.getJSONArray("speedInfo"))
+        speed_history.refreshData(lastCashData!!.getJSONArray("speedInfo"))
         val speedConfig = lastCashData!!.getJSONObject("speedConfig")
         if (speedConfig != null) {
             speed_button.text = speedConfig.getString("infoSpeedBtnTxt")

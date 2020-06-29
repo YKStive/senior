@@ -42,15 +42,23 @@ class CashActivity : BaseActivity() {
             withDraw()
         }
         last_cash.setOnClickListener {
+            if (lastCash == null || !lastCash!!.getBooleanValue("isExists")) {
+                return@setOnClickListener
+            }
+            if (lastCash!!.getIntValue("type") == 2) {
+                //0.3元的类型
+                showCashTips(lastCash!!.getString("cash"))
+                return@setOnClickListener
+            }
             startActivity(
                 Intent(this, MoneyApplyProgressActivity::class.java)
-                    .putExtra("caid", "111")
+                    .putExtra("caid", lastCash!!.getIntValue("caId").toString())
             )
         }
     }
 
     private fun refreshUI() {
-        if (selectCashItem == null || userWXMessage == null) {
+        if (selectCashItem == null || userWXMessage == null || lastCash == null) {
             loadError()
             return
         }
@@ -59,6 +67,11 @@ class CashActivity : BaseActivity() {
             short_group.visibility = View.VISIBLE
             short_text.text =
                 "还差${(itemCashValue - userWXMessage!!.getFloatValue("cash"))}元即可提现，快去做任务赚钱吧"
+        }
+        if (!lastCash!!.getBooleanValue("isExists")) {
+            last_cash.visibility = View.GONE
+        } else {
+            last_cash.visibility = View.VISIBLE
         }
         coin_number.text = selectCashItem!!.getIntValue("coin").toString()
     }
@@ -180,7 +193,7 @@ class CashActivity : BaseActivity() {
         NormalTipsDialog(this) {
             startActivity(
                 Intent(this, MoneyApplyProgressActivity::class.java)
-                    .putExtra("caid", speedModel?.getString("caid"))
+                    .putExtra("caid", speedModel?.getIntValue("caId").toString())
             )
         }.bindMoney(money).show()
     }
