@@ -7,6 +7,7 @@ import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.coin.RewardListener
 import com.youloft.senior.coin.TTRewardManager
+import com.youloft.senior.coin.stringToInt
 import com.youloft.senior.net.ApiHelper
 import com.youloft.util.ToastMaster
 import kotlinx.android.synthetic.main.money_apply_progress.*
@@ -131,7 +132,7 @@ class MoneyApplyProgressActivity : BaseActivity() {
             } else {
                 //当天不可以加速
             }
-            cash_value.text = speedConfig.getString("txMoney")
+            cash_value.text = speedConfig.getString("txMoney").stringToInt()
         }
         when {
             //异常

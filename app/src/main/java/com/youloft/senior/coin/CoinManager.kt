@@ -3,10 +3,10 @@ package com.youloft.senior.coin
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alibaba.fastjson.JSONObject
-import com.youloft.senior.net.ApiHelper.api
 import com.youloft.senior.bean.MissionResult
 import com.youloft.senior.bean.MissionResult.DataBean
 import com.youloft.senior.bean.MissionResult.DataBean.MissionsBean
+import com.youloft.senior.net.ApiHelper.api
 import com.youloft.senior.tuia.TuiaUtil
 import rx.Observable
 import rx.Subscriber
@@ -51,7 +51,6 @@ class CoinManager private constructor() {
     fun asDataChange(): LiveData<Boolean> {
         return dataChangeLiveData
     }
-
 
     /**
      * 加载数据
@@ -158,4 +157,19 @@ class CoinManager private constructor() {
 
     }
 
+}
+
+/**
+ * 金额显示处理
+ */
+fun String.stringToInt(): String {
+    try {
+        val doubleValue = this.toDouble()
+        if (doubleValue == doubleValue.toInt().toDouble()) {
+            return doubleValue.toInt().toString()
+        }
+        return this
+    } catch (e: Exception) {
+        return this
+    }
 }

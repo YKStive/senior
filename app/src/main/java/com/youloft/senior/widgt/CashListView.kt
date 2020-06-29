@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
 import com.youloft.senior.R
 import com.youloft.senior.base.App.Companion.instance
+import com.youloft.senior.coin.stringToInt
 import com.youloft.util.UiUtil
 import kotlinx.android.synthetic.main.cash_item_layout.view.*
 
@@ -90,7 +91,7 @@ internal class CashListView(
         itemView.isSelected = selectPosition == position
         itemView.select_tag.visibility =
             if (selectPosition == position) View.VISIBLE else View.GONE
-        itemView.item_cash.text = item.getString("price")
+        itemView.item_cash.text = item.getString("price").stringToInt()
         itemView.tag = item
         if (item.getIntValue("type") == 0) {
             newPeoplePosition = position

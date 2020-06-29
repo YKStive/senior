@@ -96,7 +96,7 @@ class MainFragment : BaseVMFragment() {
 //                )
 //            )
 //        }
-        mViewModel.getData(1, 0, 10,"")
+        mViewModel.getData(1, 0, 10)
 //mViewModel
     }
 
