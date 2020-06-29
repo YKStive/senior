@@ -31,7 +31,7 @@ ext {
             buildToolsVersion: "28.0.3",
             applicationId    : "com.youloft.senior",
             minSdkVersion    : 21,
-            targetSdkVersion : 29,
+            targetSdkVersion : 28,
             versionCode      : appVersionCode,
             versionName      : appVersion
     ]

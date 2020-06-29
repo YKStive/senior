@@ -12,7 +12,6 @@ android {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
-        signingConfig signingConfigs.myConfig
         versionName rootProject.ext.android.versionName
     }
     lintOptions {
