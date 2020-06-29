@@ -25,6 +25,8 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
         const val IS_LOGIN = "is_login"
         const val USER_GSON = "user_gson"
         const val USER_ID = "user_id"
+        const val USER_AVATAR = "user_avatar"
+        const val USER_NICK_NAME = "user_nick_name"
         const val IS_PUNCH = "is_punch"
         const val LAST_PUBLISH_ALBUM_TIME = "last_publish_album_time"
 
@@ -97,7 +99,8 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
     private fun <A> serialize(obj: A): String {
         val byteArrayOutputStream = ByteArrayOutputStream()
         val objectOutputStream = ObjectOutputStream(
-            byteArrayOutputStream)
+            byteArrayOutputStream
+        )
         objectOutputStream.writeObject(obj)
         var serStr = byteArrayOutputStream.toString("ISO-8859-1")
         serStr = java.net.URLEncoder.encode(serStr, "UTF-8")
@@ -121,9 +124,11 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
     private fun <A> deSerialization(str: String): A {
         val redStr = java.net.URLDecoder.decode(str, "UTF-8")
         val byteArrayInputStream = ByteArrayInputStream(
-            redStr.toByteArray(charset("ISO-8859-1")))
+            redStr.toByteArray(charset("ISO-8859-1"))
+        )
         val objectInputStream = ObjectInputStream(
-            byteArrayInputStream)
+            byteArrayInputStream
+        )
         val obj = objectInputStream.readObject() as A
         objectInputStream.close()
         byteArrayInputStream.close()

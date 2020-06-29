@@ -19,7 +19,9 @@ import com.youloft.net.ParamsInterface as ParamsInterface1
  * @desc
  */
 class App : Application() {
-    var userId: String by Preference(Preference.USER_ID, "123")
+    var userId: String by Preference(Preference.USER_ID, "")
+    var avatar: String by Preference(Preference.USER_AVATAR, "")
+    var nickName: String by Preference(Preference.USER_NICK_NAME, "")
     var user by Preference(Preference.USER_GSON, User.test())
     override fun onCreate() {
         super.onCreate()
