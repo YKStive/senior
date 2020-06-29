@@ -8,6 +8,7 @@ import com.youloft.senior.net.ApiHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 
 /**
@@ -29,20 +30,17 @@ class MainViewModel : BaseViewModel() {
         limit: Int
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-//            val listData = ApiHelper.api.getMineList(index, direction, limit)
-            val listData = ApiHelper.api.getMineList()
-            withContext(Dispatchers.Main){
-                ApiHelper.executeResponse(listData, {
-                    resultData.value = it
-                })
+            try {
+                val listData = ApiHelper.api.getMineList()
+                withContext(Dispatchers.Main) {
+                    ApiHelper.executeResponse(listData, {
+                        resultData.value = it
+                    })
+                }
+
+            } catch (e: Exception) {
             }
 
-//            withContext(Dispatchers.Main) {
-//                ApiHelper.executeResponse(stickers, {
-//                    mAdapter.items = it
-//                    mAdapter.notifyDataSetChanged()
-//                })
-//            }
         }
     }
 

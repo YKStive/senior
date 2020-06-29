@@ -94,7 +94,7 @@ ext {
             "refreshKernel"       : "com.scwang.smart:refresh-layout-kernel:2.0.1",
             "refreshHeaderClassic": "com.scwang.smart:refresh-header-classics:2.0.1",
             "refreshFooterClassic": "com.scwang.smart:refresh-footer-classics:2.0.1",
-            "baseAdapter": "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4",
+            "baseAdapter"         : "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4",
 
     ]
 

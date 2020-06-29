@@ -26,13 +26,13 @@ class App : Application() {
         instance = this
 
 //        初始化友盟分享
-        UMConfigure.init(this, "kasjdlkjslakj", "", UMConfigure.DEVICE_TYPE_PHONE, "")
-        UMConfigure.setLogEnabled(true)
-        PlatformConfig.setWeixin(
-            "wx5f3a0d4653cd3485",
-            "af16a3c2d7b39dd4e8022e04ca1baa3f"
-        )
-        PushWrapper.init(this)
+//        UMConfigure.init(this, "kasjdlkjslakj", "", UMConfigure.DEVICE_TYPE_PHONE, "")
+//        UMConfigure.setLogEnabled(true)
+//        PlatformConfig.setWeixin(
+//            "wx5f3a0d4653cd3485",
+//            "af16a3c2d7b39dd4e8022e04ca1baa3f"
+//        )
+//        PushWrapper.init(this)
 
 
         ApiHelper.initSteho(this, object : ParamsInterface1 {

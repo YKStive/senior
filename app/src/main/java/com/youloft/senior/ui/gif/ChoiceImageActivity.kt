@@ -4,14 +4,16 @@ import android.app.Activity
 import android.content.Intent
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.CheckBox
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
 import com.youloft.coolktx.dp2px
+import com.youloft.coolktx.launchIOWhenCreated
+import com.youloft.coolktx.toast
 import com.youloft.core.base.BaseActivity
 import com.youloft.core.jump.JumpResult
 import com.youloft.senior.R
@@ -19,9 +21,9 @@ import com.youloft.senior.bean.ImageRes
 import com.youloft.senior.itembinder.ChoiceMultiImageItemBinder
 import com.youloft.senior.itembinder.ChoiceSingleImageItemBinder
 import com.youloft.senior.widgt.GridSpaceItemDecoration
-import com.youloft.senior.widgt.ItemViewHolder
 import kotlinx.android.synthetic.main.activity_choice_image.*
-import kotlinx.android.synthetic.main.activity_content_publish.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class ChoiceImageActivity : BaseActivity() {
 
@@ -94,7 +96,7 @@ class ChoiceImageActivity : BaseActivity() {
                 Permission.WRITE_EXTERNAL_STORAGE
             )
             .onGranted {
-                getImages()
+                getData()
             }
             .onDenied {
                 Log.d(TAG, "please authorize sd card permissions")
@@ -102,8 +104,119 @@ class ChoiceImageActivity : BaseActivity() {
             .start()
     }
 
-    private fun getImages() {
-        mItems.clear()
+    private fun getData() {
+        lifecycleScope.launchIOWhenCreated(onError = {
+            toast("查询异常")
+        }) {
+            val result = mutableListOf<ImageRes>()
+            when (mType) {
+                TYPE_ALL -> {
+                    val images = getImages()
+                    val video = getVideo()
+
+                }
+                TYPE_IMAGE -> {
+                    val images = getImages()
+
+                }
+            }
+        }
+    }
+
+    /**
+     * 查询视频
+     * @return List<ImageRes>
+     */
+    private fun getVideo(): List<ImageRes> {
+        val result = mutableListOf<ImageRes>()
+        val resolver = contentResolver
+        val videoUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+        val projection = arrayOf(
+            MediaStore.Video.Thumbnails._ID,
+            MediaStore.Video.Thumbnails.DATA,
+            MediaStore.Video.Media.DURATION,
+            MediaStore.Video.Media.SIZE,
+            MediaStore.Video.Media.DISPLAY_NAME,
+            MediaStore.Video.Media.DATE_MODIFIED
+        )
+        val where =
+            MediaStore.Images.Media.MIME_TYPE + "=?"
+
+        val whereArgs = arrayOf("video/mp4")
+
+        val mCursor = resolver?.query(
+            videoUri,
+            projection,
+            where,
+            whereArgs,
+            MediaStore.Images.Media.DATE_MODIFIED + " desc "
+        )
+
+        mCursor?.apply {
+            while (mCursor.moveToNext()) {
+                val videoId =
+                    mCursor.getInt(mCursor.getColumnIndex(MediaStore.Video.Media._ID))
+                val videoPath =
+                    mCursor.getString(mCursor.getColumnIndex(MediaStore.Video.Media.DATA))
+                val videoDuration =
+                    mCursor.getInt(mCursor.getColumnIndex(MediaStore.Video.Media.DURATION))
+                val videoSize =
+                    mCursor.getLong(mCursor.getColumnIndex(MediaStore.Video.Media.SIZE)) / 1024
+                val videoDisplayName =
+                    mCursor.getString(mCursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME))
+
+                //提前获取缩略图
+                MediaStore.Video.Thumbnails.getThumbnail(
+                    resolver,
+                    videoId.toLong(),
+                    MediaStore.Video.Thumbnails.MICRO_KIND,
+                    null
+                )
+
+                val thumbProj = arrayOf(
+                    MediaStore.Video.Thumbnails._ID,
+                    MediaStore.Video.Thumbnails.DATA
+                )
+
+                var thumbPath: String? = null
+                val thumbCursor = resolver.query(
+                    MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI,
+                    thumbProj,
+                    MediaStore.Video.Thumbnails.VIDEO_ID + "=?",
+                    arrayOf(videoId.toString()),
+                    null
+                )
+                thumbCursor?.apply {
+                    while (thumbCursor.moveToNext()) {
+                        thumbPath =
+                            thumbCursor.getString(thumbCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA));
+
+                    }
+                    thumbCursor.close()
+                    thumbPath?.apply {
+                        ImageRes(videoPath).run {
+                            previewPath = thumbPath
+                            duration = videoDuration
+                            type = ImageRes.TYPE_VIDEO
+                            displayName = videoDisplayName
+                            result.add(this)
+
+                        }
+                    }
+                }
+            }
+            close()
+        }
+
+        return result
+    }
+
+    /**
+     * 获取相片
+     * @return List<ImageRes>
+     */
+    private fun getImages(): List<ImageRes> {
+        val result = mutableListOf<ImageRes>()
         val resolver = contentResolver
         val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(
@@ -124,29 +237,40 @@ class ChoiceImageActivity : BaseActivity() {
             where,
             whereArgs,
             MediaStore.Images.Media.DATE_MODIFIED + " desc "
-        ) ?: return
-        var path: String?
+        )
 
-        while (cursor.moveToNext()) {
-            path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
-            if (path.isNullOrEmpty()) continue
-
-            mItems.add(ImageRes(path))
+        cursor?.apply {
+            var path: String?
+            while (cursor.moveToNext()) {
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
+                if (path.isNullOrEmpty()) continue
+                ImageRes(path).run {
+                    type = ImageRes.TYPE_IMAGE
+                    result.add(this)
+                }
+            }
+            cursor.close()
         }
-        cursor.close()
 
-        mAdapter.notifyDataSetChanged()
+        return result
     }
 
     companion object {
         private var mCount: Int = 1
+        private var mType: Int = -1
         private const val KEY_RESULT: String = "images"
+        private const val TYPE_ALL: Int = 1
+        private const val TYPE_IMAGE: Int = 2
         fun start(
             context: FragmentActivity,
             count: Int = 1,
-            onResult: (bean: ArrayList<ImageRes>) -> Unit
+            type: Int = TYPE_IMAGE,
+            onResult: (
+                bean: ArrayList<ImageRes>
+            ) -> Unit
         ) {
             this.mCount = count
+            this.mType = type
             JumpResult(context).startForResult(ChoiceImageActivity::class.java) { requestCode, data ->
                 data?.apply {
                     val imageRes = data.getParcelableArrayListExtra<ImageRes>(KEY_RESULT)
