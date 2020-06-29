@@ -103,7 +103,8 @@ interface Api {
 //        @Query("limit") limit: Int
 //    ): NetResponse<List<MineDataBean>>
     @GET("api/post/user/{userId}/list")
-    fun getMineList(@Path("userId") id: String
+    fun getMineList(
+        @Path("userId") id: String
     ): NetResponse<List<MineDataBean>>
 
 
@@ -122,4 +123,37 @@ interface Api {
      */
     @POST("/api/post")
     fun publishPost(post: Post): NetResponse<Any>
+
+    /**
+     * 点赞帖子
+     */
+    @POST("api/post/comment/praise")
+    @FormUrlEncoded
+    fun parse(@FieldMap params: HashMap<String, String>): NetResponse<String>
+
+    /**
+     * 评论贴子
+     */
+    @POST("api/post/comment")
+    @FormUrlEncoded
+    fun commnet(@FieldMap params: HashMap<String, String>): NetResponse<String>
+
+    /**
+     * 删除贴子
+     */
+    @POST("api/post/delete")
+    @FormUrlEncoded
+    fun deletePost(@Field("postId") params: String): NetResponse<String>
+
+    /**
+     * 删除评论
+     */
+    @POST("api/post/comment/delete")
+    @FormUrlEncoded
+    fun deletePost(
+        @Field("postId") postId: String,
+        @Field("commentId") commentId: String
+    ): NetResponse<String>
+
+
 }
