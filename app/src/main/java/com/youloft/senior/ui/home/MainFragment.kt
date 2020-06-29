@@ -29,7 +29,8 @@ class MainFragment : BaseVMFragment() {
 //    const val GIF_TYPE = 3;
     fun itemClick(id: String, type: Int) {
         activity?.let { it1 ->
-            DetailActivity.start(it1, id, type)
+//            DetailActivity.start(it1, id, type)
+            DetailActivity.start(it1, id, MineDataBean.IMAGE_TYPE)
         }
     }
 
@@ -80,7 +81,7 @@ class MainFragment : BaseVMFragment() {
         recyclerView.adapter = mAdapter
         tv_browse_number.setOnClickListener {
             activity?.let { it1 ->
-                DetailActivity.start(it1, "3", MineDataBean.MOVIE_TYPE)
+                DetailActivity.start(it1, "3", MineDataBean.VIDEO_TYPE)
             }
         }
     }
@@ -95,7 +96,7 @@ class MainFragment : BaseVMFragment() {
 //                )
 //            )
 //        }
-        mViewModel.getData(1,0,10)
+        mViewModel.getData(1, 0, 10,"")
 //mViewModel
     }
 

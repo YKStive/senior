@@ -2,6 +2,7 @@ package com.youloft.senior.ui.adapter
 
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.youloft.net.bean.CommentBean
 import com.youloft.senior.R
@@ -18,7 +19,7 @@ import com.youloft.senior.R
  * @Version:        1.0
  */
 class CommentAdapterr(data: MutableList<CommentBean>?) :
-    BaseQuickAdapter<CommentBean, BaseViewHolder>(R.layout.item_comment, data) {
+    BaseQuickAdapter<CommentBean, BaseViewHolder>(R.layout.item_comment, data) , LoadMoreModule{
     init {
         addChildClickViewIds(R.id.ll_favorite)
     }

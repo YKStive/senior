@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_item_comment.*
  * @UpdateRemark:   更新说明：
  * @Version:        1.0
  */
-class FavoriteFragment : BaseVMFragment(), OnLoadMoreListener {
+class FavoriteFragment : BaseVMFragment() {
     companion object {
         fun newInstance(): FavoriteFragment {
             val args = Bundle()
@@ -40,12 +40,12 @@ class FavoriteFragment : BaseVMFragment(), OnLoadMoreListener {
 
 
     override fun initView() {
-        refreshLayout.setRefreshHeader(ClassicsHeader(activity))
-        refreshLayout.setRefreshFooter(ClassicsFooter(activity))
-        refreshLayout.setOnRefreshListener { refreshlayout ->
-            refreshlayout.finishRefresh(2000 /*,false*/) //传入false表示刷新失败
-        }
-        refreshLayout.setOnLoadMoreListener(this)
+//        refreshLayout.setRefreshHeader(ClassicsHeader(activity))
+//        refreshLayout.setRefreshFooter(ClassicsFooter(activity))
+//        refreshLayout.setOnRefreshListener { refreshlayout ->
+//            refreshlayout.finishRefresh(2000 /*,false*/) //传入false表示刷新失败
+//        }
+//        refreshLayout.setOnLoadMoreListener(this)
         adapterr = FavoriteAdapter(null)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapterr
@@ -62,7 +62,7 @@ class FavoriteFragment : BaseVMFragment(), OnLoadMoreListener {
         })
     }
 
-    override fun onLoadMore(refreshLayout: RefreshLayout) {
-        refreshLayout.finishLoadMore(2000 /*,false*/) //传入false表示加载失败
-    }
+//    override fun onLoadMore(refreshLayout: RefreshLayout) {
+//        refreshLayout.finishLoadMore(2000 /*,false*/) //传入false表示加载失败
+//    }
 }
