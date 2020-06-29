@@ -102,8 +102,8 @@ interface Api {
 //        @Query("direction") direction: Int,
 //        @Query("limit") limit: Int
 //    ): NetResponse<List<MineDataBean>>
-    @GET("api/post/user/list")
-    fun getMineList(
+    @GET("api/post/user/{userId}/list")
+    fun getMineList(@Path("userId") id: String
     ): NetResponse<List<MineDataBean>>
 
 
