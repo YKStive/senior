@@ -13,6 +13,7 @@ import com.youloft.senior.R
 import com.youloft.senior.bean.MineDataBean
 import com.youloft.senior.ui.adapter.MineItemAdapter
 import com.youloft.senior.ui.detail.DetailActivity
+import com.youloft.senior.utils.UserManager
 import com.youloft.senior.widgt.LoginPopup
 import com.youloft.util.ToastMaster
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -89,6 +90,7 @@ class MainFragment : BaseVMFragment() {
             }
         }
         tv_recive_commnet.setOnClickListener(View.OnClickListener {
+            UserManager.instance.loginOut()
             var pupup = LoginPopup(activity,lifecycleScope)
             pupup.showAtLocation(recyclerView, Gravity.CENTER, 0, 0)
         })

@@ -33,7 +33,7 @@ fun LifecycleCoroutineScope.launchIOWhenStarted(
 ): Job {
     return this.launchWhenStarted {
         try {
-            block.invoke(this)
+            withContext(Dispatchers.IO, block)
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
             onError.invoke(e)
@@ -47,7 +47,7 @@ fun LifecycleCoroutineScope.launchIOWhenResumed(
 ): Job {
     return this.launchWhenResumed {
         try {
-            block.invoke(this)
+            withContext(Dispatchers.IO, block)
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
             onError.invoke(e)

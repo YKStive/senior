@@ -26,4 +26,6 @@ abstract class BaseVMActivity :
     abstract fun initData()
     abstract fun startObserve()
 
+    fun showLoading() {}
+    fun dismissLoading() {}
 }

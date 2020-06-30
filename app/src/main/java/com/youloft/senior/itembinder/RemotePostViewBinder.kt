@@ -1,5 +1,6 @@
 package com.youloft.senior.itembinder
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.youloft.coolktx.dp2px
 import com.youloft.senior.utils.isByUser
 import com.youloft.senior.widgt.PostItemAlbum
 import com.youloft.senior.widgt.PostItemMultiImage
+import com.youloft.senior.widgt.VideoPlay
 import kotlinx.android.synthetic.main.item_post_bottom_share.view.*
 import kotlinx.android.synthetic.main.item_post_remote.view.*
 
@@ -47,7 +49,7 @@ open class RemotePostViewBinder(
     ) {
 
         holder.addHeader(item, goPersonPage)
-        holder.addContent(item)
+        holder.addContent(item, holder.itemView.context)
         holder.itemView.run {
             tv_content.text = item.textContent
             //条目
@@ -96,7 +98,7 @@ open class RemotePostViewBinder(
          * 根据不同类型，添加不同的content
          * @param post Post 贴子
          */
-        fun addContent(post: Post) {
+        fun addContent(post: Post, context: Context) {
             contentContainer.removeAllViews()
             when (post.postType) {
                 //图文
@@ -117,7 +119,12 @@ open class RemotePostViewBinder(
                 }
 
                 //视频
+                PostType.VIDEO -> {
+                    if (post.mediaContent.isNotEmpty()) {
+                        VideoPlay(context).apply { setVideo(post.mediaContent[0]) }
+                    }
 
+                }
 
                 //影集
                 PostType.ALBUM -> {

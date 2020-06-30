@@ -21,6 +21,7 @@ import kotlin.reflect.KProperty
 
 class Preference<T>(val name: String, private val default: T) : ReadWriteProperty<Any?, T> {
 
+
     companion object {
         const val IS_LOGIN = "is_login"
         const val USER_GSON = "user_gson"
@@ -33,13 +34,16 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
         const val USER_NICK_NAME = "user_nick_name"
         const val IS_PUNCH = "is_punch"
         const val LAST_PUBLISH_ALBUM_TIME = "last_publish_album_time"
-
-        //已发布的相册的时间
         const val PUBLISHED_ALBUM_TIME = "published_album_time"
-    }
 
-    private val prefs: SharedPreferences by lazy {
-        PreferenceManager.getDefaultSharedPreferences(App.instance())
+        private val prefs: SharedPreferences by lazy {
+            PreferenceManager.getDefaultSharedPreferences(App.instance())
+        }
+
+        fun setValue(key: String, property: KProperty<*>) {
+
+        }
+
     }
 
 

@@ -32,7 +32,6 @@ class ContextImageView(context: Context, attributeSet: AttributeSet?) :
 
     private val imageCountLimit = 20
     private val mItem: MutableList<ImageRes> = mutableListOf()
-    val emptyData: MutableLiveData<Boolean> = MutableLiveData()
     val imageData = MutableLiveData(mItem)
     private val mAdapter: MultiTypeAdapter = MultiTypeAdapter(mItem)
 
@@ -55,7 +54,7 @@ class ContextImageView(context: Context, attributeSet: AttributeSet?) :
                     ChoiceImageActivity.start(
                         getContext() as FragmentActivity,
                         imageCountLimit,
-                        ChoiceImageActivity.TYPE_ALL
+                        ChoiceImageActivity.TYPE_IMAGE
                     ) {
                         setImages(it)
                     }
@@ -80,7 +79,7 @@ class ContextImageView(context: Context, attributeSet: AttributeSet?) :
                     .start()
             }
         }, {
-            emptyData.value = true
+            imageData.value = mItem
         }))
 
         adapter = mAdapter
