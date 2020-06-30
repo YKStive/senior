@@ -12,11 +12,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.fastjson.JSONObject
-import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.bean.MissionResult
 import com.youloft.senior.cash.CashActivity
@@ -69,7 +69,7 @@ internal class MainCoinPage(
     private fun goLogin(): Boolean {
         if (!UserManager.instance.hasLogin()) {
             //登录
-            LoginPopup(context as BaseActivity, (context as BaseActivity).lifecycleScope)
+            LoginPopup(context as AppCompatActivity, (context as AppCompatActivity).lifecycleScope)
                 .showAtLocation(this, Gravity.CENTER, 0, 0)
             return true
         }

@@ -90,18 +90,18 @@ class CashActivity : BaseActivity() {
 
     override fun initData() {
         GlobalScope.launch(Dispatchers.Main) {
-            val userInfo = requestUserCoinInfo()
+            var userInfo = requestUserCoinInfo()
             val cashList = requestCoinList()
             val cashRecord = requestUserRecord()
-//            if (userInfo == null) {
-//                loadError()
-//                return@launch
-//            }
-//            if (userInfo.getIntValue("status") != 200 || userInfo.getJSONObject("data") == null) {
-//                loadError()
-//                return@launch
-//            }
-//            userInfo = userInfo.getJSONObject("data")
+            if (userInfo == null) {
+                loadError()
+                return@launch
+            }
+            if (userInfo.getIntValue("status") != 200 || userInfo.getJSONObject("data") == null) {
+                loadError()
+                return@launch
+            }
+            userInfo = userInfo.getJSONObject("data")
             if (cashList == null) {
                 loadError()
                 return@launch

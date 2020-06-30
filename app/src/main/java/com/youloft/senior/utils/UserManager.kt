@@ -58,9 +58,6 @@ class UserManager {
      * 是否过期
      */
     fun hasExpiration(): Boolean {
-        if (true) {
-            return true
-        }
         if (bean == null) {
             return true
         }

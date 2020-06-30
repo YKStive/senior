@@ -2,12 +2,15 @@ package com.youloft.senior.net
 
 import android.content.Context
 import android.text.TextUtils
+import android.util.Log
 import com.facebook.stetho.Stetho
 import com.youloft.coolktx.jsonToObject
 import com.youloft.net.BaseRetrofitClient
 import com.youloft.net.ParamsInterface
+import com.youloft.senior.BuildConfig
 import com.youloft.senior.bean.LoginBean
 import com.youloft.senior.utils.UserManager
+import com.youloft.util.MD5
 import okhttp3.*
 import okio.buffer
 import okio.sink
@@ -133,6 +136,43 @@ object ApiHelper : BaseRetrofitClient() {
     }
 
     override fun handleBuilder(builder: OkHttpClient.Builder) {
+        //验签实现
+        builder.addInterceptor(object : Interceptor {
+            @Throws(IOException::class)
+            override fun intercept(chain: Interceptor.Chain): Response {
+                var request = chain.request()
+                if (request.url.host.toLowerCase().endsWith("51wnl-cq.com")) {
+                    try {
+                        val body = request.body
+                        val queryString = "?" + request.url.encodedQuery
+                        var bodyString: String? = ""
+                        val isPost =
+                            request.method.equals("post", ignoreCase = true)
+
+                        //如果是 post 请求且 body 大于50k 则不进行签名参数生成
+                        val isBigBody =
+                            isPost && body != null && body.contentLength() > 51200
+                        if (isPost) {
+                            bodyString =
+                                if (isBigBody) null else toBodyString(body)
+                        }
+                        //bodyString 为空则表示读取 body 部分出现故障则整体不生成签名
+                        if (bodyString != null) {
+                            //进行签名同时传递参数
+                            val secret: String =
+                                MD5.encode(queryString + bodyString + "youloft_2020").toUpperCase()
+                            request = request.newBuilder().addHeader("hsign", secret).addHeader(
+                                "av",
+                                BuildConfig.VERSION_NAME
+                            ).build()
+                        }
+                    } catch (e: Throwable) {
+                        Log.e("SignError", "需要进行检查", e)
+                    }
+                }
+                return chain.proceed(request)
+            }
+        })
         builder.addInterceptor(sParamsInterceptor)
     }
 
