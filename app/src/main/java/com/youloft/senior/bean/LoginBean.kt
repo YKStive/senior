@@ -14,6 +14,6 @@ package com.youloft.senior.bean
 data class LoginBean(
     val accessToken: String,
     val expiration: String,
-    val refreshToken: String, val userId: String
+    val refreshToken: String, val userId: String = ""
 )
 
