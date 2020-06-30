@@ -8,17 +8,14 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.*
 import androidx.lifecycle.LifecycleCoroutineScope
-import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
 import com.youloft.coolktx.launchIOWhenCreated
 import com.youloft.senior.R
-import com.youloft.senior.bean.ItemData
 import com.youloft.senior.bean.LoginBean
 import com.youloft.senior.bean.LoginUploadData
-import com.youloft.senior.coin.CoinManager
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.net.NetResponse
 import com.youloft.senior.utils.Preference
+import com.youloft.senior.utils.UserManager
 import com.youloft.senior.utils.logD
 import com.youloft.socialize.SOC_MEDIA
 import com.youloft.socialize.Socialize
@@ -67,6 +64,7 @@ class LoginPopup(
                 ToastMaster.showShortToast(mContext, "请输入手机号")
                 return@setOnClickListener
             }
+            dismiss()
             if (!Socialize.getIns()
                     .checkPlatformInstall(mContext, SOC_MEDIA.WEIXIN, false)
             ) {
@@ -119,7 +117,7 @@ class LoginPopup(
                                         Preference.IS_LOGIN,
                                         true
                                     )
-                                    CoinManager.instance.loadData()
+                                    UserManager.instance.login(it)
                                 }
                             })
                         }

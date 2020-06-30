@@ -2,7 +2,9 @@ package com.youloft.senior.utils
 
 import android.text.TextUtils
 import com.youloft.coolktx.jsonToObject
+import com.youloft.coolktx.toJsonString
 import com.youloft.senior.bean.LoginBean
+import com.youloft.senior.coin.CoinManager
 
 /**
  * @author xll
@@ -11,10 +13,21 @@ import com.youloft.senior.bean.LoginBean
 
 class UserManager {
     var bean: LoginBean? = null
+    var userInfo: String by Preference("user_info_data", "")
 
     init {
-        val userInfo: String by Preference(Preference.USER_GSON, "")
         bean = userInfo.jsonToObject()
+    }
+
+    fun login(bean: LoginBean) {
+        this.bean = bean
+        userInfo = bean.toJsonString()
+        CoinManager.instance.loadData()
+    }
+
+    fun loginOut() {
+        this.bean = null
+        userInfo = ""
     }
 
     fun hasLogin(): Boolean {
