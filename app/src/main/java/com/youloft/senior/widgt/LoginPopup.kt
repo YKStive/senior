@@ -114,6 +114,10 @@ class LoginPopup(
                                         Preference.USER_PHONE,
                                         userPhone
                                     )
+                                    var isLogin: Boolean by Preference(
+                                        Preference.IS_LOGIN,
+                                        true
+                                    )
                                 }
                             })
                         }
