@@ -34,10 +34,18 @@ class UserManager {
         userInfoTime = System.currentTimeMillis()
     }
 
-    fun loginOut() {
+    /**
+     * 注销登录
+     * @param reLogin 是否重新登录
+     */
+    fun loginOut(reLogin: Boolean = false) {
         this.bean = null
         userInfo = ""
         userInfoTime = -1
+        CoinManager.instance.loadData()
+        if (reLogin) {
+            //重新拉起登录界面
+        }
     }
 
     fun hasLogin(): Boolean {

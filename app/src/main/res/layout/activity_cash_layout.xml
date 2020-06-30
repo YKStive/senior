@@ -289,7 +289,7 @@
             android:includeFontPadding="false"
             android:text="所需金币："
             android:textColor="#ff333333"
-            android:textSize="22sp" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/coin_number"

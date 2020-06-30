@@ -1,5 +1,6 @@
 package com.youloft.senior.cash
 
+import android.app.Activity
 import android.content.Intent
 import android.text.TextUtils
 import android.view.View
@@ -42,7 +43,13 @@ class CashActivity : BaseActivity() {
         ic_back.setOnClickListener { finish() }
         selectCashItem = cash_list_view.getSelectItem()
         cash_submit.setOnClickListener {
-//            PhoneDialog(this).show()
+            if (userWXMessage == null) {
+                return@setOnClickListener
+            }
+            if (!userWXMessage!!.getBooleanValue("verified")) {
+                PhoneDialog(this).show()
+                return@setOnClickListener
+            }
             withDraw()
         }
         last_cash.setOnClickListener {
@@ -80,6 +87,7 @@ class CashActivity : BaseActivity() {
             short_text.text =
                 "还差${(itemCashValue - userWXMessage!!.getFloatValue("cash"))}元即可提现，快去做任务赚钱吧"
         }
+        wx_account.text = userWXMessage!!.getString("nickname")
         if (!lastCash!!.getBooleanValue("isExists")) {
             last_cash.visibility = View.GONE
         } else {
@@ -123,6 +131,13 @@ class CashActivity : BaseActivity() {
             val userInfo = requestUserCoinInfo()
             userWXMessage = userInfo
             bindUI()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 10101 && resultCode == Activity.RESULT_OK) {
+            initData()
         }
     }
 

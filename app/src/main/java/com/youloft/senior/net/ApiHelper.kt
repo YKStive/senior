@@ -76,8 +76,17 @@ object ApiHelper : BaseRetrofitClient() {
                                     token.getJSONObject("data").toJSONString().jsonToObject()
                                 if (bean != null) {
                                     UserManager.instance.refreshUserData(bean)
+                                } else {
+                                    UserManager.instance.loginOut(true)
+                                    throw Exception("登录过期")
                                 }
+                            } else {
+                                UserManager.instance.loginOut(true)
+                                throw Exception("登录过期")
                             }
+                        } else {
+                            UserManager.instance.loginOut(true)
+                            throw Exception("登录过期")
                         }
                     }
                 }

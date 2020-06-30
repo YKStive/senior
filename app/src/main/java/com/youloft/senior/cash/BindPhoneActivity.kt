@@ -1,5 +1,6 @@
 package com.youloft.senior.cash
 
+import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
@@ -77,7 +78,7 @@ internal class BindPhoneActivity : BaseActivity() {
             val params = JSONObject()
             params["phone"] = phone
             params["smsType"] = 7
-            sendCode(params.toJSONString())
+            sendCode(params)
         }
         bind_phone_button2.setOnClickListener { verifyPhoneCode() }
         resend.setOnClickListener {
@@ -85,7 +86,7 @@ internal class BindPhoneActivity : BaseActivity() {
             val phone = phone_number.text.toString()
             params["phone"] = phone
             params["smsType"] = 7
-            sendCode(params.toJSONString())
+            sendCode(params)
         }
 
         ic_back.setOnClickListener { finish() }
@@ -110,7 +111,7 @@ internal class BindPhoneActivity : BaseActivity() {
         ToastMaster.showLongToast(this, "发送失败")
     }
 
-    private fun sendCode(body: String) {
+    private fun sendCode(body: JSONObject) {
         GlobalScope.launch(Dispatchers.Main) {
             val result = withContext(Dispatchers.IO) {
                 kotlin.runCatching {
@@ -138,7 +139,7 @@ internal class BindPhoneActivity : BaseActivity() {
         GlobalScope.launch(Dispatchers.Main) {
             val result = withContext(Dispatchers.IO) {
                 kotlin.runCatching {
-                    ApiHelper.api.verifyPhoneCode(params.toJSONString())
+                    ApiHelper.api.verifyPhoneCode(params)
                 }.getOrNull()
             }
             if (result == null) {
@@ -146,7 +147,7 @@ internal class BindPhoneActivity : BaseActivity() {
                 verifyPhoneCodeFailed()
                 return@launch
             }
-            if (result.getBooleanValue("data")) {
+            if (!result.getBooleanValue("data")) {
                 val msg = result.getString("msg")
                 verifyPhoneCodeFailed(msg)
                 return@launch
@@ -158,6 +159,7 @@ internal class BindPhoneActivity : BaseActivity() {
 
     fun bindSuccess() {
         ToastMaster.showLongToast(this, "绑定成功")
+        setResult(Activity.RESULT_OK)
         finish()
     }
 
@@ -167,10 +169,12 @@ internal class BindPhoneActivity : BaseActivity() {
 
     val handler = Handler()
     val runable = Runnable {
+        time--
         if (time > 0) {
-            resend_code.text = time.toString()
+            resend_code.text = time.toString() + "秒"
         } else {
-            writeCode(false)
+            resend.visibility = View.VISIBLE
+            resend_code.visibility = View.GONE
         }
         startNext()
     }

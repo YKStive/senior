@@ -86,10 +86,10 @@ interface Api {
     fun getStickers(): NetResponse<List<GifBean>>
 
     @POST(BASE_URL + "api/user/authcode")
-    fun sendPhoneCode(@Body body: String): JSONObject?
+    fun sendPhoneCode(@Body body: JSONObject): JSONObject?
 
     @POST(BASE_URL + "api/user/verifyPhoneCode")
-    fun verifyPhoneCode(@Body body: String): JSONObject?
+    fun verifyPhoneCode(@Body body: JSONObject): JSONObject?
 
     /**
      * 提现接口
