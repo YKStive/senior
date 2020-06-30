@@ -7,11 +7,22 @@ import com.google.gson.Gson
  * @date 2020/6/30 11:45
  */
 
-private val gsonWrapper by lazy {
+val gsonWrapper by lazy {
     Gson();
 }
 
-fun Any?.toJsonString(): String? {
+fun Any?.toJsonStringEmpty(): String? {
     this ?: return null;
-    return gsonWrapper.toJson(this)
+    return kotlin.runCatching { gsonWrapper.toJson(this) }.getOrNull()
+}
+
+fun Any?.toJsonString(): String {
+    this ?: return ""
+    return kotlin.runCatching { gsonWrapper.toJson(this) }.getOrDefault("")
+}
+
+inline fun <reified T> String?.jsonToObject(defaultValue: T? = null): T? {
+    return kotlin.runCatching {
+        gsonWrapper.fromJson(this, T::class.java)
+    }.getOrDefault(defaultValue)
 }
