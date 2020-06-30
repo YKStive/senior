@@ -11,6 +11,7 @@ import com.youloft.senior.R
 import com.youloft.senior.Repository
 import com.youloft.senior.bean.ItemData
 import com.youloft.senior.bean.LoginBean
+import com.youloft.senior.bean.LoginUploadData
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.net.NetResponse
 import com.youloft.senior.utils.logD
@@ -100,7 +101,7 @@ class LoginFragment : BaseFragment() {
     }
 
 
-    fun toLogin(loginParams: HashMap<String, String>) {
+    fun toLogin(loginParams: LoginUploadData) {
         lifecycleScope.launchIOWhenCreated({
             it.message?.logD()
         }, {

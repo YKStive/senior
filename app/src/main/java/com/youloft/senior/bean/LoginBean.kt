@@ -13,8 +13,7 @@ package com.youloft.senior.bean
  */
 data class LoginBean(
     val accessToken: String,
-    val expiration: Int,
-    val refreshToken: String,
-    val userId: String
+    val expiration: String,
+    val refreshToken: String, val userId: String
 )
 

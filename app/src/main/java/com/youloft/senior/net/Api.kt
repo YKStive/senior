@@ -17,8 +17,9 @@ import rx.Observable
  */
 interface Api {
     companion object {
-        //        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
-        const val BASE_URL = "https://shequ.51wnl-cq.com/"
+        //                const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
+        const val BASE_URL = "http://120.27.20.114:8090/"
+//        const val BASE_URL = "https://shequ.51wnl-cq.com/"
     }
 
     @GET(BASE_URL + "api/Coin_Activity/GetMissions")
@@ -38,8 +39,8 @@ interface Api {
     fun getCoinDetail(): JSONObject?
 
     @POST("/api/user/login")
-    @FormUrlEncoded
-    fun login(@FieldMap params: Map<String, String>): NetResponse<LoginBean>
+    @Headers("Content-Type: application/json;charset=UTF-8")
+    fun login(@Body params: LoginUploadData): NetResponse<LoginBean>
 
     /**
      * 获取帖子评论列表

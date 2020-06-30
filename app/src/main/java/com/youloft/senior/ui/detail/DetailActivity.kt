@@ -133,14 +133,10 @@ class DetailActivity : BaseActivity() {
 //            .commit()
 //
 //        initListeners()
-        var click = View.OnClickListener {
-
-        }
 
         ll_share_to_circle.setOnClickListener(View.OnClickListener {
 
-            var pupup = LoginPopup(this, click)
-            pupup.showAtLocation(ll_bottom, Gravity.CENTER, 0, 0)
+
         })
         //点赞帖子
         ll_favorite.setOnClickListener(View.OnClickListener {

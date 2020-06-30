@@ -1,7 +1,10 @@
 package com.youloft.senior.ui.home
 
+import android.view.Gravity
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import cc.shinichi.library.ImagePreview
 import cc.shinichi.library.bean.ImageInfo
@@ -10,6 +13,7 @@ import com.youloft.senior.R
 import com.youloft.senior.bean.MineDataBean
 import com.youloft.senior.ui.adapter.MineItemAdapter
 import com.youloft.senior.ui.detail.DetailActivity
+import com.youloft.senior.widgt.LoginPopup
 import com.youloft.util.ToastMaster
 import kotlinx.android.synthetic.main.fragment_main.*
 
@@ -84,6 +88,10 @@ class MainFragment : BaseVMFragment() {
                 DetailActivity.start(it1, "3", MineDataBean.VIDEO_TYPE)
             }
         }
+        tv_recive_commnet.setOnClickListener(View.OnClickListener {
+            var pupup = LoginPopup(activity,lifecycleScope)
+            pupup.showAtLocation(recyclerView, Gravity.CENTER, 0, 0)
+        })
     }
 
     override fun initData() {
