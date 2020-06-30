@@ -1,11 +1,14 @@
 package com.youloft.senior.ui.detail
 
 import android.content.Intent
-import android.content.res.Configuration
+import android.graphics.drawable.ColorDrawable
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -17,12 +20,12 @@ import com.youloft.senior.bean.MineDataBean
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.ui.adapter.CommentAdapterr
 import com.youloft.senior.utils.logD
-import com.youloft.senior.widgt.LoginPopup
 import com.youloft.socialize.SOC_MEDIA
 import com.youloft.socialize.share.ShareImage
 import com.youloft.socialize.share.ShareWeb
 import com.youloft.socialize.share.UmengShareActionImpl
 import kotlinx.android.synthetic.main.activity_video_detail.*
+import kotlinx.android.synthetic.main.conmon_title.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -41,6 +44,7 @@ class DetailActivity : BaseActivity() {
     var informationType: Int = 0
     lateinit var adapterr: CommentAdapterr
     lateinit var videoFragment: GIFDetailFragment
+    lateinit var mPopupWindow: PopupWindow
 
     companion object {
         fun start(context: FragmentActivity, informationId: String, informationType: Int) {
@@ -54,6 +58,7 @@ class DetailActivity : BaseActivity() {
     override fun getLayoutResId(): Int = R.layout.activity_video_detail
 
     override fun initView() {
+        image_more.visibility = View.VISIBLE
         var fragments = ArrayList<Fragment>()
         informationId = intent.getStringExtra("informationId")
         informationType = intent.getIntExtra("informationType", 0)
@@ -206,6 +211,9 @@ class DetailActivity : BaseActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
         })
+        image_more.setOnClickListener {
+            showPop()
+        }
     }
 
 //    private fun initListeners() {
@@ -261,6 +269,28 @@ class DetailActivity : BaseActivity() {
 //        finish()
     }
 
+    private fun showPop() {
+        mPopupWindow= PopupWindow(this)
+        // 设置布局文件
+        mPopupWindow.setContentView(LayoutInflater.from(this).inflate(R.layout.pop_post_more, null))
+        // 为了避免部分机型不显示，我们需要重新设置一下宽高
+        mPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
+        mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
+        // 设置pop透明效果
+        mPopupWindow.setBackgroundDrawable(ColorDrawable(0x0000))
+        // 设置pop出入动画
+        mPopupWindow.setAnimationStyle(R.style.pop_add)
+        // 设置pop获取焦点，如果为false点击返回按钮会退出当前Activity，如果pop中有Editor的话，focusable必须要为true
+        mPopupWindow.setFocusable(true)
+        // 设置pop可点击，为false点击事件无效，默认为true
+        mPopupWindow.setTouchable(true)        // 设置点击pop外侧消失，默认为false；在focusable为true时点击外侧始终消失
 
+        mPopupWindow.setOutsideTouchable(true)
+        // 相对于 + 号正下面，同时可以设置偏移量
+        mPopupWindow.showAsDropDown(image_more)
+        // 设置pop关闭监听，用于改变背景透明度
+//        mPopupWindow.setOnDismissListener(PopupWindow.OnDismissListener { toggleBright() })
+
+    }
 }
 

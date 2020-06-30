@@ -17,6 +17,7 @@ import com.youloft.senior.bean.User
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.net.NetResponse
 import com.youloft.senior.ui.adapter.CommentAdapterr
+import com.youloft.senior.utils.DiffCommentCallback
 import com.youloft.senior.utils.Preference
 import com.youloft.senior.utils.logD
 import kotlinx.android.synthetic.main.fragment_item_comment.*
@@ -63,6 +64,7 @@ class ItemCommentFragment : BaseVMFragment() {
 //        refreshLayout.setOnLoadMoreListener(this)
 
         adapter = CommentAdapterr(null)
+        adapter.setDiffCallback(DiffCommentCallback())
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapter
         adapter.setOnItemChildClickListener(object : OnItemChildClickListener {

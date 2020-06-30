@@ -20,6 +20,9 @@ import kotlinx.android.synthetic.main.activity_home.*
  * @desc
  */
 class HomeActivity : BaseVMActivity() {
+    companion object{
+        private const val COUnt_DOWN_CODE = 100
+    }
     lateinit var mViewModel: HomeModel
     private val mainFragment = MainFragment()
     private val homeFragment = HomeFragment()
@@ -29,10 +32,10 @@ class HomeActivity : BaseVMActivity() {
     private val timeHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
-            if (msg.what === 100) {
+            if (msg.what === COUnt_DOWN_CODE) {
                 if (timecount > 0) {
                     timecount--
-                    sendEmptyMessageDelayed(100, 1000)
+                    sendEmptyMessageDelayed(COUnt_DOWN_CODE, 1000)
                 } else {
                     img_publish.visibility = View.GONE
                     showPublishFlag = false
@@ -57,11 +60,13 @@ class HomeActivity : BaseVMActivity() {
 
 
         btn_home.apply {
-            if (img_publish.visibility == View.VISIBLE) {
-                img_publish.visibility = View.GONE
-            }
             isSelected = true
             setOnClickListener {
+                if (img_publish.visibility == View.VISIBLE) {
+                    img_publish.visibility = View.GONE
+                    showPublishFlag = false
+                    timeHandler.removeMessages(COUnt_DOWN_CODE)
+                }
                 supportFragmentManager.beginTransaction()
                     .hide(mainFragment)
                     .show(homeFragment)
@@ -78,7 +83,7 @@ class HomeActivity : BaseVMActivity() {
         btn_main.apply {
             setOnClickListener {
                 if (showPublishFlag) {
-                    timeHandler.sendEmptyMessageDelayed(100, 1000);
+                    timeHandler.sendEmptyMessageDelayed(COUnt_DOWN_CODE, 1000);
                     img_publish.visibility = View.VISIBLE
                 }
                 if (com.youloft.senior.utils.UserManager.instance.hasLogin()) {
@@ -102,6 +107,9 @@ class HomeActivity : BaseVMActivity() {
         }
 
         btn_function.setOnClickListener {
+            OperateDialog(this).show()
+        }
+        img_publish.setOnClickListener {
             OperateDialog(this).show()
         }
     }

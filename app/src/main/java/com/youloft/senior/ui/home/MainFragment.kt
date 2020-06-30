@@ -13,8 +13,15 @@ import com.youloft.senior.R
 import com.youloft.senior.bean.MineDataBean
 import com.youloft.senior.ui.adapter.MineItemAdapter
 import com.youloft.senior.ui.detail.DetailActivity
+import com.youloft.senior.ui.login.LoginDialog
 import com.youloft.senior.utils.UserManager
 import com.youloft.senior.widgt.LoginPopup
+import com.youloft.socialize.SOC_MEDIA
+import com.youloft.socialize.Socialize
+import com.youloft.socialize.share.ShareEventTracker
+import com.youloft.socialize.share.ShareImage
+import com.youloft.socialize.share.ShareWeb
+import com.youloft.socialize.share.UmengShareActionImpl
 import com.youloft.util.ToastMaster
 import kotlinx.android.synthetic.main.fragment_main.*
 
@@ -85,14 +92,35 @@ class MainFragment : BaseVMFragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = mAdapter
         tv_browse_number.setOnClickListener {
-            activity?.let { it1 ->
-                DetailActivity.start(it1, "3", MineDataBean.VIDEO_TYPE)
-            }
+//            activity?.let { it1 ->
+////                DetailActivity.start(it1, "3", MineDataBean.VIDEO_TYPE)
+//                Socialize.getIns().newShareBoard(activity).apply {
+//                    withDefault().let {
+//                        it.web(
+//                            ShareWeb("baidu.com")
+//                            .setThumb(ShareImage(context,"http://mmbiz.qpic.cn/mmbiz/PwIlO51l7wuFyoFwAXfqPNETWCibjNACIt6ydN7vw8LeIwT7IjyG3eeribmK4rhibecvNKiaT2qeJRIWXLuKYPiaqtQ/0"))
+//                            .setTitle("测试")
+//                            .setDescription("快来和我一起看"))
+//                    }
+//
+//                }.shareWithUI()
+//            }
+            UmengShareActionImpl(activity).platform(SOC_MEDIA.WEIXIN_CIRCLE).web(
+                ShareWeb("http://www.baidu.com").setThumb(ShareImage(context,"http://mmbiz.qpic.cn/mmbiz/PwIlO51l7wuFyoFwAXfqPNETWCibjNACIt6ydN7vw8LeIwT7IjyG3eeribmK4rhibecvNKiaT2qeJRIWXLuKYPiaqtQ/0"))
+                    .setDescription("内容").setTitle("标题")
+            ).perform()
         }
         tv_recive_commnet.setOnClickListener(View.OnClickListener {
-            UserManager.instance.loginOut()
-            var pupup = LoginPopup(activity,lifecycleScope)
-            pupup.showAtLocation(recyclerView, Gravity.CENTER, 0, 0)
+//            activity?.let {   DetailActivity.start(it, "3", MineDataBean.VIDEO_TYPE)}
+
+//            UserManager.instance.loginOut()
+//            var pupup = LoginPopup(activity, lifecycleScope)
+//            pupup.showAtLocation(recyclerView, Gravity.CENTER, 0, 0)
+            activity?.let {
+                var dialog=LoginDialog(it,lifecycleScope)
+                dialog.show()
+            }
+
         })
     }
 
@@ -106,7 +134,7 @@ class MainFragment : BaseVMFragment() {
 //                )
 //            )
 //        }
-        mViewModel.getData(1, 0, 10,"")
+        mViewModel.getData(1, 0, 10, "")
 //mViewModel
     }
 

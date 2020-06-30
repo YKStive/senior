@@ -3,6 +3,7 @@ package com.youloft.senior.base
 import android.app.Application
 import com.umeng.commonsdk.UMConfigure
 import com.umeng.socialize.PlatformConfig
+import com.youloft.senior.BuildConfig
 import com.youloft.senior.bean.User
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.push.PushWrapper
@@ -36,7 +37,7 @@ class App : Application() {
             UMConfigure.DEVICE_TYPE_PHONE,
             "2438c7b5bd38b294f4ceb1f9c0f8c796"
         )
-//        UMConfigure.setLogEnabled(true)
+        UMConfigure.setLogEnabled(BuildConfig.DEBUG)
         PushWrapper.init(this)
         PlatformConfig.setWeixin(
             "wx7b54fe6514eaefa9",

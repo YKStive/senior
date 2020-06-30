@@ -59,7 +59,7 @@
             android:id="@+id/icon_favorite"
             android:layout_width="21dp"
             android:layout_height="18dp"
-            android:src="@drawable/icon_favorite" />
+            android:src="@drawable/icon_not_favorite" />
 
         <TextView
             android:id="@+id/tv_favorite_number"
