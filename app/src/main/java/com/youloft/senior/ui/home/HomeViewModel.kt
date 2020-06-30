@@ -47,7 +47,7 @@ class HomeViewModel : BaseViewModel() {
                     index % 3 == 1 -> posts.add(Post.singleData)
                     index % 5 == 1 -> posts.add(Post.gifData)
                     index % 7 == 1 -> posts.add(Post.albumData)
-                    index % 2 == 9 -> posts.add(Post.albumData)
+                    index % 2 == 0 -> posts.add(Post.videoData)
                 }
             }
             focusInsert()

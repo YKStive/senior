@@ -1,6 +1,7 @@
 package com.youloft.senior.itembinder
 
 import android.content.Context
+import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,6 @@ import com.youloft.senior.base.App
 import com.youloft.senior.bean.Post
 import com.youloft.senior.bean.PostType
 import com.youloft.senior.utils.ImageLoader
-import com.youloft.coolktx.dp2px
 import com.youloft.senior.utils.isByUser
 import com.youloft.senior.widgt.PostItemAlbum
 import com.youloft.senior.widgt.PostItemMultiImage
@@ -28,13 +28,13 @@ import kotlinx.android.synthetic.main.item_post_remote.view.*
  * @create 2020/6/22
  * @desc 远程贴子，处理多种类型
  */
-open class RemotePostViewBinder(
+open class PostRemoteViewBinder(
     private val goPersonPage: (userId: String) -> Unit,
     val onItemClick: (postId: String, openComment: Boolean) -> Unit,
     val onShare: (postId: String) -> Unit,
     val onPraise: (postId: String) -> Unit
 ) :
-    ItemViewBinder<Post, RemotePostViewBinder.RemoteViewHolder>() {
+    ItemViewBinder<Post, PostRemoteViewBinder.RemoteViewHolder>() {
     override fun onCreateViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup
@@ -121,7 +121,10 @@ open class RemotePostViewBinder(
                 //视频
                 PostType.VIDEO -> {
                     if (post.mediaContent.isNotEmpty()) {
-                        VideoPlay(context).apply { setVideo(post.mediaContent[0]) }
+                        contentContainer.addView(VideoPlay(context).apply { setVideo(post.mediaContent[0],
+                            Size(post.width,post.height)
+                        ) })
+
                     }
 
                 }

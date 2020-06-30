@@ -10,10 +10,10 @@ import com.youloft.senior.R
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.Post
 import com.youloft.senior.bean.PostType
-import com.youloft.senior.itembinder.InviteViewBinder
-import com.youloft.senior.itembinder.LocalAlbumViewBinder
-import com.youloft.senior.itembinder.RemotePostViewBinder
-import com.youloft.senior.itembinder.PunchViewBinder
+import com.youloft.senior.itembinder.PostInviteViewBinder
+import com.youloft.senior.itembinder.PostLocalAlbumViewBinder
+import com.youloft.senior.itembinder.PostRemoteViewBinder
+import com.youloft.senior.itembinder.PostPunchViewBinder
 import com.youloft.coolktx.dp2px
 import com.youloft.senior.utils.logD
 import com.youloft.senior.widgt.RecycleViewDivider
@@ -35,7 +35,7 @@ class HomeFragment : BaseVMFragment() {
 
     override fun initView() {
         mAdapter.register(Post::class).to(
-            RemotePostViewBinder({ userId ->
+            PostRemoteViewBinder({ userId ->
                 "个人界面".logD()
             }, { postId, openComment ->
                 if (openComment) {
@@ -49,30 +49,30 @@ class HomeFragment : BaseVMFragment() {
                 "点赞".logD()
             }),
 
-            LocalAlbumViewBinder({
+            PostLocalAlbumViewBinder({
                 "去发表页面".logD()
             }, {
                 "立即分享".logD()
             }),
 
-            PunchViewBinder { btnPunch ->
+            PostPunchViewBinder { btnPunch ->
                 "立即签到".logD()
                 btnPunch.isSelected = true
             },
 
-            InviteViewBinder { _: Button ->
+            PostInviteViewBinder { _: Button ->
                 "邀请好友".logD()
             }
         ).withKotlinClassLinker { _, item ->
             when (item.postType) {
-                PostType.IMAGE_TEXT -> RemotePostViewBinder::class
-                PostType.GIF -> RemotePostViewBinder::class
-                PostType.ALBUM -> RemotePostViewBinder::class
-                PostType.VIDEO -> RemotePostViewBinder::class
-                PostType.LOCAL_ALBUM -> LocalAlbumViewBinder::class
-                PostType.INVITE -> InviteViewBinder::class
-                PostType.PUNCH -> PunchViewBinder::class
-                else -> RemotePostViewBinder::class
+                PostType.IMAGE_TEXT -> PostRemoteViewBinder::class
+                PostType.GIF -> PostRemoteViewBinder::class
+                PostType.ALBUM -> PostRemoteViewBinder::class
+                PostType.VIDEO -> PostRemoteViewBinder::class
+                PostType.LOCAL_ALBUM -> PostLocalAlbumViewBinder::class
+                PostType.INVITE -> PostInviteViewBinder::class
+                PostType.PUNCH -> PostPunchViewBinder::class
+                else -> PostRemoteViewBinder::class
             }
         }
 

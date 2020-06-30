@@ -12,19 +12,22 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
+import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
+import com.youloft.coolktx.dp2px
 import com.youloft.senior.base.App
+import com.youloft.senior.utils.logD
+import com.youloft.senior.utils.logE
 import com.youloft.util.UiUtil
-import kotlinx.android.synthetic.main.context_video.view.*
 import java.io.File
-import kotlin.properties.Delegates
 
 /**
  * @author you
  * @create 2020/6/30
  * @desc
  */
-class VideoPlay(context: Context, attributeSet: AttributeSet?=null) : FrameLayout(context, attributeSet) {
+class VideoPlay(context: Context, attributeSet: AttributeSet? = null) :
+    FrameLayout(context, attributeSet) {
 
     private var mPlayer = StandardGSYVideoPlayer(context)
 
@@ -40,44 +43,78 @@ class VideoPlay(context: Context, attributeSet: AttributeSet?=null) : FrameLayou
         addView(mPlayer)
     }
 
-    fun setVideo(path: String): Array<Int> {
+    fun setVideo(path: String, size: Size? = null): Array<Int> {
+        var videoTrueWidth = UiUtil.getScreenWidth(App.instance())
+        var videoTrueHeight = 200.dp2px
+        if (size == null) {
+            if (isLocalPath(path)) {
+                val metaRetriever = MediaMetadataRetriever()
+                metaRetriever.setDataSource(path)
+                val videoHeight =
+                    metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)
+                        .toInt()
+                val videoWidth =
+                    metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)
+                        .toInt()
 
-        val metaRetriever = MediaMetadataRetriever()
-        metaRetriever.setDataSource(path)
-        var videoHeight =
-            metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT).toInt()
-        var videoWidth =
-            metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH).toInt()
+                videoTrueWidth =
+                    if (videoWidth > UiUtil.getScreenWidth(App.instance())) UiUtil.getScreenWidth(
+                        App.instance()
+                    ) else videoWidth
+                videoTrueHeight =
+                    if (videoHeight > UiUtil.getScreenHeight(App.instance())) UiUtil.getScreenHeight(
+                        App.instance()
+                    ) else videoHeight
+            }
 
+        } else {
+            videoTrueWidth = size.width
+            videoTrueHeight = size.width
 
-        videoWidth =
-            if (videoWidth > UiUtil.getScreenWidth(App.instance())) UiUtil.getScreenWidth(App.instance()) else videoWidth
-        videoHeight =
-            if (videoHeight > UiUtil.getScreenHeight(App.instance())) UiUtil.getScreenHeight(App.instance()) else videoHeight
-
-        val thumbBitmap = ThumbnailUtils.createVideoThumbnail(
-            File(path), Size(videoWidth, videoHeight),
-            CancellationSignal()
-        )
-
-        val thumbView = ImageView(App.instance())
-        thumbView.layoutParams = ViewGroup.LayoutParams(videoWidth, videoHeight)
-        thumbView.scaleType = ImageView.ScaleType.CENTER_CROP
-        thumbView.setImageBitmap(thumbBitmap)
-
-
-        player.apply {
-            layoutParams.width = videoWidth
-            layoutParams.height = videoHeight
         }
 
 
+        val thumbView = ImageView(App.instance())
+        thumbView.layoutParams = ViewGroup.LayoutParams(videoTrueWidth, videoTrueHeight)
+        thumbView.scaleType = ImageView.ScaleType.CENTER_CROP
+
+        if (isLocalPath(path)) {
+            val thumbBitmap = ThumbnailUtils.createVideoThumbnail(
+                File(path), Size(videoTrueWidth, videoTrueHeight),
+                CancellationSignal()
+            )
+            thumbView.setImageBitmap(thumbBitmap)
+        }
+
+
+        mPlayer.apply {
+            if (layoutParams == null) {
+                layoutParams = ViewGroup.LayoutParams(videoTrueWidth, videoTrueHeight)
+            } else {
+                layoutParams.width = videoTrueWidth
+                layoutParams.height = videoTrueHeight
+            }
+        }
+
+
+        val realPath = if (isLocalPath(path)) "file://${path}" else path
+        realPath.logE()
         GSYVideoOptionBuilder()
-            .setUrl(path)
             .setThumbImageView(thumbView)
+            .setIsTouchWiget(false)
+            .setUrl("file:///storage/emulated/0/tencent/MicroMsg/WeiXin/wx_camera_1588507427887.mp4")
+            .setVideoTitle("")
+            .setFullHideActionBar(true)
+            .setCacheWithPlay(false)
+            .setRotateViewAuto(false)
+            .setLockLand(true)
+            .setPlayTag(path)
+            .setMapHeadData(mapOf(Pair("22", "33")))
+            .setShowFullAnimation(true)
+            .setNeedLockFull(true)
             .build(mPlayer)
 
-        return arrayOf(videoWidth, videoHeight)
+        return arrayOf(videoTrueWidth, videoTrueHeight)
     }
 
     fun clear() {
@@ -88,5 +125,9 @@ class VideoPlay(context: Context, attributeSet: AttributeSet?=null) : FrameLayou
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         clear()
+    }
+
+    fun isLocalPath(path: String): Boolean {
+        return !path.startsWith("http")
     }
 }
