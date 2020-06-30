@@ -317,6 +317,13 @@ public class MissionResult implements IJsonObject {
                 return !TextUtils.isEmpty(code) && code.startsWith("activity");
             }
 
+            public boolean isKeyTask(String key) {
+                if (TextUtils.isEmpty(key)) {
+                    return false;
+                }
+                return !TextUtils.isEmpty(code) && code.startsWith(key);
+            }
+
             public boolean isInvite() {
                 return !TextUtils.isEmpty(code) && code.equalsIgnoreCase("xs_001");
             }

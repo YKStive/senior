@@ -12,6 +12,7 @@ import com.youloft.senior.bean.DoubleBean
 import com.youloft.senior.bean.MissionResult.DataBean.MissionsBean
 import com.youloft.senior.cash.CashActivity
 import com.youloft.senior.net.ApiHelper
+import com.youloft.senior.utils.UserManager
 import com.youloft.senior.widgt.ProgressHUD
 import com.youloft.util.MD5
 import com.youloft.util.ToastMaster
@@ -366,6 +367,76 @@ internal class TaskManager {
 
     fun saveComplete(doubleCode: String, value: Boolean) {
         getTaskSp().edit().putBoolean(doubleCode, value).apply()
+    }
+
+
+    /**
+     * 完成创建相册任务
+     */
+    fun completeCreatePhoto(ctx: Context) {
+        completeTaskByKey(ctx, "photo")
+    }
+
+    /**
+     * 完成创建表情任务
+     */
+    fun completeCreateEmoj(ctx: Context) {
+        completeTaskByKey(ctx, "emoj")
+    }
+
+    /**
+     * 完成创建图文任务
+     */
+    fun completeCreateImageText(ctx: Context) {
+        completeTaskByKey(ctx, "imagetext")
+    }
+
+    /**
+     * 完成赞表情任务
+     */
+    fun completeZanEmoj(ctx: Context) {
+        completeTaskByKey(ctx, "zan_emoj")
+    }
+
+    /**
+     * 完成赞图文任务
+     */
+    fun completeZanImageText(ctx: Context) {
+        completeTaskByKey(ctx, "zan_imagetext")
+    }
+
+    /**
+     * 完成赞相册任务
+     */
+    fun completeZanPhoto(ctx: Context) {
+        completeTaskByKey(ctx, "zan_photo")
+    }
+
+    /**
+     * 通过任务code关键字去完成对应任务
+     */
+    private fun completeTaskByKey(ctx: Context, key: String) {
+        if (goLogin(ctx)) {
+            return
+        }
+        val tasks: MutableList<MissionsBean> = CoinManager.instance.tasks
+        if (tasks.isEmpty()) {
+            return
+        }
+        for (item in tasks) {
+            if (item.isKeyTask(key)) {
+                completeTask(item, ctx)
+                return
+            }
+        }
+    }
+
+    private fun goLogin(ctx: Context): Boolean {
+        if (!UserManager.instance.hasLogin()) {
+            ToastMaster.showLongToast(ctx, "先去登录")
+            return true
+        }
+        return false
     }
 
     companion object {
