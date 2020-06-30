@@ -7,19 +7,24 @@ import android.content.Intent
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.alibaba.fastjson.JSONObject
+import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.bean.MissionResult
 import com.youloft.senior.cash.CashActivity
 import com.youloft.senior.coin.*
 import com.youloft.senior.tuia.TuiaUtil
 import com.youloft.senior.tuia.TuiaWebActivity
+import com.youloft.senior.utils.UserManager
+import com.youloft.senior.widgt.LoginPopup
 import com.youloft.util.ToastMaster
 import com.youloft.util.UiUtil
 import kotlinx.android.synthetic.main.main_coin_page_layout.view.*
@@ -48,11 +53,27 @@ internal class MainCoinPage(
             openOrCloseMore()
         }
         coin_more.setOnClickListener {
+            if (goLogin()) {
+                return@setOnClickListener
+            }
             context.startActivity(Intent(context, CoinDetailActivity::class.java))
         }
         submit.setOnClickListener {
+            if (goLogin()) {
+                return@setOnClickListener
+            }
             context.startActivity(Intent(context, CashActivity::class.java))
         }
+    }
+
+    private fun goLogin(): Boolean {
+        if (!UserManager.instance.hasLogin()) {
+            //登录
+            LoginPopup(context as BaseActivity, (context as BaseActivity).lifecycleScope)
+                .showAtLocation(this, Gravity.CENTER, 0, 0)
+            return true
+        }
+        return false
     }
 
     fun onBack(): Boolean {
@@ -222,7 +243,7 @@ internal class MainCoinPage(
         }
     }
 
-    class SignViewHolder(ctx: Context) {
+    inner class SignViewHolder(ctx: Context) {
         val itemView: View =
             LayoutInflater.from(ctx).inflate(R.layout.main_coin_page_sign_item_layout, null, false)
 
@@ -270,6 +291,9 @@ internal class MainCoinPage(
                 state == 1 -> {
                     itemView.isSelected = true
                     itemView.setOnClickListener {
+                        if (goLogin()) {
+                            return@setOnClickListener
+                        }
                         TaskManager.instance.sign(itemView.context)
                     }
                     itemView.item_icon.setImageResource(R.drawable.qd_jb_sel_icon)
@@ -315,12 +339,15 @@ internal class MainCoinPage(
         }
     }
 
-    class ViewHolder(ctx: Context) {
+    inner class ViewHolder(ctx: Context) {
         val itemView: View =
             LayoutInflater.from(ctx).inflate(R.layout.main_coin_page_task_item_layout, null, false)
 
         init {
             itemView.item_button.setOnClickListener {
+                if (goLogin()) {
+                    return@setOnClickListener
+                }
                 if (bean == null) {
                     return@setOnClickListener
                 }

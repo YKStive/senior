@@ -10,6 +10,7 @@ import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.youloft.senior.base.App;
+import com.youloft.senior.utils.UserManager;
 
 import java.lang.reflect.Field;
 
@@ -40,7 +41,7 @@ public class TTRewardManager {
                 .setImageAcceptedSize(1080, 1920);
 
         if (extra != null) {
-            String extraValue = "qq20180530134654687#" + extra.getString("code") + "#Youloft_Android#" + extra.getString("uuid");
+            String extraValue = UserManager.Companion.getInstance().getUserId() + "#" + extra.getString("code") + "#Youloft_Android#" + extra.getString("uuid");
             builder.setRewardName("")
                     .setRewardAmount(1)
                     .setUserID(extra.getString("uid"))

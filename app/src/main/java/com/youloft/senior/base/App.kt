@@ -7,6 +7,7 @@ import com.youloft.senior.bean.User
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.push.PushWrapper
 import com.youloft.senior.utils.Preference
+import com.youloft.senior.utils.UserManager
 import com.youloft.senior.web.WebComponentHandle
 import com.youloft.webview.ProtocolDispatcher
 import okhttp3.HttpUrl
@@ -28,7 +29,13 @@ class App : Application() {
         instance = this
 
 //        初始化友盟分享
-        UMConfigure.init(this, "5ef993fbdbc2ec08212b6815", "", UMConfigure.DEVICE_TYPE_PHONE, "2438c7b5bd38b294f4ceb1f9c0f8c796")
+        UMConfigure.init(
+            this,
+            "5ef993fbdbc2ec08212b6815",
+            "",
+            UMConfigure.DEVICE_TYPE_PHONE,
+            "2438c7b5bd38b294f4ceb1f9c0f8c796"
+        )
 //        UMConfigure.setLogEnabled(true)
         PushWrapper.init(this)
         PlatformConfig.setWeixin(
@@ -48,7 +55,7 @@ class App : Application() {
 
     private fun bindParams1(urlBuilder: HttpUrl.Builder, params: Set<String>?) {
         if (!hasKey(params, "uid")) {
-            urlBuilder.addEncodedQueryParameter("uid", "qq20180530134654687")
+            urlBuilder.addEncodedQueryParameter("uid", UserManager.instance.getUserId())
         }
 
         if (!hasKey(params, "cid")) {

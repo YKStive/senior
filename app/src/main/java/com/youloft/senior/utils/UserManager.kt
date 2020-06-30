@@ -30,4 +30,17 @@ class UserManager {
         }
         return bean!!.userId
     }
+
+    companion object {
+        /**
+         * 获取实例
+         *
+         * @return
+         */
+        /**
+         * 实例
+         */
+        val instance by lazy { UserManager() }
+
+    }
 }
