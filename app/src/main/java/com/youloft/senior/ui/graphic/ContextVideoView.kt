@@ -2,7 +2,11 @@ package com.youloft.senior.ui.graphic
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.media.MediaMetadataRetriever
+import android.media.ThumbnailUtils
+import android.os.CancellationSignal
 import android.util.AttributeSet
+import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +20,10 @@ import com.youloft.senior.R
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.ImageRes
 import com.youloft.senior.utils.logD
+import com.youloft.util.UiUtil
 import kotlinx.android.synthetic.main.context_video.view.*
+import java.io.File
+
 
 /**
  * @author you
@@ -35,32 +42,23 @@ class ContextVideoView(context: Context, attributeSet: AttributeSet?) :
                 emptyData.value = true
             }
 
-            player.apply {
-                backButton.visibility = View.GONE
-                titleTextView.visibility = View.GONE
-
-            }
         }
     }
 
     fun setVideo(imageRes: ImageRes) {
-        this.mItem = imageRes
-        GSYVideoOptionBuilder()
-            .setUrl(imageRes.previewPath)
-            .setVideoAllCallBack(object : GSYSampleCallBack() {
-                override fun onPrepared(url: String?, vararg objects: Any?) {
-                    super.onPrepared(url, *objects)
-                    "prepare".logD()
-                }
-            })
-            .build(player)
+        val videoSize = player.setVideo(imageRes.previewPath!!)
+        mItem = imageRes
+        mItem.apply {
+            this.videoWidth = videoSize[0]
+            this.videoHeight = videoSize[1]
+        }
 
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        player.setVideoAllCallBack(null)
-        GSYVideoManager.releaseAllVideos()
+        player.clear()
+
     }
 
     fun getData(): List<ImageRes>? {

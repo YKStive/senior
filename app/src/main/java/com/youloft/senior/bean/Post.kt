@@ -6,7 +6,7 @@ data class Post(
     val avatar: String = App.instance().avatar,
     val createTime: String = "",
     val id: String = App.instance().userId,
-    var mediaContent: List<String>,
+    var mediaContent: List<String> = listOf(),
     val nickname: String = App.instance().nickName,
     val postType: Int,
     val praised: Int = 0,
@@ -22,6 +22,10 @@ data class Post(
 
         val imagePath =
             "https://pic-bucket.ws.126.net/photo/0009/2019-04-19/ED4HKOFA0AI20009NOS.jpg"
+
+        val videoPath =
+            "https://haokan.baidu.com/v?vid=11226516248969224954&pd=bjh&fr=bjhauthor&type=video"
+
         val gifPath =
             "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/200px-Rotating_earth_%28large%29.gif"
         var avatar = "https://pic4.zhimg.com/v2-5fd62f20577029e9418233411e3ef24f_b.jpg"
@@ -68,6 +72,7 @@ data class Post(
             "123",
             3000
         )
+
 
         val singleData: Post = Post(
             avatar,

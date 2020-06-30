@@ -17,6 +17,8 @@ data class ImageRes(
     var displayName: String? = null,
     var duration: Int? = null,
     var type: Int = TYPE_IMAGE,
+    var videoWidth: Int = 0,
+    var videoHeight: Int = 0,
     var time: Long = 0
 ) :
     Parcelable {

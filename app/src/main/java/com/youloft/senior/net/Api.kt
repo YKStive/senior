@@ -123,7 +123,7 @@ interface Api {
      * @return NetResponse<Any>
      */
     @POST("/api/post")
-    fun publishPost(post: Post): NetResponse<Any>
+    fun publishPost(@Body post: Post): NetResponse<Any>
 
     /**
      * 点赞帖子
@@ -156,5 +156,12 @@ interface Api {
         @Field("commentId") commentId: String
     ): NetResponse<String>
 
+
+    /**
+     * 获取未读评论
+     * @return NetResponse<List<Comment>>
+     */
+    @GET("/api/post/user/unreadcomment")
+    fun getUnReadComment(): NetResponse<List<Comment>>
 
 }

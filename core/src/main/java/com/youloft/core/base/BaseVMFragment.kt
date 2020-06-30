@@ -35,4 +35,6 @@ abstract class BaseVMFragment : Fragment() {
     abstract fun initView()
     abstract fun initData()
     abstract fun startObserve()
+    fun showLoading() {}
+    fun dismissLoading() {}
 }

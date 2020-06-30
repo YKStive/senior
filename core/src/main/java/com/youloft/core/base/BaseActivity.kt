@@ -19,11 +19,9 @@ abstract class BaseActivity : AppCompatActivity() {
         initData()
     }
 
-//     fun showShortToast(content: String) {
-//        Toast.makeText(this, content, Toast.LENGTH_SHORT).show()
-//    }
-
     abstract fun getLayoutResId(): Int
     abstract fun initView()
     abstract fun initData()
+    fun showLoading() {}
+    fun dismissLoading() {}
 }
