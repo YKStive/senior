@@ -2,13 +2,8 @@ package com.youloft.senior.net
 
 import com.alibaba.fastjson.JSONObject
 import com.youloft.net.bean.CommentBean
-import com.youloft.senior.bean.GifBean
-import com.youloft.senior.bean.LoginBean
-import com.youloft.senior.bean.MissionResult
 import com.youloft.senior.bean.*
-import retrofit2.Call
 import retrofit2.http.*
-import rx.Observable
 
 /**
  * @author you
@@ -18,8 +13,8 @@ import rx.Observable
 interface Api {
     companion object {
         //                const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
-        const val BASE_URL = "http://120.27.20.114:8090/"
-//        const val BASE_URL = "https://shequ.51wnl-cq.com/"
+//        const val BASE_URL = "http://120.27.20.114:8090/"
+        const val BASE_URL = "http://shequ.51wnl-cq.com/"
     }
 
     @GET(BASE_URL + "api/Coin_Activity/GetMissions")
@@ -69,6 +64,15 @@ interface Api {
     /**
      * 获取提现进度
      */
+    @GET(BASE_URL + "api/user/refreshtoken")
+    fun refreshToken(
+        @Query("refreshToken") refreshToken: String
+        , @Query("userId") userId: String
+    ): JSONObject?
+
+    /**
+     * 获取提现进度
+     */
     @GET(BASE_URL + "Api/User/GetIsExistsCashingOrder")
     fun getLastCash(): JSONObject?
 
@@ -107,15 +111,6 @@ interface Api {
     fun getMineList(
         @Path("userId") id: String
     ): NetResponse<List<MineDataBean>>
-
-
-    /**
-     * 提现进度
-     *
-     * @return
-     */
-    @GET(BASE_URL + "Api/User/CashProgress")
-    fun cashProgress(@Query("caId") caId: String?): Observable<ApplyOptionResponse?>
 
     /**
      * 发布帖子

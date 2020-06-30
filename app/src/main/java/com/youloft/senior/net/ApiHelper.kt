@@ -1,13 +1,17 @@
 package com.youloft.senior.net
 
 import android.content.Context
+import android.text.TextUtils
 import com.facebook.stetho.Stetho
+import com.youloft.coolktx.jsonToObject
 import com.youloft.net.BaseRetrofitClient
 import com.youloft.net.ParamsInterface
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
+import com.youloft.senior.bean.LoginBean
+import com.youloft.senior.utils.UserManager
+import okhttp3.*
+import okio.buffer
+import okio.sink
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.util.*
 
@@ -49,17 +53,38 @@ object ApiHelper : BaseRetrofitClient() {
     /**
      * 处理所有51wnl-cq.com下请求的公共参数
      */
-    var sParamsInterceptor: Interceptor = object : Interceptor {
+    val sParamsInterceptor: Interceptor = object : Interceptor {
         @Throws(IOException::class)
         override fun intercept(chain: Interceptor.Chain): Response {
             var request: Request = chain.request()
-//            if (request.url.host.toLowerCase().endsWith("51wnl-cq.com")) {
+            if (request.url.host.toLowerCase().endsWith("51wnl-cq.com")) {
+                //自己的接口 加入过期判断
+                if (UserManager.instance.hasLogin() && !request.url.toString()
+                        .contains("refreshtoken")
+                ) {
+                    if (UserManager.instance.hasExpiration()) {
+                        val token = api.refreshToken(
+                            UserManager.instance.getRefreshToken(),
+                            UserManager.instance.getUserId()
+                        )
+                        if (token != null && token.getIntValue("status") == 200) {
+                            if (token.getJSONObject("data") != null) {
+                                val bean: LoginBean? =
+                                    token.getJSONObject("data").toJSONString().jsonToObject()
+                                if (bean != null) {
+                                    UserManager.instance.refreshUserData(bean)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             //处理公共参数
             request = parseRequest(request)
-//            }
             return chain.proceed(request)
         }
     }
+
 
     /**
      * 处理公共参数的添加
@@ -71,6 +96,14 @@ object ApiHelper : BaseRetrofitClient() {
     private fun parseRequest(request: Request): Request {
         //公共参数只处理URL后面追加参数
         val builder = request.newBuilder()
+        //添加header
+        if (!TextUtils.isEmpty(UserManager.instance.getAccessToken())) {
+            builder.addHeader(
+                "Authorization",
+                String.format("Bearer %s", UserManager.instance.getAccessToken())
+            )
+        }
+
         val urlBuilder = request.url.newBuilder()
         if (paramHandlers != null) {
             paramHandlers!!.bindParams(
@@ -101,5 +134,32 @@ object ApiHelper : BaseRetrofitClient() {
 
     override fun handleBuilder(builder: OkHttpClient.Builder) {
         builder.addInterceptor(sParamsInterceptor)
+    }
+
+    /**
+     * 读取 Body 内容
+     *
+     * @param body
+     * @return
+     */
+    private fun toBodyString(body: RequestBody?): String? {
+        if (body == null) {
+            return ""
+        }
+        val bos = ByteArrayOutputStream()
+        return try {
+            val buffer = bos.sink().buffer()
+            body.writeTo(buffer)
+            buffer.flush()
+            buffer.close()
+            bos.toString("UTF-8")
+        } catch (e: Exception) {
+            null
+        } finally {
+            try {
+                bos.close()
+            } catch (e: IOException) {
+            }
+        }
     }
 }

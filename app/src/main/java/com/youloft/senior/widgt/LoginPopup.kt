@@ -105,7 +105,7 @@ class LoginPopup(
                                         Preference.REFRESHTOKEN,
                                         it.refreshToken
                                     )
-                                    var expiration: String by Preference(
+                                    var expiration: Long by Preference(
                                         Preference.EXPIRATION,
                                         it.expiration
                                     )
