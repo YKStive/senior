@@ -23,6 +23,9 @@ class UserManager {
         bean = userInfo.jsonToObject()
     }
 
+    /**
+     * 登录成功
+     */
     fun login(bean: LoginBean) {
         this.bean = bean
         userInfo = bean.toJsonString()
@@ -30,6 +33,9 @@ class UserManager {
         CoinManager.instance.loadData()
     }
 
+    /**
+     * 更新用户数据
+     */
     fun refreshUserData(bean: LoginBean) {
         this.bean = bean
         userInfo = bean.toJsonString()
@@ -51,6 +57,9 @@ class UserManager {
         }
     }
 
+    /**
+     * 是否登录
+     */
     fun hasLogin(): Boolean {
         if (bean == null) {
             return false
@@ -58,6 +67,9 @@ class UserManager {
         return !TextUtils.isEmpty(bean!!.userId)
     }
 
+    /**
+     * 获取用户id
+     */
     fun getUserId(): String {
         if (bean == null) {
             return ""
@@ -66,7 +78,7 @@ class UserManager {
     }
 
     /**
-     * 是否过期
+     * AccessToken是否过期
      */
     fun hasExpiration(): Boolean {
         if (bean == null) {
@@ -75,6 +87,9 @@ class UserManager {
         return abs(userInfoTime - System.currentTimeMillis()) > (bean!!.expiration * 1000 - 10 * 60 * 1000)
     }
 
+    /**
+     * 获取token
+     */
     fun getAccessToken(): String {
         if (bean == null) {
             return ""
@@ -82,6 +97,10 @@ class UserManager {
         return bean!!.accessToken
     }
 
+    /**
+     * 获取刷新token
+     * ps：用于获取accessToken
+     */
     fun getRefreshToken(): String {
         if (bean == null) {
             return ""
