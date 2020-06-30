@@ -5,10 +5,6 @@ import kotlinx.coroutines.*
 
 /**
  * IO线程调用block
- * @receiver LifecycleCoroutineScope
- * @param onError Function1<[@kotlin.ParameterName] Exception, Unit>
- * @param block [@kotlin.ExtensionFunctionType] SuspendFunction1<CoroutineScope, Unit>
- * @return Job
  */
 fun CoroutineScope.launchIO(
     onError: (e: java.lang.Exception) -> Unit = {},
