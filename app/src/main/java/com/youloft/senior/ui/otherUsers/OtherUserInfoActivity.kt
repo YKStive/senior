@@ -1,5 +1,7 @@
 package com.youloft.senior.ui.otherUsers
 
+import android.content.Context
+import android.content.Intent
 import android.view.Gravity
 import android.view.View
 import androidx.activity.viewModels
@@ -33,8 +35,17 @@ import kotlinx.android.synthetic.main.fragment_main.*
  */
 
 class OtherUserInfoActivity : BaseVMActivity() {
+    lateinit var userId: String
+
     companion object {
         private const val TAG = "OtherUserInfoActivity"
+
+        @JvmStatic
+        fun start(context: Context, userId: String) {
+            val starter = Intent(context, OtherUserInfoActivity::class.java)
+            starter.putExtra("userId", userId)
+            context.startActivity(starter)
+        }
     }
 
     private val mViewModel by viewModels<MainViewModel>()
@@ -55,7 +66,8 @@ class OtherUserInfoActivity : BaseVMActivity() {
     }
 
     override fun initData() {
-        mViewModel.getData(1, 0, 10, "")
+        userId = intent.getStringExtra("userId")
+        mViewModel.getData(1, 0, 10, userId)
     }
 
     override fun startObserve() {
