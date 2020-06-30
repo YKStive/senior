@@ -24,7 +24,7 @@ import java.util.Map;
 import cc.shinichi.library.tool.ui.ToastUtil;
 
 /**
- * @Description: java类作用描述
+ * @Description: 快捷登录弹出
  * @Author: slh
  * @CreateDate: 2020/6/29 15:12
  * @UpdateUser: 更新者：
@@ -66,7 +66,7 @@ public class LoginPopup extends PopupWindow {
                 ) {
                     ToastMaster.showShortToast(mContext, "微信未安装");
                 }
-                Socialize.getIns().auth(mContext,SOC_MEDIA.WEIXIN, new AuthListener() {
+                Socialize.getIns().auth(mContext, SOC_MEDIA.WEIXIN, new AuthListener() {
                     @Override
                     public void onStart(SOC_MEDIA platform) {
 
@@ -107,7 +107,7 @@ public class LoginPopup extends PopupWindow {
 //                        .putString("loginType", "wx")
 //                        .commit()
 
-                    });
+                });
 
             }
         });

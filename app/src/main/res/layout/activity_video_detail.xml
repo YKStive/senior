@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -177,28 +178,51 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="25dp"
+                android:layout_marginEnd="@dimen/dp_15"
                 android:background="#ffefefef"
                 android:hint="点击发表评论"
                 android:textColor="#ff777777"
                 android:textSize="20sp" />
         </LinearLayout>
 
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="22dp"
-            android:layout_marginStart="23dp"
-            android:src="@drawable/icon_un_favorite">
+        <LinearLayout
+            android:id="@+id/ll_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
 
-        </ImageView>
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="22dp"
+                android:layout_marginStart="23dp"
+                android:src="@drawable/icon_un_favorite" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="6dp"
+                android:gravity="center_vertical"
+                android:text="赞"
+                android:textColor="#ff333333"
+                android:textSize="19sp" />
+        </LinearLayout>
 
         <TextView
-            android:layout_width="19dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="6dp"
-            android:gravity="center_vertical"
-            android:text="赞"
-            android:textColor="#ff333333"
-            android:textSize="19sp" />
+            android:id="@+id/tv_sen_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_15"
+            android:background="@color/edt_cursor_colr"
+            android:paddingStart="11dp"
+            android:paddingTop="3dp"
+            android:paddingEnd="11dp"
+            android:paddingBottom="3dp"
+            android:text="发表"
+            android:textColor="#ffffffff"
+            android:textSize="19sp"
+            android:visibility="gone" />
+
 
     </LinearLayout>
 </LinearLayout>

@@ -2,21 +2,29 @@ package com.youloft.senior.ui.detail
 
 import android.content.Intent
 import android.content.res.Configuration
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
+import com.youloft.coolktx.launchIOWhenCreated
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.bean.MineDataBean
+import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.ui.adapter.CommentAdapterr
+import com.youloft.senior.utils.logD
 import com.youloft.senior.widgt.LoginPopup
 import com.youloft.socialize.SOC_MEDIA
 import com.youloft.socialize.share.ShareImage
 import com.youloft.socialize.share.ShareWeb
 import com.youloft.socialize.share.UmengShareActionImpl
 import kotlinx.android.synthetic.main.activity_video_detail.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  *
@@ -47,12 +55,11 @@ class DetailActivity : BaseActivity() {
 
     override fun initView() {
         var fragments = ArrayList<Fragment>()
-        fragments.add(ItemCommentFragment.newInstance())
-        fragments.add(FavoriteFragment.newInstance())
-
-        tablayout.setViewPager(viewPager, arrayOf("全部评论", "点赞"), this, fragments)
         informationId = intent.getStringExtra("informationId")
         informationType = intent.getIntExtra("informationType", 0)
+        fragments.add(ItemCommentFragment.newInstance(informationId))
+        fragments.add(FavoriteFragment.newInstance())
+        tablayout.setViewPager(viewPager, arrayOf("全部评论", "点赞"), this, fragments)
         if (informationType == MineDataBean.MOVIE_TYPE) {
             //影集
             supportFragmentManager.beginTransaction()
@@ -132,8 +139,76 @@ class DetailActivity : BaseActivity() {
 
         ll_share_to_circle.setOnClickListener(View.OnClickListener {
 
-            var pupup = LoginPopup(this,click)
-            pupup.showAtLocation(ll_bottom,Gravity.CENTER,0,0)
+            var pupup = LoginPopup(this, click)
+            pupup.showAtLocation(ll_bottom, Gravity.CENTER, 0, 0)
+        })
+        //点赞帖子
+        ll_favorite.setOnClickListener(View.OnClickListener {
+            lifecycleScope.launchIOWhenCreated({
+                it.message?.logD()
+            }, {
+//            val stickers = ApiHelper.api.getStickers()
+                var params = HashMap<String, String>()
+//TODO
+//                params.put("postId", informationId)
+//                params.put("userId", itemBean.id)
+//                params.put("avatar", itemBean.id)
+//                params.put("nickname", itemBean.id)
+//                            val res = NetResponse<String>(ApiHelper.api.parse(params).data, "", "", 200)
+                val res = ApiHelper.api.parse(params)
+                withContext(Dispatchers.Main) {
+                    if (res.status == 200) {
+
+                    }
+//                                ApiHelper.executeResponse(res, {
+//                                    if (res.status==200)
+//                                })
+                }
+            })
+        })
+
+
+//发表评论
+        tv_sen_comment.setOnClickListener(View.OnClickListener {
+            lifecycleScope.launchIOWhenCreated({
+                it.message?.logD()
+            }, {
+//            val stickers = ApiHelper.api.getStickers()
+                var params = HashMap<String, String>()
+//TODO
+//                params.put("postId", informationId)
+//                params.put("userId", itemBean.id)
+//                params.put("avatar", itemBean.id)
+//                params.put("nickname", itemBean.id)
+                params.put("content", edt_comment.text.toString())
+//                            val res = NetResponse<String>(ApiHelper.api.parse(params).data, "", "", 200)
+                val res = ApiHelper.api.commnet(params)
+                withContext(Dispatchers.Main) {
+                    if (res.status == 200) {
+
+                    }
+//                                ApiHelper.executeResponse(res, {
+//                                    if (res.status==200)
+//                                })
+                }
+            })
+        })
+        edt_comment.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (s.toString().isNotEmpty()) {
+                    ll_favorite.visibility = View.GONE
+                    tv_sen_comment.visibility = View.VISIBLE
+                } else {
+                    ll_favorite.visibility = View.VISIBLE
+                    tv_sen_comment.visibility = View.GONE
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
         })
     }
 

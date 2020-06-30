@@ -18,15 +18,15 @@ import kotlinx.coroutines.Dispatchers
  */
 object Repository {
     private const val TAG = "Repository"
-    fun getLogin(params: Map<String, String>) = this.fire {
-        val projectTree = NetWork.getLogin(params)
-        if (projectTree.status == 200) {
-            val bannerList = projectTree.data
-            Result.success(projectTree)
-        } else {
-            Result.failure(RuntimeException("response status is ${projectTree.status}  msg is ${projectTree.msg}"))
-        }
-    }
+//    fun getLogin(params: Map<String, String>) = this.fire {
+//        val projectTree = NetWork.getLogin(params)
+//        if (projectTree.status == 200) {
+//            val bannerList = projectTree.data
+//            Result.success(projectTree)
+//        } else {
+//            Result.failure(RuntimeException("response status is ${projectTree.status}  msg is ${projectTree.msg}"))
+//        }
+//    }
 
 //    fun getItem(params: String) = this.fire {
 //        val projectTree = NetWork.getItem(params)

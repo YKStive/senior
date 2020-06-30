@@ -39,6 +39,7 @@
         <activity android:name=".ui.gif.GifActivity" />
         <activity
             android:name=".ui.detail.DetailActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
 

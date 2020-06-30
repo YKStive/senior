@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#59FFFFFF"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+
+        android:id="@+id/pop_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_login_corner"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_copy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:drawableStart="@drawable/icon_copy_comment"
+            android:drawablePadding="4dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="@dimen/dp_15"
+            android:text="复制"
+            android:textColor="#ff333333"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="47dp"
+
+            android:background="@color/line_color" />
+
+        <TextView
+            android:id="@+id/tv_report"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:drawableStart="@drawable/icon_delete"
+            android:drawablePadding="4dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="@dimen/dp_15"
+            android:text="举报"
+            android:textColor="#ff333333"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/line_color" />
+
+        <TextView
+            android:id="@+id/tv_cancle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="45dp"
+            android:text="取消"
+            android:textColor="#fff7612c"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+</RelativeLayout>

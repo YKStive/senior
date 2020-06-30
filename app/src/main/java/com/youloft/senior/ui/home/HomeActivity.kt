@@ -54,6 +54,9 @@ class HomeActivity : BaseActivity() {
 
 
         btn_home.apply {
+            if (img_publish.visibility == View.VISIBLE) {
+                img_publish.visibility = View.GONE
+            }
             isSelected = true
             setOnClickListener {
                 supportFragmentManager.beginTransaction()

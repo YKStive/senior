@@ -19,10 +19,10 @@ import com.youloft.senior.Repository
 class LoginViewModel : BaseViewModel() {
     val data: MutableLiveData<LoginBean> = MutableLiveData()
 
-    fun getData(params: Map<String, String>) {
-        val value = Repository.getLogin(params).value
-        data.value = if (value != null) value.getOrNull() else null
-    }
+//    fun getData(params: Map<String, String>) {
+//        val value = Repository.getLogin(params).value
+//        data.value = if (value != null) value.getOrNull() else null
+//    }
 
 //    fun getData(params: Map<String, String>) {
 //            launch(
