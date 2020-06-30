@@ -3,13 +3,14 @@ package com.youloft.senior.ui.home
 import android.content.Intent
 import android.os.Handler
 import android.os.Message
-import android.util.Log
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
-import com.youloft.core.base.BaseActivity
+import com.youloft.core.base.BaseVMActivity
 import com.youloft.senior.R
-import com.youloft.senior.ui.gif.GifActivity
+import com.youloft.senior.ui.login.LoginFragment
 import com.youloft.senior.widgt.OperateDialog
 import kotlinx.android.synthetic.main.activity_home.*
 
@@ -18,7 +19,11 @@ import kotlinx.android.synthetic.main.activity_home.*
  * @create 2020/6/18
  * @desc
  */
-class HomeActivity : BaseActivity() {
+class HomeActivity : BaseVMActivity() {
+    lateinit var mViewModel: HomeModel
+    private val mainFragment = MainFragment()
+    private val homeFragment = HomeFragment()
+    private val notLoginFragment = LoginFragment()
     var showPublishFlag = true
     var timecount = 3
     private val timeHandler: Handler = object : Handler() {
@@ -43,12 +48,10 @@ class HomeActivity : BaseActivity() {
 
     override fun initView() {
         reqPermissions()
-        val mainFragment = MainFragment()
-        val homeFragment = HomeFragment()
-
         supportFragmentManager.beginTransaction()
             .add(R.id.fl_container_home, homeFragment)
             .add(R.id.fl_container_main, mainFragment)
+            .add(R.id.fl_container_main, notLoginFragment)
             .commit()
 
 
@@ -78,10 +81,19 @@ class HomeActivity : BaseActivity() {
                     timeHandler.sendEmptyMessageDelayed(100, 1000);
                     img_publish.visibility = View.VISIBLE
                 }
-                supportFragmentManager.beginTransaction()
-                    .hide(homeFragment)
-                    .show(mainFragment)
-                    .commit()
+                if (com.youloft.senior.utils.UserManager.instance.hasLogin()) {
+                    supportFragmentManager.beginTransaction()
+                        .hide(homeFragment)
+                        .hide(notLoginFragment)
+                        .show(mainFragment)
+                        .commit()
+                } else {
+                    supportFragmentManager.beginTransaction()
+                        .hide(homeFragment)
+                        .hide(mainFragment)
+                        .show(notLoginFragment)
+                        .commit()
+                }
                 isSelected = true
                 main_coin_page.visibility = View.GONE
                 btn_home.isSelected = false
@@ -107,7 +119,28 @@ class HomeActivity : BaseActivity() {
     }
 
     override fun initData() {
+    }
 
+    /**
+     * 只针对“我的”登录成功后的页面切换
+     */
+    override fun startObserve() {
+        mViewModel = ViewModelProvider(this).get(HomeModel::class.java)
+        mViewModel.isLogin.observe(this, Observer { isLogin ->
+            if (isLogin) {
+                supportFragmentManager.beginTransaction()
+                    .hide(homeFragment)
+                    .hide(notLoginFragment)
+                    .show(mainFragment)
+                    .commit()
+            } else {
+                supportFragmentManager.beginTransaction()
+                    .hide(homeFragment)
+                    .hide(mainFragment)
+                    .show(notLoginFragment)
+                    .commit()
+            }
+        })
     }
 
 

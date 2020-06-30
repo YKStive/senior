@@ -17,6 +17,7 @@ import com.youloft.senior.net.NetResponse
 import com.youloft.senior.utils.Preference
 import com.youloft.senior.utils.UserManager
 import com.youloft.senior.utils.logD
+import com.youloft.senior.utils.logE
 import com.youloft.socialize.SOC_MEDIA
 import com.youloft.socialize.Socialize
 import com.youloft.socialize.auth.AuthListener
@@ -69,10 +70,10 @@ class LoginPopup(
                     .checkPlatformInstall(mContext, SOC_MEDIA.WEIXIN, false)
             ) {
                 ToastMaster.showShortToast(mContext, "微信未安装")
+                return@setOnClickListener
             }
             Socialize.getIns().auth(mContext, SOC_MEDIA.WEIXIN, object : AuthListener {
                 override fun onStart(platform: SOC_MEDIA) {
-                    Log.e(TAG, "微信登录onStart")
                 }
 
                 override fun onComplete(
@@ -83,7 +84,9 @@ class LoginPopup(
                     lifecycleScop.launchIOWhenCreated({
                         it.message?.logD()
                     }, {
-
+                        for ((key, value) in weichatData.entries) {
+                            "${key}  =  ${value}".logE(com.youloft.senior.utils.TAG)
+                        }
 //            val stickers = ApiHelper.api.getStickers()
                         var loginData = LoginUploadData()
                         loginData.type = "0"
@@ -96,27 +99,6 @@ class LoginPopup(
                             ApiHelper.executeResponse(stickers, {
                                 if (stickers.isSuccess()) {
                                     ToastMaster.showShortToast(mContext, "登录成功");
-                                    var userId: String by Preference(Preference.USER_ID, it.userId)
-                                    var accessToken: String by Preference(
-                                        Preference.ACCESSTOKEN,
-                                        it.accessToken
-                                    )
-                                    var refreshToken: String by Preference(
-                                        Preference.REFRESHTOKEN,
-                                        it.refreshToken
-                                    )
-                                    var expiration: String by Preference(
-                                        Preference.EXPIRATION,
-                                        it.expiration
-                                    )
-                                    var userPhone: String by Preference(
-                                        Preference.USER_PHONE,
-                                        userPhone
-                                    )
-                                    var isLogin: Boolean by Preference(
-                                        Preference.IS_LOGIN,
-                                        true
-                                    )
                                     UserManager.instance.login(it)
                                 }
                             })
@@ -129,20 +111,10 @@ class LoginPopup(
                     action: Int,
                     t: Throwable
                 ) {
-                    Log.e(TAG, "onError" + t.message)
                 }
 
                 override fun onCancel(platform: SOC_MEDIA, action: Int) {
-                    Log.e(TAG, "onCancel")
-                } //                    Preference<String>("accessToken","" ).setValue()
-                //                    CApp.getInstance()
-                //                        .getSharedPreferences("temp_token_xx", Context.MODE_PRIVATE)
-                //                        .edit()
-                //                        .putString("accessToken", info.get("accessToken"))
-                //                        .putString("openid", info.get("openid"))
-                //                        .putString("appid", BuildConfig.WX_SHARE_ID)
-                //                        .putString("loginType", "wx")
-                //                        .commit()
+                }
             })
         }
 

@@ -1,30 +1,26 @@
 package com.youloft.senior.ui.login
 
-import android.widget.Toast
-import androidx.lifecycle.Observer
+import androidx.core.graphics.Insets.of
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
 import com.youloft.coolktx.launchIOWhenCreated
-import com.youloft.core.base.BaseActivity
-import com.youloft.core.base.BaseFragment
+import com.youloft.core.base.BaseVMFragment
 import com.youloft.senior.R
-import com.youloft.senior.Repository
-import com.youloft.senior.bean.ItemData
 import com.youloft.senior.bean.LoginBean
 import com.youloft.senior.bean.LoginUploadData
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.net.NetResponse
+import com.youloft.senior.ui.home.HomeModel
+import com.youloft.senior.utils.TAG
+import com.youloft.senior.utils.UserManager
 import com.youloft.senior.utils.logD
+import com.youloft.senior.utils.logE
 import com.youloft.socialize.SOC_MEDIA
 import com.youloft.socialize.Socialize
 import com.youloft.socialize.auth.AuthListener
-import com.youloft.util.ToastMaster.showShortToast
+import com.youloft.util.ToastMaster
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.fragment_movie_detail.*
-import kotlinx.android.synthetic.main.fragment_movie_detail.iv_head
-import kotlinx.android.synthetic.main.fragment_movie_detail.tv_browse_number
-import kotlinx.android.synthetic.main.fragment_movie_detail.tv_name
-import kotlinx.android.synthetic.main.fragment_video.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -38,86 +34,86 @@ import kotlinx.coroutines.withContext
  * @UpdateRemark:   更新说明：
  * @Version:        1.0
  */
-class LoginFragment : BaseFragment() {
-    lateinit var id: String
+private const val TAG = "LoginFragment"
 
-    //     var platform: Int
-    lateinit var gender: String
-    lateinit var headIconUrl: String
+class LoginFragment : BaseVMFragment() {
+    lateinit var id: String
+    lateinit var mViewModel: HomeModel
+
+    //    private val mViewModel by viewModels<HomeModel>()
     lateinit var name: String
     lateinit var description: String
-    lateinit var unionid: String
     override fun getLayoutResId(): Int =
         R.layout.activity_login
 
     override fun initView() {
         tv_login.setOnClickListener {
+            var userPhone = edt_phone.text.toString()
+            if (userPhone.isEmpty() || userPhone.length < 11) {
+                ToastMaster.showShortToast(activity, "请输入手机号")
+                return@setOnClickListener
+            }
             if (!Socialize.getIns()
                     .checkPlatformInstall(activity, SOC_MEDIA.WEIXIN, false)
             ) {
-                Toast.makeText(activity, "微信未安装", Toast.LENGTH_SHORT).show()
+                ToastMaster.showShortToast(activity, "微信未安装")
+                return@setOnClickListener
             }
             Socialize.getIns().auth(activity, SOC_MEDIA.WEIXIN, object : AuthListener {
+                override fun onStart(platform: SOC_MEDIA) {
+                }
+
                 override fun onComplete(
-                    platform: SOC_MEDIA?,
+                    platform: SOC_MEDIA,
                     action: Int,
-                    data: MutableMap<String, String>?
+                    weichatData: Map<String, String>
                 ) {
-//                    Preference<String>("accessToken","" ).setValue()
-//                    CApp.getInstance()
-//                        .getSharedPreferences("temp_token_xx", Context.MODE_PRIVATE)
-//                        .edit()
-//                        .putString("accessToken", info.get("accessToken"))
-//                        .putString("openid", info.get("openid"))
-//                        .putString("appid", BuildConfig.WX_SHARE_ID)
-//                        .putString("loginType", "wx")
-//                        .commit()
-                    unionid = data?.get("unionid").toString()
-                    id = data?.get("openid").toString()
-                    headIconUrl = data?.get("profile_image_url").toString()
-                    name = data?.get("screen_name").toString()
-                    description = ""
-                    val sex: String = data?.get("gender").toString()
-                    gender = if ("男" == sex) {
-                        "0"
-                    } else {
-                        "1"
+                    for ((key, value) in weichatData.entries) {
+                        "${key}  =  ${value}".logE(TAG)
                     }
+                    lifecycleScope.launchIOWhenCreated({
+                        it.message?.logD()
+                    }, {
+
+                        var loginData = LoginUploadData()
+                        loginData.type = "0"
+                        loginData.openid = weichatData.get("openid")
+                        loginData.accessToken = weichatData.get("accessToken")
+                        loginData.phone = userPhone
+                        val stickers =
+                            NetResponse<LoginBean>(ApiHelper.api.login(loginData).data, "", "", 200)
+                        withContext(Dispatchers.Main) {
+                            ApiHelper.executeResponse(stickers, {
+                                if (stickers.isSuccess()) {
+                                    ToastMaster.showShortToast(activity, "登录成功");
+                                    UserManager.instance.login(it)
+                                    mViewModel.isLogin.value = true
+                                }
+                            })
+                        }
+                    })
                 }
 
-                override fun onCancel(platform: SOC_MEDIA?, action: Int) {
+                override fun onError(
+                    platform: SOC_MEDIA,
+                    action: Int,
+                    t: Throwable
+                ) {
                 }
 
-                override fun onError(platform: SOC_MEDIA?, action: Int, t: Throwable?) {
-                }
-
-                override fun onStart(platform: SOC_MEDIA?) {
+                override fun onCancel(platform: SOC_MEDIA, action: Int) {
                 }
             })
         }
     }
 
     override fun initData() {
+//        ViewModelProvider.of(activity).get(HomeModel::class.java)
+        activity?.let { mViewModel = ViewModelProvider(it).get(HomeModel::class.java) }
     }
 
+    override fun startObserve() {
 
-    fun toLogin(loginParams: LoginUploadData) {
-        lifecycleScope.launchIOWhenCreated({
-            it.message?.logD()
-        }, {
-//            val stickers = ApiHelper.api.getStickers()
-            val stickers =
-                NetResponse<LoginBean>(ApiHelper.api.login(loginParams).data, "", "", 200)
-            withContext(Dispatchers.Main) {
-                ApiHelper.executeResponse(stickers, {
-//                    activity?.let { it1 ->
-//                        Glide.with(it1).load(it?.avatar).into(iv_head) }
-//                    tv_name.setText(it.nickname)
-//                    tv_browse_number.setText("${it.viewed}次浏览")
-//                    tv_content_video.setText(it.textContent)
-//                    tv_create_time.setText(it.createTime)
-                })
-            }
-        })
     }
+
 }
