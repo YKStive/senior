@@ -29,7 +29,7 @@ class CoinTipsDialog(
         bindUI()
     }
 
-    fun bindCoinCash(coin: Int, cash: String): CoinTipsDialog {
+    fun bindCoinCash(coin: Int, cash: String?): CoinTipsDialog {
         if (TextUtils.isEmpty(content)) {
             content = "我的金币:" + coin + "≈" + cash.stringToInt() + "元"
         }
