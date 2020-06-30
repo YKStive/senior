@@ -62,6 +62,10 @@ class CashActivity : BaseActivity() {
                     .putExtra("caid", lastCash!!.getIntValue("caId").toString())
             )
         }
+        refresh_view.showLoading()
+        refresh_view.bindRefreshCallBack {
+            initData()
+        }
     }
 
     private fun refreshUI() {
@@ -69,6 +73,7 @@ class CashActivity : BaseActivity() {
             loadError()
             return
         }
+        refresh_view.showSuccess()
         val itemCashValue = selectCashItem!!.getFloatValue("price")
         if (itemCashValue > userWXMessage!!.getFloatValue("cash")) {
             short_group.visibility = View.VISIBLE
@@ -294,7 +299,7 @@ class CashActivity : BaseActivity() {
      * 加载失败
      */
     private fun loadError() {
-
+        refresh_view.showErr()
     }
 
     suspend fun requestUserCoinInfo() = withContext(Dispatchers.IO) {

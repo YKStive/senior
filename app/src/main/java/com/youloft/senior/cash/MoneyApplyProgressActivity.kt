@@ -18,40 +18,6 @@ import kotlinx.coroutines.withContext
 import java.util.*
 
 class MoneyApplyProgressActivity : BaseActivity() {
-    val dd = "{\n" +
-            "    \"data\":{\n" +
-            "        \"isSpeed\":true,//是否可以加速\n" +
-            "        \"speedConfig\":{//加速配置相关\n" +
-            "            \"txNeedDay\":7,//体现需要多少天到账\n" +
-            "            \"txSpeedDay\":1,//每次加速多少天\n" +
-            "            \"dayWorkNum\":1,//每天可以加速多少次\n" +
-            "            \"txMoney\":1,//体现金额\n" +
-            "            \"tipSpeedBtnTxt\":\"立即加速\",//弹窗加速按钮文字\n" +
-            "            \"infoSpeedBtnTxt\":\"立即加速1天\",//详情加速按钮文字\n" +
-            "            \"tipSpeedBtnContent\":\"您的提现预计\",//弹窗加速文案\n" +
-            "            \"txjd\": 6,//提现进度\n" +
-            "            \"toDayOverBtnTxt\": \"今日加速已达上线\",//当天提现加速完后按钮提示文本\n" +
-            "            \"toDayIsSpeed\": true,//当天是否可以加速\n" +
-            "        },\n" +
-            "        \"video\":{//视频相关配置\n" +
-            "            \"txType\":1,\n" +
-            "            \"platformId\":\"jrtt\",\n" +
-            "            \"posId\":\"900974226\",\n" +
-            "            \"appId\":\"5000974\"\n" +
-            "        },\n" +
-            "        \"speedInfo\":[//加速记录\n" +
-            "            {\n" +
-            "                \"title\":\"观看视频\",\n" +
-            "                \"time\":\"2019-1-1\",//yyyy-MM-dd HH:mm:sss\n" +
-            "                \"txt\":\"+1天\"\n" +
-            "            }\n" +
-            "        ],\n" +
-            "\t\t\"status\":1,//-1，异常 0,进行中 1，已打款\n" +
-            "\t\t\"caId\":11,\n" +
-            "\t\t\"cashType\":0,//0新用户专享 1普通提现\n" +
-            "\t\t\"msg\":\"\"//相关提醒文本\n" +
-            "    }\n" +
-            "}"
     private var lastCashData: JSONObject? = null
     private var caid: String? = ""
 
@@ -91,6 +57,10 @@ class MoneyApplyProgressActivity : BaseActivity() {
                 extra
             )
         }
+        refresh_view.showLoading()
+        refresh_view.bindRefreshCallBack {
+            initData()
+        }
     }
 
     override fun initData() {
@@ -118,11 +88,17 @@ class MoneyApplyProgressActivity : BaseActivity() {
         }
     }
 
+    private fun loadErr() {
+        refresh_view.showErr()
+    }
+
     private fun bindUI() {
         if (lastCashData == null) {
             //加载失败页面
+            loadErr()
             return
         }
+        refresh_view.showSuccess()
         speed_history.refreshData(lastCashData!!.getJSONArray("speedInfo"))
         val speedConfig = lastCashData!!.getJSONObject("speedConfig")
         if (speedConfig != null) {

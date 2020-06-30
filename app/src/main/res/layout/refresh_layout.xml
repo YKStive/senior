@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/emptyLayout"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:background="#ffff"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -51,13 +50,11 @@
         android:paddingBottom="10dp"
         android:visibility="invisible">
 
-        <ProgressBar
-            android:id="@+id/anim"
+        <com.youloft.senior.widgt.AnimationImageView
+            android:id="@+id/anim_view"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:indeterminate="true"
-            android:indeterminateDrawable="@drawable/loading_img_anim"
-            android:indeterminateDuration="600"
+            android:src="@drawable/loading_img"
             android:visibility="visible" />
 
         <TextView
