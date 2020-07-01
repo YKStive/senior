@@ -20,6 +20,7 @@ import com.youloft.senior.bean.Post
 import com.youloft.senior.bean.PostType
 import com.youloft.senior.utils.ImageLoader
 import com.youloft.senior.utils.isByUser
+import com.youloft.senior.widgt.PostHeaderView
 import com.youloft.senior.widgt.PostItemAlbum
 import com.youloft.senior.widgt.PostItemMultiImage
 import kotlinx.android.synthetic.main.item_post_bottom_share.view.*
@@ -66,12 +67,14 @@ open class PostRemoteViewBinder(
             }
 
             //评论
+            tv_comment.text = if (item.commented == 0) "评论" else item.commented.toString()
             tv_comment.setOnClickListener {
                 onItemClick(item, true)
             }
 
             //点赞
             tv_praise.apply {
+                isSelected = item.isPraised
                 text = item.praised.toString()
                 setOnClickListener {
                     isSelected = !isSelected
@@ -203,35 +206,17 @@ open class PostRemoteViewBinder(
          */
         fun addHeader(post: Post, goPersonPage: (userId: String) -> Unit) {
             headerContainer.removeAllViews()
-            val header: View = if (post.userId.isByUser()) {
-                LayoutInflater.from(App.instance())
-                    .inflate(R.layout.item_post_header_main, itemView as ViewGroup, false)
-            } else {
-                LayoutInflater.from(App.instance())
-                    .inflate(R.layout.item_post_header_other, itemView as ViewGroup, false)
-            }
-            headerContainer.addView(header)
-
-            val ivAvatar = header.findViewById<ImageView>(R.id.iv_avatar)
-            val tvNickname = header.findViewById<TextView>(R.id.tv_name)
-            Glide.with(itemView).load(post.avatar).error(R.drawable.ic_placeholder_error)
-                .into(ivAvatar)
-            tvNickname.text = post.nickname
-
-            ivAvatar.setOnClickListener {
-                goPersonPage(post.userId)
-            }
-
-            tvNickname.setOnClickListener {
-                goPersonPage(post.userId)
-            }
-
-
-            header.findViewById<TextView>(R.id.tv_view_amount).text =
-                String.format(
-                    App.instance().resources.getString(R.string.viewed_amount),
-                    post.viewed
+            headerContainer.addView(PostHeaderView(App.instance(), post.userId.isByUser()).apply {
+                setAvatar(post.avatar)
+                setTitle(post.nickname)
+                setDesc(
+                    String.format(
+                        App.instance().resources.getString(R.string.viewed_amount),
+                        post.viewed
+                    )
                 )
+                onAvatarClick { goPersonPage(post.userId) }
+            })
         }
     }
 

@@ -22,12 +22,12 @@ class AvatarImageView(context: Context, attrs: AttributeSet?) :
 
 
     private val paint by lazy {
-        Paint().apply {
-            isAntiAlias = true
-            style = Paint.Style.FILL
-            color = Color.RED
+//        Paint().apply {
+//            isAntiAlias = true
+//            style = Paint.Style.FILL
+//            color = Color.RED
 //            xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN)
-        }
+//        }
     }
 
 
@@ -52,7 +52,7 @@ class AvatarImageView(context: Context, attrs: AttributeSet?) :
 
     override fun onDraw(canvas: Canvas) {
 //        canvas.saveLayer(null, null, Canvas.ALL_SAVE_FLAG)
-//        super.onDraw(canvas)
+        super.onDraw(canvas)
 //        val circle = width / 2f
 //        canvas.drawCircle(circle, circle, circle, paint)
 //        paint.reset()

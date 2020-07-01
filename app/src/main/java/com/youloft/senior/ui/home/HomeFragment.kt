@@ -60,7 +60,8 @@ class HomeFragment : BaseVMFragment() {
             },
 
             PostInviteViewBinder { _: Button ->
-                "邀请好友".logD()
+                this.activity?.let { InviteFriendActivity.start(it) }
+
             }
         ).withKotlinClassLinker { _, item ->
             when (item.postType) {

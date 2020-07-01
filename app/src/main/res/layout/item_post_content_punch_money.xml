@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:padding="11dp"
     app:bl_corners_radius="2dp"
-    app:bl_solid_color="#ffffc437">
+    app:bl_solid_color="#FFF3DE">
 
 
     <TextView
