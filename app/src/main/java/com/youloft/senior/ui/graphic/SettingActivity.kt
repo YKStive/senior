@@ -1,5 +1,7 @@
 package com.youloft.senior.ui.graphic
 
+import android.content.Intent
+import androidx.fragment.app.FragmentActivity
 import com.youloft.coolktx.MarketHelper
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
@@ -35,5 +37,12 @@ class SettingActivity : BaseActivity() {
 
     override fun initData() {
 
+    }
+
+    companion object {
+        fun start(context: FragmentActivity) {
+            val intent = Intent(context, SettingActivity::class.java)
+            context.startActivity(intent)
+        }
     }
 }

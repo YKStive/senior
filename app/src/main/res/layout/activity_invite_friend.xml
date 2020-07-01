@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.youloft.senior.base.CommonTitle
+        android:id="@+id/common_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/ic_bg_invite_friend">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/ic_invite_text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="#ffffff"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="25dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_text">
+
+                    <ImageView
+                        android:id="@+id/iv_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/ic_invite_code_left"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_invite_code_text"
+                        app:layout_constraintEnd_toStartOf="@id/tv_invite_code_text"
+                        app:layout_constraintTop_toTopOf="@id/tv_invite_code_text" />
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/ic_invite_code_right"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_invite_code_text"
+                        app:layout_constraintStart_toEndOf="@id/tv_invite_code_text"
+                        app:layout_constraintTop_toTopOf="@id/tv_invite_code_text" />
+
+                    <TextView
+                        android:id="@+id/tv_invite_code_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="我的邀请码"
+                        android:textColor="#F23854"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_invite_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="TT124544"
+                        android:textColor="#F73C8A"
+                        android:textSize="40sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_invite_code_text" />
+
+                    <com.noober.background.view.BLTextView
+                        android:id="@+id/tv_copy_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:paddingStart="16dp"
+                        android:paddingTop="3dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="3dp"
+                        android:text="点击复制"
+                        android:textColor="#ffffff"
+                        android:textSize="20sp"
+                        app:bl_corners_radius="17dp"
+                        app:bl_gradient_angle="90"
+                        app:bl_gradient_endColor="#F73C8A"
+                        app:bl_gradient_startColor="#FC6F6F"
+                        app:bl_gradient_type="linear"
+                        app:bl_gradient_useLevel="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_invite_code" />
+
+                    <com.noober.background.view.BLView
+                        android:id="@+id/line"
+                        style="@style/line_vertical"
+                        android:layout_width="3dp"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        app:bl_gradient_angle="360"
+                        app:bl_gradient_endColor="#F23955"
+                        app:bl_gradient_startColor="#AD41D0"
+                        app:bl_gradient_type="linear"
+                        app:bl_gradient_useLevel="true"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_invite_step"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_copy_code"
+                        app:layout_constraintTop_toTopOf="@id/tv_invite_step" />
+
+                    <TextView
+                        android:id="@+id/tv_invite_step"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="62dp"
+                        android:text="邀请步骤"
+                        android:textColor="#40375E"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@id/line"
+                        app:layout_constraintTop_toBottomOf="@id/tv_copy_code" />
+
+                    <ImageView
+                        android:id="@+id/iv_invite_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="9dp"
+                        android:layout_marginTop="15dp"
+                        android:src="@drawable/ic_invite_phone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_invite_step" />
+
+                    <ImageView
+                        android:id="@+id/iv_invite_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="9dp"
+                        android:src="@drawable/ic_invite_money"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/iv_invite_phone" />
+
+                    <ImageView
+                        android:id="@+id/iv_invite_down"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="9dp"
+                        android:src="@drawable/ic_invite_down"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/iv_invite_phone" />
+
+                    <com.noober.background.view.BLTextView
+                        android:id="@+id/tv_01"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="2dp"
+                        android:text="01"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp"
+                        app:bl_corners_radius="15dp"
+                        app:bl_solid_color="#FC6C71"
+                        app:layout_constraintEnd_toEndOf="@id/iv_invite_phone"
+                        app:layout_constraintStart_toStartOf="@id/iv_invite_phone"
+                        app:layout_constraintTop_toBottomOf="@id/iv_invite_phone" />
+
+                    <com.noober.background.view.BLTextView
+                        android:id="@+id/tv_02"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="2dp"
+                        android:text="02"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp"
+                        app:bl_corners_radius="15dp"
+                        app:bl_solid_color="#FC6C71"
+                        app:layout_constraintEnd_toEndOf="@id/iv_invite_down"
+                        app:layout_constraintStart_toStartOf="@id/iv_invite_down"
+                        app:layout_constraintTop_toBottomOf="@id/iv_invite_down" />
+
+                    <com.noober.background.view.BLTextView
+                        android:id="@+id/tv_03"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="2dp"
+                        android:text="03"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp"
+                        app:bl_corners_radius="15dp"
+                        app:bl_solid_color="#FC6C71"
+                        app:layout_constraintEnd_toEndOf="@id/iv_invite_money"
+                        app:layout_constraintStart_toStartOf="@id/iv_invite_money"
+                        app:layout_constraintTop_toBottomOf="@id/iv_invite_money" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="2dp"
+                        android:background="#FC6C71"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_01"
+                        app:layout_constraintEnd_toStartOf="@id/tv_02"
+                        app:layout_constraintStart_toEndOf="@id/tv_01"
+                        app:layout_constraintTop_toTopOf="@id/tv_01" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="2dp"
+                        android:background="#FC6C71"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_01"
+                        app:layout_constraintEnd_toStartOf="@id/tv_03"
+                        app:layout_constraintStart_toEndOf="@id/tv_02"
+                        app:layout_constraintTop_toTopOf="@id/tv_01" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:text="点击按钮\n微信邀请"
+                        android:textColor="#40375E"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="@id/iv_invite_phone"
+                        app:layout_constraintStart_toStartOf="@id/iv_invite_phone"
+                        app:layout_constraintTop_toBottomOf="@id/tv_01" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:gravity="center"
+                        android:text="好友下载\n填写邀请码"
+                        android:textColor="#40375E"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="@id/iv_invite_down"
+                        app:layout_constraintStart_toStartOf="@id/iv_invite_down"
+                        app:layout_constraintTop_toBottomOf="@id/tv_02" />
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:gravity="center"
+                        android:text="获取奖励\n2000金币"
+                        android:textColor="#40375E"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="@id/iv_invite_money"
+                        app:layout_constraintStart_toStartOf="@id/iv_invite_money"
+                        app:layout_constraintTop_toBottomOf="@id/tv_03" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.noober.background.view.BLTextView
+                    android:id="@+id/tv_invite_rule"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:paddingStart="8dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="6dp"
+                    android:text="活动规则"
+                    android:textColor="#DD561F"
+                    android:textSize="13sp"
+                    app:bl_corners_bottomLeftRadius="100dp"
+                    app:bl_corners_topLeftRadius="100dp"
+                    app:bl_solid_color="#FFDD8D"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_text" />
+
+
+                <com.noober.background.view.BLConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:paddingTop="22dp"
+                    android:paddingBottom="14dp"
+                    app:bl_corners_radius="10dp"
+                    app:bl_solid_color="#ffffff"
+                    app:layout_constraintEnd_toEndOf="@id/cl_1"
+                    app:layout_constraintStart_toStartOf="@id/cl_1"
+                    app:layout_constraintTop_toBottomOf="@id/cl_1">
+
+                    <TextView
+                        android:id="@+id/tv_invite_improve"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="33dp"
+                        android:layout_marginEnd="33dp"
+                        android:gravity="center"
+                        android:text="@string/invite_improve"
+                        android:textColor="#000000"
+                        android:textSize="19sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_invite_wx"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:drawableTop="@drawable/ic_invite_weixin"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_horizontal"
+                        android:text="微信"
+                        android:textColor="#40375E"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toStartOf="@id/tv_invite_pyq"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_invite_improve" />
+
+                    <TextView
+                        android:id="@+id/tv_invite_pyq"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableTop="@drawable/ic_invite_pyq"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_horizontal"
+                        android:text="微信"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_invite_wx"
+                        app:layout_constraintTop_toTopOf="@id/tv_invite_wx" />
+
+                </com.noober.background.view.BLConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+
+    </FrameLayout>
+
+</LinearLayout>

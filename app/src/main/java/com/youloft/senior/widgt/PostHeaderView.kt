@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.bumptech.glide.Glide
 import com.youloft.senior.R
 import com.youloft.senior.utils.ImageLoader
 
@@ -53,10 +54,21 @@ class PostHeaderView(context: Context, attributeSet: AttributeSet?) :
         setDesc(desc)
     }
 
+
+    fun onAvatarClick(click: () -> Unit) {
+        ivAvatar.setOnClickListener { click.invoke() }
+        tvTitle.setOnClickListener { click.invoke() }
+    }
+
     fun setAvatar(avatar: String?) {
         avatar?.apply {
-            ImageLoader.loadImage(this@PostHeaderView, this, ivAvatar)
+            Glide.with(context)
+                .load(avatar)
+                .circleCrop()
+                .into(ivAvatar)
         }
+
+
     }
 
     fun setTitle(title: String?) {

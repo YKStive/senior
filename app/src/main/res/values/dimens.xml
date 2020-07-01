@@ -8,4 +8,6 @@
     <dimen name="app_post_gif_width">201dp</dimen>
     <dimen name="app_post_gif_height">201dp</dimen>
     <dimen name="app_post_padding">60dp</dimen>
+    <dimen name="app_post_item_video_vertical_width">178dp</dimen>
+    <dimen name="app_post_item_video_vertical_height">315dp</dimen>
 </resources>

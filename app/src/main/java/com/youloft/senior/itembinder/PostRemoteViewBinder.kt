@@ -1,25 +1,28 @@
 package com.youloft.senior.itembinder
 
 import android.content.Context
-import android.util.Size
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.drakeet.multitype.ItemViewBinder
+import com.youloft.coolktx.dp2px
 import com.youloft.senior.R
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.Post
 import com.youloft.senior.bean.PostType
 import com.youloft.senior.utils.ImageLoader
 import com.youloft.senior.utils.isByUser
+import com.youloft.senior.widgt.PostHeaderView
 import com.youloft.senior.widgt.PostItemAlbum
 import com.youloft.senior.widgt.PostItemMultiImage
-import com.youloft.senior.widgt.VideoPlay
 import kotlinx.android.synthetic.main.item_post_bottom_share.view.*
 import kotlinx.android.synthetic.main.item_post_remote.view.*
 
@@ -30,11 +33,12 @@ import kotlinx.android.synthetic.main.item_post_remote.view.*
  */
 open class PostRemoteViewBinder(
     private val goPersonPage: (userId: String) -> Unit,
-    val onItemClick: (postId: String, openComment: Boolean) -> Unit,
+    val onItemClick: (post: Post, openComment: Boolean?) -> Unit,
     val onShare: (postId: String) -> Unit,
     val onPraise: (postId: String) -> Unit
-) :
-    ItemViewBinder<Post, PostRemoteViewBinder.RemoteViewHolder>() {
+
+) : ItemViewBinder<Post, PostRemoteViewBinder.RemoteViewHolder>() {
+
     override fun onCreateViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup
@@ -54,7 +58,7 @@ open class PostRemoteViewBinder(
             tv_content.text = item.textContent
             //条目
             setOnClickListener {
-                onItemClick(item.id, false)
+                onItemClick(item, null)
             }
 
             //分享
@@ -63,12 +67,14 @@ open class PostRemoteViewBinder(
             }
 
             //评论
+            tv_comment.text = if (item.commented == 0) "评论" else item.commented.toString()
             tv_comment.setOnClickListener {
-                onItemClick(item.id, true)
+                onItemClick(item, true)
             }
 
             //点赞
             tv_praise.apply {
+                isSelected = item.isPraised
                 text = item.praised.toString()
                 setOnClickListener {
                     isSelected = !isSelected
@@ -121,9 +127,47 @@ open class PostRemoteViewBinder(
                 //视频
                 PostType.VIDEO -> {
                     if (post.mediaContent.isNotEmpty()) {
-                        contentContainer.addView(VideoPlay(context).apply { setVideo(post.mediaContent[0],
-                            Size(post.width,post.height)
-                        ) })
+                        val container = FrameLayout(context)
+                        container.apply {
+                            layoutParams = ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT
+                            )
+                        }
+                        val thumbView = ImageView(context)
+                        thumbView.apply {
+                            layoutParams = if (post.width < post.height) ViewGroup.LayoutParams(
+                                178.dp2px,
+                                315.dp2px
+                            ) else ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                178.dp2px
+                            )
+                            scaleType = ImageView.ScaleType.CENTER_CROP
+                        }
+                        val playView = ImageView(context)
+                        playView.apply {
+                            layoutParams = FrameLayout.LayoutParams(
+                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT
+                            )
+                            (layoutParams as FrameLayout.LayoutParams).gravity = Gravity.CENTER
+                            setImageResource(R.drawable.ic_placeholder_error)
+
+                        }
+                        container.addView(thumbView)
+                        container.addView(playView)
+                        contentContainer.addView(container)
+                        Glide.with(thumbView.context)
+                            .setDefaultRequestOptions(
+                                RequestOptions()
+                                    .frame(1000000)
+                                    .centerCrop()
+                                    .error(R.drawable.ic_placeholder_error)
+                                    .placeholder(R.drawable.ic_placeholder_error)
+                            )
+                            .load(post.mediaContent[0])
+                            .into(thumbView)
 
                     }
 
@@ -162,35 +206,17 @@ open class PostRemoteViewBinder(
          */
         fun addHeader(post: Post, goPersonPage: (userId: String) -> Unit) {
             headerContainer.removeAllViews()
-            val header: View = if (post.userId.isByUser()) {
-                LayoutInflater.from(App.instance())
-                    .inflate(R.layout.item_post_header_main, itemView as ViewGroup, false)
-            } else {
-                LayoutInflater.from(App.instance())
-                    .inflate(R.layout.item_post_header_other, itemView as ViewGroup, false)
-            }
-            headerContainer.addView(header)
-
-            val ivAvatar = header.findViewById<ImageView>(R.id.iv_avatar)
-            val tvNickname = header.findViewById<TextView>(R.id.tv_name)
-            Glide.with(itemView).load(post.avatar).error(R.drawable.ic_placeholder_error)
-                .into(ivAvatar)
-            tvNickname.text = post.nickname
-
-            ivAvatar.setOnClickListener {
-                goPersonPage(post.userId)
-            }
-
-            tvNickname.setOnClickListener {
-                goPersonPage(post.userId)
-            }
-
-
-            header.findViewById<TextView>(R.id.tv_view_amount).text =
-                String.format(
-                    App.instance().resources.getString(R.string.viewed_amount),
-                    post.viewed
+            headerContainer.addView(PostHeaderView(App.instance(), post.userId.isByUser()).apply {
+                setAvatar(post.avatar)
+                setTitle(post.nickname)
+                setDesc(
+                    String.format(
+                        App.instance().resources.getString(R.string.viewed_amount),
+                        post.viewed
+                    )
                 )
+                onAvatarClick { goPersonPage(post.userId) }
+            })
         }
     }
 

@@ -1,42 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/header"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <com.youloft.senior.widgt.AvatarImageView
-        android:id="@+id/iv_avatar"
+    <FrameLayout
+        android:id="@+id/avatar_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="38dp"
-        android:layout_height="38dp"
-        tools:src="@drawable/test" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/ic_placeholder_error" />
+
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_avatar_border"
+            />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/tv_name"
-        app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
-        app:layout_constraintStart_toEndOf="@id/iv_avatar"
-        app:layout_constraintTop_toTopOf="@id/iv_avatar"
-        tools:text="啦啦啦啦啦"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
         android:textColor="#FF555555"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/avatar_container"
+        app:layout_constraintStart_toEndOf="@id/avatar_container"
+        app:layout_constraintTop_toTopOf="@id/avatar_container"
+        tools:text="啦啦啦啦啦" />
 
 
     <TextView
         android:id="@+id/tv_view_amount"
-        app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/iv_avatar"
-        tools:text="@string/viewed_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
         android:textColor="#FF999999"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/avatar_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/avatar_container"
+        tools:text="@string/viewed_amount" />
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/home_qp_angle"
+        app:layout_constraintStart_toEndOf="@id/avatar_container"
+        app:layout_constraintTop_toBottomOf="@id/avatar_container" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,10 +6,10 @@
     android:layout_height="wrap_content">
 
     <com.youloft.senior.widgt.PostHeaderView
-        app:hv_is_main="true"
         android:id="@+id/header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:hv_is_main="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -17,8 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/ic_post_item_bg_other"
+        android:background="@drawable/bg_post_item_content"
         android:paddingStart="15dp"
         android:paddingTop="10dp"
         android:paddingEnd="15sp"

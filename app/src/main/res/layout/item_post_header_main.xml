@@ -7,26 +7,28 @@
     android:layout_height="wrap_content">
 
     <FrameLayout
-        android:background="@drawable/ic_avatar_border"
         android:id="@+id/avatar_container"
-        android:layout_width="38dp"
-        android:layout_height="38dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <com.youloft.senior.widgt.AvatarImageView
+        <ImageView
             android:id="@+id/iv_avatar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
             android:layout_gravity="center"
-            tools:src="@drawable/test" />
+            android:scaleType="centerCrop"
+            tools:src="@drawable/ic_placeholder_error" />
 
         <ImageView
+            android:layout_gravity="center"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
             android:scaleType="fitXY"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_avatar_border" />
+            android:src="@drawable/ic_avatar_border"
+            />
     </FrameLayout>
 
     <TextView
@@ -53,5 +55,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/avatar_container"
         tools:text="@string/viewed_amount" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/home_qp_angle"
+        app:layout_constraintEnd_toStartOf="@id/avatar_container"
+        app:layout_constraintTop_toBottomOf="@id/avatar_container" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

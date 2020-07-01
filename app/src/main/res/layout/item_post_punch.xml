@@ -16,8 +16,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/ic_post_item_bg_other"
+        android:background="@drawable/bg_post_item_content"
         android:paddingStart="15dp"
         android:paddingTop="10dp"
         android:paddingEnd="15sp"

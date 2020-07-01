@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Message
 import android.util.AttributeSet
+import android.view.MotionEvent
 import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 import java.util.jar.Attributes
@@ -37,6 +38,11 @@ open class AutoScrollRecycleView(context: Context, attr: AttributeSet?) :
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         mHandler.removeCallbacksAndMessages(null)
+    }
+
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        return false
     }
 
 

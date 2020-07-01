@@ -19,8 +19,11 @@ data class Post(
     val templateId: Int = 0,
     val textContent: String = "",
     val userId: String = "",
-    val viewed: Int = 0
-) {
+    val viewed: Int = 0,
+    val commented: Int = 20,
+    val isPraised: Boolean = true
+
+    ) {
 
 
     companion object {
@@ -34,6 +37,7 @@ data class Post(
         val gifPath =
             "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/200px-Rotating_earth_%28large%29.gif"
         var avatar = "https://pic4.zhimg.com/v2-5fd62f20577029e9418233411e3ef24f_b.jpg"
+//        var avatar = gifPath
         val multiData: Post = Post(
             200.dp2px,
             UiUtil.getScreenHeight(App.instance()),
