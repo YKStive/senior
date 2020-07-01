@@ -152,7 +152,7 @@ open class PostRemoteViewBinder(
                                 ViewGroup.LayoutParams.WRAP_CONTENT
                             )
                             (layoutParams as FrameLayout.LayoutParams).gravity = Gravity.CENTER
-                            setImageResource(R.drawable.ic_placeholder_error)
+                            setImageResource(R.drawable.ic_video_play)
 
                         }
                         container.addView(thumbView)

@@ -23,4 +23,14 @@
         android:layout_marginRight="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textColor="#ffffff"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_clover"
+        app:layout_constraintStart_toStartOf="@id/iv_clover" />
 </androidx.constraintlayout.widget.ConstraintLayout>

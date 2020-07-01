@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#99000000">
+
+
+    <com.noober.background.view.BLConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        app:bl_corners_topLeftRadius="15dp"
+        app:bl_corners_topRightRadius="15dp"
+        app:bl_solid_color="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="温馨提示"
+            android:textColor="#333333"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_protocol_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/protocol_desc"
+            android:textColor="#555555"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <com.noober.background.view.BLTextView
+            android:id="@+id/tv_disagree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingStart="31dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="31dp"
+            android:paddingBottom="10dp"
+            android:text="@string/disagree"
+            android:textColor="#8E8E8E"
+            android:textSize="20sp"
+            app:bl_corners_radius="25dp"
+            app:bl_solid_color="#EAEAEA"
+            app:layout_constraintStart_toStartOf="@id/tv_protocol_desc"
+            app:layout_constraintTop_toBottomOf="@id/tv_protocol_desc" />
+
+        <com.noober.background.view.BLTextView
+            android:id="@+id/tv_agree"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:paddingStart="31dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="31dp"
+            android:paddingBottom="10dp"
+            android:text="@string/agree"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            app:bl_corners_radius="25dp"
+            app:bl_gradient_angle="90"
+            app:bl_gradient_endColor="#FF6734"
+            app:bl_gradient_startColor="#FF8B5D"
+            app:bl_gradient_type="radial"
+            app:bl_gradient_useLevel="true"
+            app:layout_constraintEnd_toEndOf="@id/tv_protocol_desc"
+            app:layout_constraintStart_toEndOf="@id/tv_disagree"
+            app:layout_constraintTop_toBottomOf="@id/tv_protocol_desc" />
+    </com.noober.background.view.BLConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,62 +11,42 @@ import com.yanzhenjie.permission.runtime.Permission
 import com.youloft.core.base.BaseVMActivity
 import com.youloft.senior.R
 import com.youloft.senior.ui.login.LoginFragment
+import com.youloft.senior.utils.Preference
 import com.youloft.senior.widgt.OperateDialog
+import com.youloft.senior.widgt.PrivacyDialog
 import kotlinx.android.synthetic.main.activity_home.*
 
 /**
  * @author you
  * @create 2020/6/18
- * @desc
+ * @desc 首页
  */
 class HomeActivity : BaseVMActivity() {
-    companion object{
-        private const val COUnt_DOWN_CODE = 100
-    }
+
+    private var isAgreePrivacy by Preference(Preference.IS_AGREE_PRIVACY, false)
     lateinit var mViewModel: HomeModel
     private val mainFragment = MainFragment()
     private val homeFragment = HomeFragment()
     private val notLoginFragment = LoginFragment()
-    var showPublishFlag = true
-    var timecount = 3
-    private val timeHandler: Handler = object : Handler() {
-        override fun handleMessage(msg: Message) {
-            super.handleMessage(msg)
-            if (msg.what === COUnt_DOWN_CODE) {
-                if (timecount > 0) {
-                    timecount--
-                    sendEmptyMessageDelayed(COUnt_DOWN_CODE, 1000)
-                } else {
-                    img_publish.visibility = View.GONE
-                    showPublishFlag = false
-                }
-            }
-        }
-    }
-
     override fun getLayoutResId(): Int {
         return R.layout.activity_home
 
     }
 
     override fun initView() {
-        reqPermissions()
-        supportFragmentManager.beginTransaction()
-            .add(R.id.fl_container_home, homeFragment)
-            .add(R.id.fl_container_main, mainFragment)
-            .add(R.id.fl_container_main, notLoginFragment)
-            .commit()
-
+        if (!isAgreePrivacy) {
+            PrivacyDialog(this) {
+                isAgreePrivacy = true
+                reqPermissions()
+            }.show()
+        } else {
+            reqPermissions()
+        }
 
 
         btn_home.apply {
             isSelected = true
             setOnClickListener {
-                if (img_publish.visibility == View.VISIBLE) {
-                    img_publish.visibility = View.GONE
-                    showPublishFlag = false
-                    timeHandler.removeMessages(COUnt_DOWN_CODE)
-                }
                 supportFragmentManager.beginTransaction()
                     .hide(mainFragment)
                     .show(homeFragment)
@@ -82,9 +62,13 @@ class HomeActivity : BaseVMActivity() {
 
         btn_main.apply {
             setOnClickListener {
-                if (showPublishFlag) {
-                    timeHandler.sendEmptyMessageDelayed(COUnt_DOWN_CODE, 1000);
-                    img_publish.visibility = View.VISIBLE
+                img_publish.apply {
+                    if (visibility == View.GONE) {
+                        visibility = View.VISIBLE
+                        postDelayed({
+                            visibility = View.GONE
+                        }, 3000)
+                    }
                 }
                 if (com.youloft.senior.utils.UserManager.instance.hasLogin()) {
                     supportFragmentManager.beginTransaction()
@@ -160,6 +144,11 @@ class HomeActivity : BaseVMActivity() {
                 Permission.WRITE_EXTERNAL_STORAGE
             )
             .onGranted {
+                supportFragmentManager.beginTransaction()
+                    .add(R.id.fl_container_home, homeFragment)
+                    .add(R.id.fl_container_main, mainFragment)
+                    .add(R.id.fl_container_main, notLoginFragment)
+                    .commit()
             }
             .onDenied {
                 finish()
