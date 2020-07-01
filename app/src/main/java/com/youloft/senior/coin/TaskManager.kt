@@ -433,7 +433,6 @@ internal class TaskManager {
 
     private fun goLogin(ctx: Context): Boolean {
         if (!UserManager.instance.hasLogin()) {
-            ToastMaster.showLongToast(ctx, "先去登录")
             return true
         }
         return false

@@ -1,8 +1,6 @@
 package com.youloft.senior.ui.login
 
 import android.app.Activity
-import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +10,7 @@ import android.widget.TextView
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.youloft.coolktx.launchIOWhenCreated
 import com.youloft.core.R
+import com.youloft.core.base.BaseBottomDialog
 import com.youloft.senior.bean.LoginBean
 import com.youloft.senior.bean.LoginUploadData
 import com.youloft.senior.net.ApiHelper
@@ -23,8 +22,6 @@ import com.youloft.socialize.SOC_MEDIA
 import com.youloft.socialize.Socialize
 import com.youloft.socialize.auth.AuthListener
 import com.youloft.util.ToastMaster
-import kotlinx.android.synthetic.main.cash_tips_dialog_layout.*
-import kotlinx.android.synthetic.main.dialog_delete_tips.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -43,7 +40,7 @@ class LoginDialog(
     var activity: Activity,
     var lifecycleScop: LifecycleCoroutineScope,
     style: Int = R.style.loginDialogStyle
-) : Dialog(activity, style) {
+) : BaseBottomDialog(activity, style) {
     lateinit var view: View
     lateinit var edtPhone: EditText
     lateinit var tvLogin: TextView

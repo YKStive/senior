@@ -13,8 +13,10 @@
         <item name="android:windowSoftInputMode">adjustNothing|stateHidden</item>
     </style>
 
-    <style name="loginDialogStyle" parent="DialogTheme">
+    <style name="loginDialogStyle" parent="DialogThemeResize">
         <item name="android:windowAnimationStyle">@style/ActionSheetDialogAnimation</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowFullscreen">false</item>
     </style>
 
         <!-- ActionSheet进出动画 -->

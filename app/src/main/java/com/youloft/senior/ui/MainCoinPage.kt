@@ -7,7 +7,6 @@ import android.content.Intent
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,8 +22,8 @@ import com.youloft.senior.cash.CashActivity
 import com.youloft.senior.coin.*
 import com.youloft.senior.tuia.TuiaUtil
 import com.youloft.senior.tuia.TuiaWebActivity
+import com.youloft.senior.ui.login.LoginDialog
 import com.youloft.senior.utils.UserManager
-import com.youloft.senior.widgt.LoginPopup
 import com.youloft.util.ToastMaster
 import com.youloft.util.UiUtil
 import kotlinx.android.synthetic.main.main_coin_page_layout.view.*
@@ -69,8 +68,8 @@ internal class MainCoinPage(
     private fun goLogin(): Boolean {
         if (!UserManager.instance.hasLogin()) {
             //登录
-            LoginPopup(context as AppCompatActivity, (context as AppCompatActivity).lifecycleScope)
-                .showAtLocation(this, Gravity.CENTER, 0, 0)
+            LoginDialog(context as AppCompatActivity, (context as AppCompatActivity).lifecycleScope)
+                .show()
             return true
         }
         return false
