@@ -3,6 +3,8 @@ package com.youloft.senior.net
 import android.content.Context
 import android.text.TextUtils
 import android.util.Log
+import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONObject
 import com.facebook.stetho.Stetho
 import com.youloft.coolktx.jsonToObject
 import com.youloft.net.BaseRetrofitClient
@@ -70,12 +72,17 @@ object ApiHelper : BaseRetrofitClient() {
                             UserManager.instance.getRefreshToken(),
                             UserManager.instance.getUserId()
                         )
-                        if (token != null && token.getIntValue("status") == 200) {
-                            if (token.getJSONObject("data") != null) {
-                                val bean: LoginBean? =
-                                    token.getJSONObject("data").toJSONString().jsonToObject()
-                                if (bean != null) {
-                                    UserManager.instance.refreshUserData(bean)
+                        if (token != null) {
+                            if (token.getIntValue("status") == 200) {
+                                if (token.getJSONObject("data") != null) {
+                                    val bean: LoginBean? =
+                                        token.getJSONObject("data").toJSONString().jsonToObject()
+                                    if (bean != null) {
+                                        UserManager.instance.refreshUserData(bean)
+                                    } else {
+                                        UserManager.instance.loginOut(true)
+                                        throw Exception("登录过期")
+                                    }
                                 } else {
                                     UserManager.instance.loginOut(true)
                                     throw Exception("登录过期")
@@ -84,16 +91,25 @@ object ApiHelper : BaseRetrofitClient() {
                                 UserManager.instance.loginOut(true)
                                 throw Exception("登录过期")
                             }
-                        } else {
-                            UserManager.instance.loginOut(true)
-                            throw Exception("登录过期")
                         }
                     }
                 }
             }
             //处理公共参数
             request = parseRequest(request)
-            return chain.proceed(request)
+            val response = chain.proceed(request)
+            if (response.body != null) {
+                try {
+                    val result = response.body!!.string()
+                    val state = JSONObject.parseObject("result").getIntValue("status")
+                    if (state == 230) {
+                        //登录过期
+                        UserManager.instance.loginOut(true)
+                    }
+                } catch (e: Exception) {
+                }
+            }
+            return response.cacheResponse!!
         }
     }
 

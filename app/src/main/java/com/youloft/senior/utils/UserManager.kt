@@ -1,12 +1,18 @@
 package com.youloft.senior.utils
 
 import android.text.TextUtils
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.youloft.coolktx.jsonToObject
 import com.youloft.coolktx.toJsonString
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.LoginBean
 import com.youloft.senior.coin.CoinManager
+import com.youloft.senior.ui.login.LoginDialog
 import com.youloft.util.ToastMaster
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 /**
@@ -53,7 +59,13 @@ class UserManager {
         CoinManager.instance.loadData()
         if (reLogin) {
             //重新拉起登录界面
-            ToastMaster.showLongToast(App.instance(), "登录过期，请重新登录")
+            GlobalScope.launch(Dispatchers.Main) {
+                ToastMaster.showLongToast(App.instance(), "登录过期，请重新登录")
+                val activity = ActivityManager.instance.topActivity ?: return@launch
+                LoginDialog(
+                    activity as AppCompatActivity, activity.lifecycleScope
+                ).show()
+            }
         }
     }
 
