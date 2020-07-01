@@ -97,19 +97,19 @@ object ApiHelper : BaseRetrofitClient() {
             }
             //处理公共参数
             request = parseRequest(request)
-            val response = chain.proceed(request)
-            if (response.body != null) {
-                try {
-                    val result = response.body!!.string()
-                    val state = JSONObject.parseObject("result").getIntValue("status")
-                    if (state == 230) {
-                        //登录过期
-                        UserManager.instance.loginOut(true)
-                    }
-                } catch (e: Exception) {
-                }
-            }
-            return response.cacheResponse!!
+//            val response = chain.proceed(request)
+//            if (response.body != null) {
+//                try {
+//                    val result = response.body!!.string()
+//                    val state = JSONObject.parseObject("result").getIntValue("status")
+//                    if (state == 230) {
+//                        //登录过期
+//                        UserManager.instance.loginOut(true)
+//                    }
+//                } catch (e: Exception) {
+//                }
+//            }
+            return chain.proceed(request)
         }
     }
 
