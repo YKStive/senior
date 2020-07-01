@@ -48,6 +48,8 @@ class UserManager {
         userInfoTime = System.currentTimeMillis()
     }
 
+    var showLogin: Boolean = false
+
     /**
      * 注销登录
      * @param reLogin 是否重新登录
@@ -59,12 +61,20 @@ class UserManager {
         CoinManager.instance.loadData()
         if (reLogin) {
             //重新拉起登录界面
-            GlobalScope.launch(Dispatchers.Main) {
-                ToastMaster.showLongToast(App.instance(), "登录过期，请重新登录")
-                val activity = ActivityManager.instance.topActivity ?: return@launch
-                LoginDialog(
-                    activity as AppCompatActivity, activity.lifecycleScope
-                ).show()
+            synchronized(this) {
+                if (showLogin) {
+                    return
+                }
+                GlobalScope.launch(Dispatchers.Main) {
+                    ToastMaster.showLongToast(App.instance(), "登录过期，请重新登录")
+                    val activity = ActivityManager.instance.topActivity ?: return@launch
+                    showLogin = true
+                    LoginDialog(
+                        activity as AppCompatActivity, activity.lifecycleScope
+                    )
+                        .apply { setOnDismissListener { showLogin = false } }
+                        .show()
+                }
             }
         }
     }

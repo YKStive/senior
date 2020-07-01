@@ -3,7 +3,6 @@ package com.youloft.senior.net
 import android.content.Context
 import android.text.TextUtils
 import android.util.Log
-import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import com.facebook.stetho.Stetho
 import com.youloft.coolktx.jsonToObject
@@ -14,6 +13,7 @@ import com.youloft.senior.bean.LoginBean
 import com.youloft.senior.utils.UserManager
 import com.youloft.util.MD5
 import okhttp3.*
+import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.buffer
 import okio.sink
 import java.io.ByteArrayOutputStream
@@ -97,19 +97,25 @@ object ApiHelper : BaseRetrofitClient() {
             }
             //处理公共参数
             request = parseRequest(request)
-//            val response = chain.proceed(request)
-//            if (response.body != null) {
-//                try {
-//                    val result = response.body!!.string()
-//                    val state = JSONObject.parseObject("result").getIntValue("status")
-//                    if (state == 230) {
-//                        //登录过期
-//                        UserManager.instance.loginOut(true)
-//                    }
-//                } catch (e: Exception) {
-//                }
-//            }
-            return chain.proceed(request)
+            val response = chain.proceed(request)
+            if (response.body != null && UserManager.instance.hasLogin()) {
+                var result: String? = null
+                try {
+                    result = response.body!!.string()
+                    val state = JSONObject.parseObject(result).getIntValue("status")
+                    if (state == 401) {
+                        //登录过期
+                        UserManager.instance.loginOut(true)
+                    }
+                } catch (e: Exception) {
+                } finally {
+                    if (!TextUtils.isEmpty(result)) {
+                        return response.newBuilder()
+                            .body(result!!.toResponseBody(response.body!!.contentType())).build()
+                    }
+                }
+            }
+            return response
         }
     }
 

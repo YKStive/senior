@@ -47,6 +47,7 @@ class LoginDialog(
     lateinit var ivClose: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        UserManager.instance.showLogin = true
         view = LayoutInflater.from(activity).inflate(com.youloft.senior.R.layout.popup_login, null)
         setContentView(view)
         setCancelable(false)
@@ -117,5 +118,10 @@ class LoginDialog(
                 }
             })
         }
+    }
+
+    override fun dismiss() {
+        super.dismiss()
+        UserManager.instance.showLogin = false
     }
 }
