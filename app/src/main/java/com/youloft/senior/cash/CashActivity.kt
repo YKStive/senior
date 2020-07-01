@@ -57,6 +57,10 @@ class CashActivity : BaseActivity() {
                 return@setOnClickListener
             }
             if (lastCash!!.getIntValue("type") == 2) {
+                if (lastCash!!.getIntValue("cashStatus") == -1) {
+                    ToastMaster.showLongToast(this, "提现异常，请联系客服处理")
+                    return@setOnClickListener
+                }
                 //0.3元的类型
                 showCashTips(
                     lastCash!!.getString("cash"),
