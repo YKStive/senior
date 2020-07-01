@@ -60,4 +60,11 @@
     <string name="app_update">软件更新</string>
     <string name="app_praise">给软件好评</string>
     <string name="logout">退出登录</string>
+    <string name="invite_rule1">1.每成功邀请一位新用户（以下或称“好友”），您可以将活动页面通过微信分享给好友，好友首次装简单天气并成功绑定微信或手机号，则视为邀请成功，邀请者首次可获得10000金币，后续可获得8000金币奖励；（注：邀请码为本平台为每位用户设立的独立ID号，用于邀请好友时使用，且每位用户只能填写一次邀请码）。
+</string>
+    <string name="invite_rule2">2.每位新用户只能被邀请一次，同一微信号，同一手机号，同一设备都视为同一个用户。</string>
+    <string name="invite_rule3">3.邀请奖励会自动发放至您的账户，请在“我的”-“钱包”中查看，系统仅保存您最近7天金币记录，请注意查收。</string>
+    <string name="invite_rule4">4.邀请好友数量无上限，邀请越多奖励越多。</string>
+    <string name="invite_rule5">5.对于存在非正常邀请行为的用户，平台将取消其参加活动的资格，并扣除相应的奖励不予结算。</string>
+    <string name="invite_improve">分享到微信群，成功率</string>
 </resources>

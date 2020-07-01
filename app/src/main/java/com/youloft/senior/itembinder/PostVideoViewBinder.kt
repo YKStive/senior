@@ -4,15 +4,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.drakeet.multitype.ItemViewBinder
 import com.youloft.senior.R
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.Post
-import kotlinx.android.synthetic.main.item_post_header_other.view.*
-import kotlinx.android.synthetic.main.item_post_punch.view.*
-import kotlin.random.Random
+import kotlinx.android.synthetic.main.item_post_video.view.*
 
 /**
  * @author you
@@ -28,9 +28,7 @@ open class PostVideoViewBinder(
         inflater: LayoutInflater,
         parent: ViewGroup
     ): ViewHolder {
-        val root: ConstraintLayout =
-            inflater.inflate(R.layout.item_post_video, parent, false) as ConstraintLayout
-        return ViewHolder(root)
+        return ViewHolder(inflater.inflate(R.layout.item_post_video, parent, false))
     }
 
     override fun onBindViewHolder(
@@ -38,23 +36,40 @@ open class PostVideoViewBinder(
     ) {
 
         holder.itemView.run {
-
-            iv_avatar.setImageResource(R.drawable.ic_placeholder_error)
-            tv_name.text = context.resources.getString(R.string.punch_every_day_money)
-            tv_view_amount.text = String.format(
-                App.instance().resources.getString(R.string.punch_amount),
-                Random.nextInt(100000, 300000)
-            )
-
-
-            btn_punch.run {
-                setOnClickListener {
-                    onInvite(this)
-                }
-            }
-
-
+            tv_content.text = item.textContent
+            setPlayer(item, player)
         }
+    }
+
+    private fun setPlayer(item: Post, player: ImageView) {
+        if (item.width < item.height) {
+            player.apply {
+                layoutParams.width =
+                    App.instance().resources.getDimension(R.dimen.app_post_item_video_vertical_width)
+                        .toInt()
+                layoutParams.height =
+                    App.instance().resources.getDimension(R.dimen.app_post_item_video_vertical_height)
+                        .toInt()
+            }
+        } else {
+            player.apply {
+                layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+                layoutParams.height =
+                    App.instance().resources.getDimension(R.dimen.app_post_item_video_vertical_width)
+                        .toInt()
+            }
+        }
+
+        Glide.with(player.context)
+            .setDefaultRequestOptions(
+                RequestOptions()
+                    .frame(1000000)
+                    .centerCrop()
+                    .error(R.drawable.ic_placeholder_error)
+                    .placeholder(R.drawable.ic_placeholder_error)
+            )
+            .load(item.mediaContent[0])
+            .into(player)
     }
 
     class ViewHolder(itemView: View) :

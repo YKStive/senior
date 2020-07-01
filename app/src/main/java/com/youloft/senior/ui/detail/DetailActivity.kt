@@ -47,10 +47,18 @@ class DetailActivity : BaseActivity() {
     lateinit var mPopupWindow: PopupWindow
 
     companion object {
-        fun start(context: FragmentActivity, informationId: String, informationType: Int) {
+        fun start(
+            context: FragmentActivity,
+            informationId: String,
+            informationType: Int,
+            isComment: Boolean? = false
+        ) {
             val starter = Intent(context, DetailActivity::class.java)
             starter.putExtra("informationId", informationId)
             starter.putExtra("informationType", informationType)
+            isComment?.apply {
+                starter.putExtra("isComment", isComment)
+            }
             context.startActivity(starter)
         }
     }
@@ -270,7 +278,7 @@ class DetailActivity : BaseActivity() {
     }
 
     private fun showPop() {
-        mPopupWindow= PopupWindow(this)
+        mPopupWindow = PopupWindow(this)
         // 设置布局文件
         mPopupWindow.setContentView(LayoutInflater.from(this).inflate(R.layout.pop_post_more, null))
         // 为了避免部分机型不显示，我们需要重新设置一下宽高

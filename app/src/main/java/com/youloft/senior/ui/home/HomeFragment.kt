@@ -10,11 +10,10 @@ import com.youloft.senior.R
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.Post
 import com.youloft.senior.bean.PostType
-import com.youloft.senior.itembinder.PostInviteViewBinder
-import com.youloft.senior.itembinder.PostLocalAlbumViewBinder
-import com.youloft.senior.itembinder.PostRemoteViewBinder
-import com.youloft.senior.itembinder.PostPunchViewBinder
 import com.youloft.coolktx.dp2px
+import com.youloft.senior.itembinder.*
+import com.youloft.senior.ui.detail.DetailActivity
+import com.youloft.senior.ui.graphic.InviteFriendActivity
 import com.youloft.senior.utils.logD
 import com.youloft.senior.widgt.RecycleViewDivider
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -37,14 +36,14 @@ class HomeFragment : BaseVMFragment() {
         mAdapter.register(Post::class).to(
             PostRemoteViewBinder({ userId ->
                 "个人界面".logD()
-            }, { postId, openComment ->
-                if (openComment) {
-                    "评论".logD()
-                } else {
-                    "详情".logD()
-                }
+            }, { post, openComment ->
+                this.activity?.let { DetailActivity.start(it, post.id, post.postType, openComment) }
             }, { postId ->
                 "分享".logD()
+                this.activity?.let {
+                    InviteFriendActivity.start(it)
+                }
+
             }, { postId ->
                 "点赞".logD()
             }),

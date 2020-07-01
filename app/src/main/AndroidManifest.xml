@@ -84,6 +84,9 @@
         <activity android:name=".ui.graphic.ContentPublishActivity" />
         <activity android:name=".ui.graphic.ReceivedCommentActivity" />
         <activity android:name=".ui.graphic.ReceivedPraiseActivity" />
+        <activity android:name=".ui.graphic.InviteRuleActivity" />
+        <activity android:name=".ui.graphic.SettingActivity" />
+        <activity android:name=".ui.graphic.InviteFriendActivity" />
 
         <meta-data
             android:name="com.huawei.hms.client.appid"
