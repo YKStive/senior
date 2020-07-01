@@ -24,6 +24,7 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
 
     companion object {
         const val IS_LOGIN = "is_login"
+        const val IS_AGREE_PRIVACY = "is_agree_privacy"
         const val USER_GSON = "user_gson"
         const val ACCESSTOKEN = "accessToken"
         const val REFRESHTOKEN = "refreshToken"

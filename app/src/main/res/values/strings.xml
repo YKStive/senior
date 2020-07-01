@@ -67,4 +67,9 @@
     <string name="invite_rule4">4.邀请好友数量无上限，邀请越多奖励越多。</string>
     <string name="invite_rule5">5.对于存在非正常邀请行为的用户，平台将取消其参加活动的资格，并扣除相应的奖励不予结算。</string>
     <string name="invite_improve">分享到微信群，成功率</string>
+    <string name="protocol_desc">在您使用最美社区APP服务前，请认真阅读%s和%s的全部条款，您同意并接受全部条款后再开始使用我们的服务。</string>
+    <string name="user_protocol">《用户协议》</string>
+    <string name="privacy">《隐私政策》</string>
+    <string name="disagree">不同意</string>
+    <string name="agree">同意</string>
 </resources>

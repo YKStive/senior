@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.drakeet.multitype.ItemViewBinder
+import com.youloft.coolktx.addZero
 import com.youloft.coolktx.dp2px
 import com.youloft.coolktx.toast
 import com.youloft.senior.R
@@ -43,6 +44,13 @@ class ChoiceMultiImageItemBinder(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ImageRes) {
 
         holder.itemView.run {
+
+            item.duration?.apply {
+                val min = item.duration!! / 1000 / 60
+                val sec = item.duration!! / 1000 % 60
+                tv_duration.text = "${min.addZero()}:${sec.addZero()}"
+            }
+
             if (item.isSelected) {
                 iv_check.setImageResource(R.drawable.ic_image_checked)
             } else {
@@ -92,7 +100,7 @@ class ChoiceMultiImageItemBinder(
         if (item.isSelected || count < limit) {
             item.isSelected = !item.isSelected
             adapter.notifyItemChanged(holder.layoutPosition)
-            selectedCount.value = count+1
+            selectedCount.value = count + 1
         } else {
             context.toast(toastStr)
         }
