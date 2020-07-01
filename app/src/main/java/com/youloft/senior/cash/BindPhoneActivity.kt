@@ -193,6 +193,11 @@ internal class BindPhoneActivity : BaseActivity() {
         time = -1
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        stop()
+    }
+
     /**
      * 切换到填写验证码界面
      */
@@ -203,6 +208,7 @@ internal class BindPhoneActivity : BaseActivity() {
             resend.visibility = View.GONE
             resend_code.visibility = View.VISIBLE
             time = 60
+            resend_code.text = "${time}秒"
             startTime();
         } else {
             ToastMaster.showLongToast(this, "发送失败，请重新发送")

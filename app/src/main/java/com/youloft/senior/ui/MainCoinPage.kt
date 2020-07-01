@@ -487,7 +487,8 @@ internal class MainCoinPage(
             }
             itemView.item_content.text = bean.subItems[0].content
             itemView.item_coin.text = "+${bean.subItems[0].coin}"
-            itemView.item_button.text = if (bean.hasDone()) "已完成" else bean.button
+            itemView.item_button.text =
+                if (bean.hasDone()) "已完成" else if (TextUtils.isEmpty(bean.button)) "立即完成" else bean.button
             if (bean.isRewardTask && !bean.hasDone()) {
                 //判定是否有 iterval
                 MissionCountDownTimer.updateCountDown(

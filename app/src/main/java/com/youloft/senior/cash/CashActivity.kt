@@ -86,6 +86,8 @@ class CashActivity : BaseActivity() {
             short_group.visibility = View.VISIBLE
             short_text.text =
                 "还差${(itemCashValue - userWXMessage!!.getFloatValue("cash"))}元即可提现，快去做任务赚钱吧"
+        } else {
+            short_group.visibility = View.GONE
         }
         wx_account.text = userWXMessage!!.getString("nickname")
         if (!lastCash!!.getBooleanValue("isExists")) {
@@ -217,6 +219,11 @@ class CashActivity : BaseActivity() {
         if (selectCashItem == null) {
             return
         }
+        val itemCashValue = selectCashItem!!.getFloatValue("price")
+        if (itemCashValue > userWXMessage!!.getFloatValue("cash")) {
+            ToastMaster.showLongToast(this, "余额不足")
+            return
+        }
         showProcess("申请提交中")
         GlobalScope.launch(Dispatchers.Main) {
             val selectType = selectCashItem!!.getIntValue("type")
@@ -249,6 +256,7 @@ class CashActivity : BaseActivity() {
                 )
                 lastCash!!.put("type", if (selectType == 0) 2 else 1)
                 //提现成功
+                refreshUser()
                 if (selectType == 0) {
                     //新人专享
                     if (speedMode != null) {
