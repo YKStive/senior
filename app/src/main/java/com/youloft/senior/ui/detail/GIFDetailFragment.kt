@@ -79,14 +79,14 @@ class GIFDetailFragment : BaseFragment() {
         //外部辅助的旋转，帮助全屏
         orientationUtils = OrientationUtils(activity, detail_player)
 //初始化不打开外部的旋转
-//初始化不打开外部的旋转
         orientationUtils.setEnable(false)
 
         val gsyVideoOption = GSYVideoOptionBuilder()
         //.setThumbImageView(imageView)
         gsyVideoOption
-            .setIsTouchWiget(true)
             .setRotateViewAuto(false)
+            .setThumbPlay(true)
+            .setIsTouchWiget(false)
             .setLockLand(false)
             .setAutoFullWithSize(true)
             .setShowFullAnimation(false)
