@@ -110,18 +110,18 @@ class MovieAndGifDetailFragment : BaseFragment() {
         tv_make.setOnClickListener {
             activity?.let { thisActivity ->
                 ChoiceImageActivity.start(thisActivity, 20) {
-                    var imageList = mutableListOf<String>()
-                    for (index in 0..it.lastIndex) {
-                        imageList.add(Base64.encodeFromFile(it[index].path))
-                    }
-                    val imageRes = imageList.toJsonString()
-                    imageRes.logE(TAG)
+//                    var imageList = mutableListOf<String>()
+//                    for (index in 0..it.lastIndex) {
+//                        imageList.add(Base64.encodeFromFile(it[index].path))
+//                    }
+//                    val imageRes = imageList.toJsonString()
+                    val imageRes = it.toJsonString()
                     activity?.let {
                         it.toString().logE("ssssssss${TAG}")
                         WebViewActivity.start(
                             it,
-                            "http://192.168.2.22:5000/preview-album.html?autoplay=1",
-                            "imageRes"
+                            "http://192.168.2.22:8080/preview-album.html?autoplay=1&id=1",
+                            imageRes
                         )
                     }
 
