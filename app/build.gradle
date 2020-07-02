@@ -97,3 +97,44 @@ dependencies {
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.15'
 
 }
+
+def getDate() {
+    TimeZone.setDefault(TimeZone.getTimeZone("GMT+8"))
+    Calendar cal = Calendar.getInstance();
+    def date = cal.getTime();
+    def formattedDate = date.format('yyyyMMdd-HHmm')
+    return formattedDate
+}
+
+/**
+ * 改变包路径
+ * @param type
+ */
+def changeApkPath(String type) {
+    def dateString = getDate()
+    android.applicationVariants.all { variant ->
+        variant.getPackageApplication().outputDirectory = new File(rootProject.rootDir.getAbsolutePath() + "/output/" + rootProject.ext.android.versionName + "/" + type + "/" + dateString)
+        variant.getPackageApplication().outputScope.apkDatas.forEach { apkData ->
+            if (variant.buildType.name == "release") {
+                //这个修改输出APK的文件名
+                apkData.outputFileName = type + "-" + rootProject.ext.android.versionName + "-" + rootProject.ext.android.versionCode + '.apk'
+            }
+        }
+    }
+}
+
+//打测试包
+task assembleForPreview(dependsOn: 'assembleRelease') {
+    dependsOn {
+        changeApkPath("beta")
+    }
+}
+
+/**
+ * 发布华为模板包
+ */
+task assembleForRelease(dependsOn: ['assembleRelease']) {
+    dependsOn {
+        changeApkPath("release")
+    }
+}
