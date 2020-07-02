@@ -108,6 +108,7 @@ class ChoiceImageActivity : BaseActivity() {
     }
 
     private fun getData() {
+        showLoading()
         lifecycleScope.launchIOWhenCreated(onError = {
             toast("查询异常")
         }) {
@@ -125,7 +126,9 @@ class ChoiceImageActivity : BaseActivity() {
                 }
             }
 
+
             withContext(Dispatchers.Main) {
+                dismissLoading()
                 mItems.clear()
                 mItems.addAll(result)
                 mAdapter.notifyDataSetChanged()

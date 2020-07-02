@@ -67,6 +67,10 @@ class ContentPublishActivity : BaseVMActivity() {
             layoutParams = FrameLayout.LayoutParams(112.dp2px, 112.dp2px)
             setImageResource(R.drawable.ic_placeholder_error)
             setOnClickListener {
+                if (mJustShow) {
+                    finish()
+                    return@setOnClickListener
+                }
                 ChoiceImageActivity.start(this@ContentPublishActivity, imageCountLimit, TYPE_ALL) {
                     when (it[0].type) {
                         ImageRes.TYPE_VIDEO -> {
@@ -169,7 +173,9 @@ class ContentPublishActivity : BaseVMActivity() {
     }
 
     companion object {
-        fun start(context: FragmentActivity) {
+        private var mJustShow: Boolean = false
+        fun start(context: FragmentActivity, justShow: Boolean) {
+            mJustShow = justShow
             val intent = Intent(context, ContentPublishActivity::class.java)
             context.startActivity(intent)
         }
