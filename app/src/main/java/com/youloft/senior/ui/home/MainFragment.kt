@@ -106,12 +106,17 @@ class MainFragment : BaseVMFragment() {
 //                }.shareWithUI()
 //            }
             UmengShareActionImpl(activity).platform(SOC_MEDIA.WEIXIN_CIRCLE).web(
-                ShareWeb("http://www.baidu.com").setThumb(ShareImage(context,"http://mmbiz.qpic.cn/mmbiz/PwIlO51l7wuFyoFwAXfqPNETWCibjNACIt6ydN7vw8LeIwT7IjyG3eeribmK4rhibecvNKiaT2qeJRIWXLuKYPiaqtQ/0"))
+                ShareWeb("http://www.baidu.com").setThumb(
+                    ShareImage(
+                        context,
+                        "http://mmbiz.qpic.cn/mmbiz/PwIlO51l7wuFyoFwAXfqPNETWCibjNACIt6ydN7vw8LeIwT7IjyG3eeribmK4rhibecvNKiaT2qeJRIWXLuKYPiaqtQ/0"
+                    )
+                )
                     .setDescription("内容").setTitle("标题")
             ).perform()
         }
         tv_recive_commnet.setOnClickListener(View.OnClickListener {
-            activity?.let {   DetailActivity.start(it, "3", MineDataBean.MOVIE_TYPE)}
+            activity?.let { DetailActivity.start(it, "3", MineDataBean.MOVIE_TYPE) }
 
 //            UserManager.instance.loginOut()
 //            var pupup = LoginPopup(activity, lifecycleScope)
@@ -125,16 +130,9 @@ class MainFragment : BaseVMFragment() {
     }
 
     override fun initData() {
-//        var data = mutableListOf<MineData>()
-//        for (i in 0..10) {
-//            data.add(
-//                MineData(
-//                    "2020", "3", mutableListOf(), 2, 55, "ssss", 3, "koskofkodkodkodk"
-//                    , 455, 48848
-//                )
-//            )
-//        }
-        mViewModel.getData(1, 0, 10, "")
+        var params = HashMap<String, String>()
+        params.put("userId", UserManager.instance.getUserId())
+        mViewModel.getData(params)
 //mViewModel
     }
 

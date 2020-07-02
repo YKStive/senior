@@ -12,9 +12,10 @@ import retrofit2.http.*
  */
 interface Api {
     companion object {
-                        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
+        //                        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
 //        const val BASE_URL = "http://120.27.20.114:8090/"
 //        const val BASE_URL = "https://shequ.51wnl-cq.com/"
+        const val BASE_URL = "http://shequ.51wnl-cq.com/"
     }
 
     @GET(BASE_URL + "api/Coin_Activity/GetMissions")
@@ -107,9 +108,9 @@ interface Api {
 //        @Query("direction") direction: Int,
 //        @Query("limit") limit: Int
 //    ): NetResponse<List<MineDataBean>>
-    @GET("api/post/user/{userId}/list")
+    @GET("api/post/user/list")
     fun getMineList(
-        @Path("userId") id: String
+        @QueryMap params: HashMap<String, String>
     ): NetResponse<List<MineDataBean>>
 
     /**

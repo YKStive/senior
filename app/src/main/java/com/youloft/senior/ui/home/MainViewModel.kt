@@ -25,15 +25,12 @@ class MainViewModel : BaseViewModel() {
     //结果
     var resultData = MutableLiveData<List<MineDataBean>>()
     fun getData(
-        index: Int,
-        direction: Int,
-        limit: Int,
-        userId: String
+        params: HashMap<String, String>
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
 //            val listData = ApiHelper.api.getMineList(index, direction, limit)
-                val listData = ApiHelper.api.getMineList(userId)
+                val listData = ApiHelper.api.getMineList(params)
                 withContext(Dispatchers.Main) {
                     ApiHelper.executeResponse(listData, {
                         resultData.value = it

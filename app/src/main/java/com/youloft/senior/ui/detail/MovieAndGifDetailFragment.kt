@@ -102,7 +102,8 @@ class MovieAndGifDetailFragment : BaseFragment() {
                     WebViewActivity.start(
                         it1,
                         "http://192.168.2.22:5000/preview-album?autoplay=1",
-                        ""
+                        "",
+                        WebViewActivity.MOVIE_WEB_FULLSCREEN
                     )
                 }
             }
@@ -117,11 +118,11 @@ class MovieAndGifDetailFragment : BaseFragment() {
 //                    val imageRes = imageList.toJsonString()
                     val imageRes = it.toJsonString()
                     activity?.let {
-                        it.toString().logE("ssssssss${TAG}")
                         WebViewActivity.start(
                             it,
                             "http://192.168.2.22:8080/preview-album.html?autoplay=1&id=1",
-                            imageRes
+                            imageRes,
+                            WebViewActivity.MOVIE_WEB_PREVIEW
                         )
                     }
 

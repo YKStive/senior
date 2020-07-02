@@ -67,7 +67,9 @@ class OtherUserInfoActivity : BaseVMActivity() {
 
     override fun initData() {
         userId = intent.getStringExtra("userId")
-        mViewModel.getData(1, 0, 10, userId)
+        var params=HashMap<String,String>()
+        params.put("userId",userId)
+        mViewModel.getData(params)
     }
 
     override fun startObserve() {

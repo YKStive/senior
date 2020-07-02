@@ -7,12 +7,10 @@ import android.view.ViewGroup
 import android.webkit.WebSettings
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.youloft.coolktx.jsonToObject
 import com.youloft.coolktx.toJsonString
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.bean.ImageRes
-import com.youloft.senior.bean.User
 import com.youloft.senior.utils.logE
 import com.youloft.util.Base64
 import kotlinx.android.synthetic.main.activity_web.*
@@ -32,6 +30,8 @@ import kotlinx.android.synthetic.main.conmon_title.*
 class WebViewActivity : BaseActivity() {
     var url = ""
     var imges: String = ""
+    var currentWebType = MOVIE_WEB_FULLSCREEN
+
     override fun getLayoutResId(): Int {
         return R.layout.activity_web
     }
@@ -40,33 +40,32 @@ class WebViewActivity : BaseActivity() {
         val webSettings: WebSettings = web_movie.getSettings()
         // 设置与Js交互的权限
         webSettings.javaScriptEnabled = true
-        tv_exit.visibility = View.VISIBLE
+        if (currentWebType == MOVIE_WEB_FULLSCREEN) {
+            tv_exit.visibility = View.VISIBLE
+            tv_exit.setOnClickListener {
+                finish()
+            }
+        } else if (currentWebType == MOVIE_WEB_PREVIEW) {
+            tv_publish.visibility = View.VISIBLE
+            tv_publish.setOnClickListener {
+                //TODO
+            }
+        }
+
         image_back.setOnClickListener {
             finish()
         }
-        tv_exit.setOnClickListener {
-            finish()
-        }
+
 
     }
 
     override fun initData() {
         url = intent.getStringExtra("url")
         imges = intent.getStringExtra("imges");
-        url.logE("shoalunhong1")
+        currentWebType = intent.getIntExtra("type", MOVIE_WEB_FULLSCREEN);
         if (url.isNotEmpty()) {
-            url.logE("shoalunhong")
             web_movie.loadUrl(url)
         }
-        var list = Gson().fromJson(
-            imges,
-            object :
-                TypeToken<List<ImageRes?>?>() {}.type
-        ) as List<User?>
-//        var gson = Gson().also {
-//            it.fromJson(imges,TypeToken<ArrayList<ImageRes>>(){}.type)
-//        }
-
         if (imges.isNotBlank()) {
             Thread(Runnable {
                 var arrarList = Gson().fromJson(
@@ -90,12 +89,15 @@ class WebViewActivity : BaseActivity() {
 
     companion object {
         private const val TAG = "WebViewActivity"
+        const val MOVIE_WEB_PREVIEW = 1
+        const val MOVIE_WEB_FULLSCREEN = 0
 
         @JvmStatic
-        fun start(context: Context, url: String, imges: String?) {
+        fun start(context: Context, url: String, imges: String?, currentWebType: Int) {
             val starter = Intent(context, WebViewActivity::class.java)
             starter.putExtra("url", url)
             starter.putExtra("imges", imges)
+            starter.putExtra("type", currentWebType)
             context.startActivity(starter)
         }
     }
