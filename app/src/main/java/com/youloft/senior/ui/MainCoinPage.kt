@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.fastjson.JSONObject
+import com.youloft.core.Analytics
 import com.youloft.senior.R
 import com.youloft.senior.bean.MissionResult
 import com.youloft.senior.cash.CashActivity
@@ -63,6 +64,7 @@ internal class MainCoinPage(
             }
             context.startActivity(Intent(context, CashActivity::class.java))
         }
+        Analytics.reportEvent("Gold.IM")
     }
 
     private fun goLogin(): Boolean {

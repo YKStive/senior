@@ -35,4 +35,5 @@ dependencies {
     api rootProject.ext.dependencies['kotlinx-coroutines']
     api rootProject.ext.dependencies['viewModel']
     api rootProject.ext.dependencies['walle']
+    implementation rootProject.ext.dependencies['glide']
 }

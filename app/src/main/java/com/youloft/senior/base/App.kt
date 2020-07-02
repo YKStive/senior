@@ -3,6 +3,7 @@ package com.youloft.senior.base
 import android.app.Application
 import com.umeng.commonsdk.UMConfigure
 import com.umeng.socialize.PlatformConfig
+import com.youloft.core.Analytics
 import com.youloft.senior.BuildConfig
 import com.youloft.senior.bean.User
 import com.youloft.senior.net.ApiHelper
@@ -54,6 +55,7 @@ class App : Application() {
         })
         ProtocolDispatcher.registerProtocolHandle("protocol", WebComponentHandle::class.java)
         ActivityManager.instance.init(this)
+        Analytics.init(this)
     }
 
     private fun bindParams1(urlBuilder: HttpUrl.Builder, params: Set<String>?) {

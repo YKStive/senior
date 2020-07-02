@@ -1,24 +1,14 @@
 package com.youloft.senior.ui.gif
 
 import android.content.Intent
-import android.graphics.BitmapFactory
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
-import com.drakeet.multitype.MultiTypeAdapter
-import com.youloft.coolktx.launchIOWhenCreated
 import com.youloft.core.base.BaseActivity
-import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.R
-import com.youloft.senior.bean.GifBean
-import com.youloft.senior.itembinder.GifListViewBinder
-import com.youloft.senior.net.Api
+import com.youloft.senior.bean.Post
+import com.youloft.senior.bean.PostType
 import com.youloft.senior.utils.ImageLoader
-import com.youloft.senior.utils.gifmaker.GifMaker
-import com.youloft.senior.utils.logD
 import kotlinx.android.synthetic.main.activity_gif_preview.*
 
 /**
@@ -41,7 +31,11 @@ class GifPreviewActivity : BaseActivity() {
         }
 
         tv_publish.setOnClickListener {
-            GifPublishActivity.start(this, mResultGif)
+            val post = Post(postType = PostType.GIF)
+            post.mediaContent = arrayListOf<String>().apply {
+                add(mResultGif)
+            }
+            PostPublishActivity.start(this, post)
         }
 
         tv_photo.setOnClickListener {

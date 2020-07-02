@@ -1,8 +1,6 @@
 package com.youloft.core.base
 
-import android.content.Context
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.youloft.core.Analytics
 
@@ -12,6 +10,7 @@ import com.youloft.core.Analytics
  * @desc activity基类
  */
 abstract class BaseActivity : AppCompatActivity() {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,8 +22,20 @@ abstract class BaseActivity : AppCompatActivity() {
     abstract fun getLayoutResId(): Int
     abstract fun initView()
     abstract fun initData()
-    fun showLoading() {}
-    fun dismissLoading() {}
+
+    private var mLoadingDialog: BaseLoadingDialog? = null
+    fun showLoading() {
+        if (mLoadingDialog == null) {
+            mLoadingDialog = BaseLoadingDialog(this)
+            mLoadingDialog!!.show()
+        }
+    }
+
+    fun dismissLoading() {
+        if (mLoadingDialog != null && mLoadingDialog!!.isShowing) {
+            mLoadingDialog!!.dismiss()
+        }
+    }
 
     override fun onResume() {
         super.onResume()

@@ -109,7 +109,7 @@ class ContentPublishActivity : BaseVMActivity() {
      * @param imageData List<ImageRes>? 文件
      */
     private fun publish(content: String, imageData: List<ImageRes>?) {
-        val filePath = mutableListOf<String>()
+        val filePath = ArrayList<String>()
         imageData?.apply {
             forEach {
                 filePath.add(if (it.type == ImageRes.TYPE_VIDEO) it.previewPath!! else it.path)

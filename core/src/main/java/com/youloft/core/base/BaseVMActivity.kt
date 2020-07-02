@@ -27,8 +27,19 @@ abstract class BaseVMActivity :
     abstract fun initData()
     abstract fun startObserve()
 
-    fun showLoading() {}
-    fun dismissLoading() {}
+    private var mLoadingDialog: BaseLoadingDialog? = null
+    fun showLoading() {
+        if (mLoadingDialog == null) {
+            mLoadingDialog = BaseLoadingDialog(this)
+            mLoadingDialog!!.show()
+        }
+    }
+
+    fun dismissLoading() {
+        if (mLoadingDialog != null && mLoadingDialog!!.isShowing) {
+            mLoadingDialog!!.dismiss()
+        }
+    }
 
 
     override fun onResume() {

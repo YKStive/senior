@@ -55,7 +55,7 @@ class PrivacyDialog(val context: FragmentActivity, private val onAgree: () -> Un
                         WebActivity.start(context, WebActivity.WebSetting().apply {
                             isNeedTab = false
                             isIs_hide_title = true
-                            url = "http://www.baidu.com"
+                            url = "https://docs.qq.com/doc/DWWtnTmhVWVRBY1Z2?pub=1&dver=2.1.0"
                         })
                     }
 
@@ -73,7 +73,7 @@ class PrivacyDialog(val context: FragmentActivity, private val onAgree: () -> Un
                         WebActivity.start(context, WebActivity.WebSetting().apply {
                             isNeedTab = false
                             isIs_hide_title = true
-                            url = "http://www.baidu.com"
+                            url = "https://docs.qq.com/doc/DWWtsVEJzUm9FdmNO?pub=1&dver=2.1.0"
                         })
                     }
 

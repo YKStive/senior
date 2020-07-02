@@ -87,6 +87,10 @@ public class Analytics {
         TCAgent.onPause(activity);
     }
 
+    public static void reportEvent(String name) {
+        reportEvent(name, null);
+    }
+
     /**
      * 暂时不要打开TalkingData的上报
      *

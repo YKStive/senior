@@ -93,11 +93,10 @@ class LoginPopup(
                         loginData.openid = weichatData.get("openid")
                         loginData.accessToken = weichatData.get("accessToken")
                         loginData.phone = userPhone
-                        val stickers =
-                            NetResponse<LoginBean>(ApiHelper.api.login(loginData).data, "", "", 200)
+                        val result = ApiHelper.api.login(loginData)
                         withContext(Dispatchers.Main) {
-                            ApiHelper.executeResponse(stickers, {
-                                if (stickers.isSuccess()) {
+                            ApiHelper.executeResponse(result, {
+                                if (result.isSuccess()) {
                                     ToastMaster.showShortToast(mContext, "登录成功");
                                     UserManager.instance.login(it)
                                 }

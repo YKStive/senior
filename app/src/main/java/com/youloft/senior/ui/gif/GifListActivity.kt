@@ -15,6 +15,8 @@ import com.youloft.senior.base.App
 import com.youloft.senior.bean.GifBean
 import com.youloft.senior.itembinder.GifListViewBinder
 import com.youloft.coolktx.dp2px
+import com.youloft.senior.bean.Post
+import com.youloft.senior.bean.PostType
 import com.youloft.senior.net.NetResponse
 import com.youloft.senior.utils.logD
 import com.youloft.senior.widgt.RecycleViewDivider
@@ -57,7 +59,11 @@ class GifListActivity : BaseActivity() {
                 GifPreviewActivity.start(this, tempPath, imageRes)
             }
         }, {
-            GifPublishActivity.start(this, it)
+            val post = Post(postType = PostType.GIF)
+            post.mediaContent = arrayListOf<String>().apply {
+                add(it)
+            }
+            PostPublishActivity.start(this, post)
         }))
         rv_gif.adapter = mAdapter
 
