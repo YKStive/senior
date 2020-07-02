@@ -22,13 +22,14 @@ import kotlin.math.abs
  */
 
 class UserManager {
-    private var bean: LoginBean? = null
-    private var userInfo: String by Preference("user_info_data", "")
+    var bean: LoginBean? = null
+    private var userInfo: String by Preference(Preference.USER_INFO, "")
     private var userInfoTime: Long by Preference("user_info_data_time", 0)
 
     init {
         bean = userInfo.jsonToObject()
     }
+
 
     /**
      * 登录成功
@@ -100,6 +101,26 @@ class UserManager {
             return ""
         }
         return bean!!.userId
+    }
+
+    /**
+     * 获取用户id
+     */
+    fun getAvatar(): String {
+        if (bean == null) {
+            return ""
+        }
+        return bean!!.avatar
+    }
+
+    /**
+     * 获取用户id
+     */
+    fun getNickName(): String {
+        if (bean == null) {
+            return ""
+        }
+        return bean!!.nickname
     }
 
     /**

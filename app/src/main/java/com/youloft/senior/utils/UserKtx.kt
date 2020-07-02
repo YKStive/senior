@@ -8,6 +8,10 @@ import com.youloft.senior.base.App
  * @desc 用户工具类
  */
 
-fun String.isByUser(): Boolean {
-    return App.instance().userId == this
+fun String?.isByUser(): Boolean {
+    return if (UserManager.instance.getUserId().isEmpty()) {
+        false
+    } else {
+        UserManager.instance.getUserId() == this
+    }
 }

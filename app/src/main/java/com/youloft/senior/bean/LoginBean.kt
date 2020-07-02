@@ -16,7 +16,7 @@ data class LoginBean(
     val expiration: Long,
     val refreshToken: String,
     val userId: String = "",
-    val avatar: String? = "",
-    val nickname: String? = ""
+    var avatar: String = "",
+    val nickname: String = ""
 )
 

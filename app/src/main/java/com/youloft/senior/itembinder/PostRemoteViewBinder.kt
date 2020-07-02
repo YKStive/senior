@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -207,7 +206,7 @@ open class PostRemoteViewBinder(
         fun addHeader(post: Post, goPersonPage: (userId: String) -> Unit) {
             headerContainer.removeAllViews()
             headerContainer.addView(PostHeaderView(App.instance(), post.userId.isByUser()).apply {
-                setAvatar(post.avatar)
+                setAvatar(post.avater)
                 setTitle(post.nickname)
                 setDesc(
                     String.format(
