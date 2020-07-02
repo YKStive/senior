@@ -7,6 +7,7 @@ import com.youloft.senior.BuildConfig
 import com.youloft.senior.bean.User
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.push.PushWrapper
+import com.youloft.senior.utils.ActivityManager
 import com.youloft.senior.utils.Preference
 import com.youloft.senior.utils.UserManager
 import com.youloft.senior.web.WebComponentHandle
@@ -52,6 +53,7 @@ class App : Application() {
             }
         })
         ProtocolDispatcher.registerProtocolHandle("protocol", WebComponentHandle::class.java)
+        ActivityManager.instance.init(this)
     }
 
     private fun bindParams1(urlBuilder: HttpUrl.Builder, params: Set<String>?) {
