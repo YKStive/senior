@@ -19,7 +19,6 @@ import com.youloft.senior.bean.PraiseBean
 import com.youloft.senior.bean.PraiseComment
 import com.youloft.senior.bean.User
 import com.youloft.senior.net.ApiHelper
-import com.youloft.senior.net.NetResponse
 import com.youloft.senior.ui.adapter.CommentAdapterr
 import com.youloft.senior.ui.login.LoginDialog
 import com.youloft.senior.utils.DiffCommentCallback
@@ -128,6 +127,8 @@ class ItemCommentFragment : BaseVMFragment() {
     }
 
     override fun initData() {
+        val userStr by Preference(Preference.USER_INFO, "")
+//        userInfo = gson.fromJson(userStr, User.javaClass)
         var recivePostId = arguments?.getString("postId");
         if (!recivePostId.isNullOrBlank()) {
             postId = recivePostId

@@ -18,10 +18,10 @@
         tools:replace="android:allowBackup">
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5ef993fbdbc2ec08212b6815" />
+            android:value="5eec77680cafb2860d0001e1" />
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="621594bd4985f96707e1213e41e3b27a" /> <!-- 黄历详情 -->
+            android:value="2438c7b5bd38b294f4ceb1f9c0f8c796" /> <!-- 黄历详情 -->
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="wnl_master" />

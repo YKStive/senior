@@ -11,6 +11,7 @@ import com.youloft.coolktx.toast
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.base.App
+import com.youloft.senior.utils.UserManager
 import com.youloft.socialize.SOC_MEDIA
 import com.youloft.socialize.Socialize
 import com.youloft.socialize.UmengSocialize
@@ -34,7 +35,7 @@ class InviteFriendActivity : BaseActivity() {
             InviteRuleActivity.start(this)
         }
 
-        tv_invite_code.text = App.instance().userId
+        tv_invite_code.text = UserManager.instance.getUserId()
 
         tv_copy_code.setOnClickListener {
             val clipboardManager: ClipboardManager =

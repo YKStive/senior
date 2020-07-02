@@ -9,6 +9,7 @@ import com.drakeet.multitype.ItemViewBinder
 import com.youloft.senior.R
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.Post
+import com.youloft.senior.utils.UserManager
 import kotlinx.android.synthetic.main.item_post_local_album.view.*
 
 /**
@@ -37,8 +38,8 @@ open class PostLocalAlbumViewBinder(
 
         holder.itemView.run {
 
-            header.setAvatar(App.instance().user.avatar)
-            header.setTitle(App.instance().user.nickname)
+            header.setAvatar(UserManager.instance.getUserId())
+            header.setTitle(UserManager.instance.getNickName())
             header.setDesc(item.createTime)
 
 

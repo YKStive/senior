@@ -63,6 +63,10 @@ class PostPublishActivity : BaseActivity() {
         mViewModel.liveData.observe(this, Observer {
             if (it.showLoading) {showLoading()} else {dismissLoading()}
             it.showError?.let { it1 -> toast(it1) }
+            if (it.isSuccess) {
+                toast("帖子发表成功，审核通过后别人就可以看到啦")
+                finish()
+            }
         })
     }
 

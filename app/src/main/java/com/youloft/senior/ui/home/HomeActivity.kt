@@ -33,6 +33,7 @@ class HomeActivity : BaseVMActivity() {
 
     }
 
+    private var showPublish = true
     override fun initView() {
         if (!isAgreePrivacy) {
             PrivacyDialog(this) {
@@ -60,16 +61,31 @@ class HomeActivity : BaseVMActivity() {
         }
 
 
+
         btn_main.apply {
             setOnClickListener {
                 img_publish.apply {
-                    if (visibility == View.GONE) {
+                    if (visibility == View.GONE && showPublish) {
+                        showPublish = false
                         visibility = View.VISIBLE
                         postDelayed({
                             visibility = View.GONE
                         }, 3000)
                     }
                 }
+//                if (com.youloft.senior.utils.UserManager.instance.hasLogin()) {
+                supportFragmentManager.beginTransaction()
+                    .hide(homeFragment)
+                    .hide(notLoginFragment)
+                    .show(mainFragment)
+                    .commit()
+//                } else {
+//                    supportFragmentManager.beginTransaction()
+//                        .hide(homeFragment)
+//                        .hide(mainFragment)
+//                        .show(notLoginFragment)
+//                        .commit()
+//                }
                 if (com.youloft.senior.utils.UserManager.instance.hasLogin()) {
                     supportFragmentManager.beginTransaction()
                         .hide(homeFragment)

@@ -2,6 +2,7 @@ package com.youloft.senior.widgt;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -9,7 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.integration.webp.decoder.WebpDrawable;
+import com.bumptech.glide.integration.webp.decoder.WebpDrawableTransformation;
+import com.bumptech.glide.load.Transformation;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.youloft.senior.R;
+import com.youloft.senior.utils.DefaultTrans;
 
 
 public class ProgressHUD extends Dialog {
@@ -44,8 +50,10 @@ public class ProgressHUD extends Dialog {
 //                txt.setText(message);
 //            }
 //        }
+        Transformation<Bitmap> circleCrop = new DefaultTrans();
         Glide.with(context)
                 .load(R.drawable.ic_progress_loading)
+                .optionalTransform(WebpDrawable.class, new WebpDrawableTransformation(circleCrop))
                 .into((ImageView) dialog.findViewById(R.id.iv_loading));
         dialog.setCancelable(cancelable);
         dialog.setOnCancelListener(cancelListener);
