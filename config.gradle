@@ -95,6 +95,7 @@ ext {
             "refreshHeaderClassic": "com.scwang.smart:refresh-header-classics:2.0.1",
             "refreshFooterClassic": "com.scwang.smart:refresh-footer-classics:2.0.1",
             "baseAdapter"         : "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4",
+            "qiniu"               : "com.qiniu:qiniu-android-sdk:7.6.4",
 
     ]
 

@@ -85,6 +85,7 @@ dependencies {
     implementation rootProject.ext.dependencies['refreshFooterClassic']
     implementation rootProject.ext.dependencies['baseAdapter']
     implementation rootProject.ext.dependencies['videoPlayer']
+    implementation rootProject.ext.dependencies['qiniu']
 
     api(name: 'msa_mdid_1.0.13', ext: 'aar')
     implementation project(path: ':core')

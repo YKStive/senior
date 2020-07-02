@@ -1,50 +1,53 @@
 package com.youloft.senior.bean
 
+import android.os.Parcelable
 import com.youloft.coolktx.dp2px
 import com.youloft.senior.base.App
 import com.youloft.util.UiUtil
+import java.io.Serializable
 
 data class Post(
-    val height: Int = 200.dp2px,
-    val width: Int = UiUtil.getScreenHeight(App.instance()),
-    val avatar: String = App.instance().avatar,
-    val createTime: String = "",
-    val id: String = App.instance().userId,
-    var mediaContent: List<String> = listOf(),
-    val nickname: String = App.instance().nickName,
-    val postType: Int,
+    var height: Int = 200.dp2px,
+    var width: Int = UiUtil.getScreenHeight(App.instance()),
+    var avatar: String = App.instance().avatar,
+    var createTime: String = "",
+    var id: String = "",
+    var mediaContent: List<String> = arrayListOf(),
+    var nickname: String = App.instance().nickName,
+    var postType: Int = 0,
 
-    val praised: Int = 0,
-    val template: String = "",
-    val templateId: Int = 0,
-    val textContent: String = "",
-    val userId: String = "",
-    val viewed: Int = 0,
-    val commented: Int = 20,
-    val isPraised: Boolean = true
+    var praised: Int = 0,
+    var template: String = "",
+    var templateId: Int = 0,
+    var textContent: String = "",
+    var userId: String = App.instance().userId,
+    var viewed: Int = 0,
+    var commented: Int = 20,
+    var isPraised: Boolean = true
 
-    ) {
+) : Serializable {
 
 
     companion object {
 
-        val imagePath =
+        var imagePath =
             "https://pic-bucket.ws.126.net/photo/0009/2019-04-19/ED4HKOFA0AI20009NOS.jpg"
 
-        val videoPath =
+        var videoPath =
             "http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4"
 
-        val gifPath =
+        var gifPath =
             "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/200px-Rotating_earth_%28large%29.gif"
         var avatar = "https://pic4.zhimg.com/v2-5fd62f20577029e9418233411e3ef24f_b.jpg"
-//        var avatar = gifPath
-        val multiData: Post = Post(
+
+        //        var avatar = gifPath
+        var multiData: Post = Post(
             200.dp2px,
             UiUtil.getScreenHeight(App.instance()),
             avatar,
             "1992-11-25",
             "999",
-            listOf(
+            arrayListOf(
                 imagePath,
                 imagePath,
                 imagePath,
@@ -62,13 +65,13 @@ data class Post(
             3000
         )
 
-        val albumData: Post = Post(
+        var albumData: Post = Post(
             200.dp2px,
             UiUtil.getScreenHeight(App.instance()),
             avatar,
             "1992-11-25",
             "999",
-            listOf(
+            arrayListOf(
                 imagePath,
                 imagePath,
                 imagePath,
@@ -87,13 +90,13 @@ data class Post(
         )
 
 
-        val singleData: Post = Post(
+        var singleData: Post = Post(
             200.dp2px,
             UiUtil.getScreenHeight(App.instance()),
             avatar,
             "1992-11-25",
             "999",
-            listOf(
+            arrayListOf(
                 imagePath
             ),
             "别名",
@@ -106,13 +109,13 @@ data class Post(
             3000
         )
 
-        val videoData: Post = Post(
+        var videoData: Post = Post(
             500.dp2px,
             200.dp2px,
             avatar,
             "1992-11-25",
             "999",
-            listOf(
+            arrayListOf(
                 videoPath
             ),
             "视频",
@@ -125,13 +128,13 @@ data class Post(
             3000
         )
 
-        val gifData: Post = Post(
+        var gifData: Post = Post(
             200.dp2px,
             UiUtil.getScreenHeight(App.instance()),
             avatar,
             "1992-11-25",
             "999",
-            listOf(
+            arrayListOf(
                 gifPath
             ),
             "别名",
@@ -144,10 +147,10 @@ data class Post(
             3000
         )
 
-        val localAlbumData: Post = Post(
+        var localAlbumData: Post = Post(
             200.dp2px,
             UiUtil.getScreenHeight(App.instance()),
-            avatar, "", "", listOf(
+            avatar, "", "", arrayListOf(
                 imagePath,
                 imagePath,
                 imagePath,
@@ -158,17 +161,17 @@ data class Post(
             "", 0, "", "", 0
         )
 
-        val inviteData: Post = Post(
+        var inviteData: Post = Post(
             200.dp2px,
             UiUtil.getScreenHeight(App.instance()),
-            avatar, "", "", listOf(""), "", PostType.INVITE, 0,
+            avatar, "", "", arrayListOf(""), "", PostType.INVITE, 0,
             "", 0, "", "", 0
         )
 
-        val punchData: Post = Post(
+        var punchData: Post = Post(
             200.dp2px,
             UiUtil.getScreenHeight(App.instance()),
-            avatar, "", "", listOf(""), "", PostType.PUNCH, 0,
+            avatar, "", "", arrayListOf(""), "", PostType.PUNCH, 0,
             "", 0, "", "", 0
         )
     }

@@ -5,9 +5,9 @@
     android:layout_gravity="center"
     android:background="@drawable/bg_s"
     android:gravity="center"
-    android:orientation="vertical"
     android:minWidth="40dp"
     android:minHeight="40dp"
+    android:orientation="vertical"
     android:padding="10dp">
 
 
@@ -16,8 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@drawable/loading_img"
-        android:tint="#FFF"/>
+        android:tint="#FFF" />
 
     <TextView
         android:id="@+id/message"
@@ -26,7 +25,7 @@
         android:layout_marginTop="5dp"
         android:gravity="center"
         android:text="Message"
-        android:visibility="gone"
-        android:textColor="#EDEDED" />
+        android:textColor="#EDEDED"
+        android:visibility="gone" />
 
 </LinearLayout>

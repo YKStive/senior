@@ -28,7 +28,7 @@ class PostViewModel : BaseViewModel() {
      * @param filePaths MutableList<String> 文件路径
      * @return List<String> 远程地址列表
      */
-    private fun uploadFile(filePaths: MutableList<String>): List<String> {
+    private fun uploadFile(filePaths: MutableList<String>): ArrayList<String> {
         return arrayListOf()
     }
 
@@ -37,12 +37,12 @@ class PostViewModel : BaseViewModel() {
      * @param post Post 帖子
      * @param filePaths MutableList<String> 文件地址列表
      */
-    fun publishPost(post: Post, filePaths: MutableList<String>) {
+    fun publishPost(post: Post, filePaths: ArrayList<String>) {
         liveData.value = BaseUiModel(showLoading = true)
         viewModelScope.launchIO(onError = {
             liveData.value = BaseUiModel(showLoading = false, showError = "上传失败")
         }) {
-            var fileRemoteResult: List<String> = listOf()
+            var fileRemoteResult: ArrayList<String> = arrayListOf()
             if (filePaths.isNotEmpty()) {
                 fileRemoteResult = uploadFile(filePaths)
             }
@@ -52,7 +52,7 @@ class PostViewModel : BaseViewModel() {
                 ApiHelper.executeResponse(result, {
                     liveData.value = BaseUiModel(showLoading = false)
                 }, {
-                    liveData.value = BaseUiModel(showLoading = false, showError = "上传失败")
+                    liveData.value = BaseUiModel(showLoading = false, showError = it)
                 })
             }
         }
