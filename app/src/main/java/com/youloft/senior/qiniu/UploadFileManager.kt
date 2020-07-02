@@ -37,8 +37,7 @@ object UploadFileManager {
         onError: ((msg: String) -> Unit)?
     ) {
         withContext(Dispatchers.IO) {
-            //todo 视频不压缩
-            val compressFilePaths = Luban.with(App.instance()).load(paths).get()
+            val compressFilePaths = compressFile(paths)
             val qnToken = ApiHelper.api.getQNToken()
             ApiHelper.executeResponse(qnToken, { tokenJson ->
                 val token = tokenJson.getString("token")
@@ -69,6 +68,16 @@ object UploadFileManager {
         }
 
 
+    }
+
+    private fun compressFile(paths: List<String>): MutableList<File> {
+        return if (paths.size == 1 && paths[0].endsWith(".mp4")) {
+            mutableListOf<File>().apply {
+                add(File(paths[0]))
+            }
+        } else {
+            Luban.with(App.instance()).load(paths).get()
+        }
     }
 
     private fun createKey(path: String): String {
