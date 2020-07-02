@@ -63,19 +63,22 @@ class CashActivity : BaseActivity() {
                 }
                 //0.3元的类型
                 showCashTips(
-                    lastCash!!.getString("cash"),
+                    lastCash!!.getString("cash").stringToInt(),
                     lastCash!!.getString("caId").stringToInt()
                 )
                 return@setOnClickListener
             }
             startActivity(
                 Intent(this, MoneyApplyProgressActivity::class.java)
-                    .putExtra("caid", lastCash!!.getIntValue("caId").toString())
+                    .putExtra("caid", lastCash!!.getIntValue("caId").toString().stringToInt())
             )
         }
         refresh_view.showLoading()
         refresh_view.bindRefreshCallBack {
             initData()
+        }
+        short_group.setOnClickListener {
+            finish()
         }
     }
 
@@ -86,7 +89,7 @@ class CashActivity : BaseActivity() {
         }
         refresh_view.showSuccess()
         val itemCashValue = selectCashItem!!.getFloatValue("price")
-        if (itemCashValue > userWXMessage!!.getFloatValue("cash")) {
+        if (itemCashValue > userWXMessage!!.getFloatValue("money")) {
             short_group.visibility = View.VISIBLE
             short_text.text =
                 "还差${(itemCashValue - userWXMessage!!.getFloatValue("cash"))}元即可提现，快去做任务赚钱吧"
@@ -186,9 +189,11 @@ class CashActivity : BaseActivity() {
                 return@launch
             }
             if (!cashRecord.getBooleanValue("success")) {
+                ToastMaster.showLongToast(this@CashActivity, "网络异常")
                 return@launch
             }
             if (cashRecord.getJSONObject("data") == null) {
+                ToastMaster.showLongToast(this@CashActivity, "网络异常")
                 return@launch
             }
             requestReword(caid, cashRecord.getJSONObject("data"))
@@ -224,7 +229,7 @@ class CashActivity : BaseActivity() {
             return
         }
         val itemCashValue = selectCashItem!!.getFloatValue("price")
-        if (itemCashValue > userWXMessage!!.getFloatValue("cash")) {
+        if (itemCashValue > userWXMessage!!.getFloatValue("money")) {
             ToastMaster.showLongToast(this, "余额不足")
             return
         }
@@ -253,10 +258,10 @@ class CashActivity : BaseActivity() {
                 last_cash.visibility = View.VISIBLE
                 lastCash = JSONObject()
                 lastCash!!.put("isExists", true)
-                lastCash!!.put("caId", speedMode.getString("caId"))
+                lastCash!!.put("caId", speedMode.getString("caId").stringToInt())
                 lastCash!!.put(
                     "cash",
-                    speedMode.getJSONObject("speedConfig")?.getString("txMoney") ?: 0
+                    speedMode.getJSONObject("speedConfig")?.getString("cash") ?: 0
                 )
                 lastCash!!.put("type", if (selectType == 0) 2 else 1)
                 //提现成功
@@ -267,7 +272,7 @@ class CashActivity : BaseActivity() {
                         val speedConfig = speedMode.getJSONObject("speedConfig")
                         if (speedConfig != null) {
                             showCashTips(
-                                speedConfig.getString("txMoney"),
+                                speedConfig.getString("cash").stringToInt(),
                                 speedMode.getString("caId").stringToInt(),
                                 speedMode
                             )
@@ -278,7 +283,7 @@ class CashActivity : BaseActivity() {
                     if (speedMode != null) {
                         val speedConfig = speedMode.getJSONObject("speedConfig")
                         if (speedConfig != null) {
-                            showNormal(speedConfig.getString("txMoney"), speedMode)
+                            showNormal(speedConfig.getString("cash").stringToInt(), speedMode)
                         }
                     }
                 }
@@ -317,7 +322,7 @@ class CashActivity : BaseActivity() {
             cash_list_view.refresh(cashListResult)
         }
         my_coin.text = userWXMessage!!.getIntValue("coin").toString()
-        top_cash.text = userWXMessage!!.getString("cash")
+        top_cash.text = userWXMessage!!.getString("money")
         selectCashItem = cash_list_view.getSelectItem()
         refreshUI()
     }

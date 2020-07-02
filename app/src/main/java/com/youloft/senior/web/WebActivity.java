@@ -1,5 +1,6 @@
 package com.youloft.senior.web;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -99,6 +100,63 @@ public class WebActivity extends BaseActivity implements OutWebCallBack {
 
     boolean isWrittenOff = false;
 
+    public static void start(Context context, WebSetting setting) {
+        Intent intent = new Intent(context, WebActivity.class);
+        intent.putExtra("need", setting.needTab);
+        intent.putExtra("is_hide_title", setting.is_hide_title);
+        intent.putExtra("red_packfromage_type", setting.red_packfromage_type);
+        intent.putExtra("url", setting.url);
+        intent.putExtra("from", setting.from);
+        context.startActivity(intent);
+    }
+
+    public static class WebSetting {
+        private boolean needTab;
+        private boolean is_hide_title;
+        private int red_packfromage_type;
+        private String url;
+        private String from;
+
+        public boolean isNeedTab() {
+            return needTab;
+        }
+
+        public void setNeedTab(boolean needTab) {
+            this.needTab = needTab;
+        }
+
+        public boolean isIs_hide_title() {
+            return is_hide_title;
+        }
+
+        public void setIs_hide_title(boolean is_hide_title) {
+            this.is_hide_title = is_hide_title;
+        }
+
+        public int getRed_packfromage_type() {
+            return red_packfromage_type;
+        }
+
+        public void setRed_packfromage_type(int red_packfromage_type) {
+            this.red_packfromage_type = red_packfromage_type;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getFrom() {
+            return from;
+        }
+
+        public void setFrom(String from) {
+            this.from = from;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
