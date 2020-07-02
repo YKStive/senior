@@ -23,14 +23,17 @@ class CommentAdapterr(data: MutableList<CommentBean>?) :
     init {
         addChildClickViewIds(R.id.ll_favorite)
     }
-
+    companion object {
+        const val PAYLOAD = 100
+    }
     override fun convert(holder: BaseViewHolder, item: CommentBean) {
 //        holder.setText(R.id.tv_name, item.nickname).setText(R.id.tv_content, item.content)
 //            .setText(R.id.tv_date, item.createTime)
 //
         Glide.with(context).load(item.avatar).into(holder.getView(R.id.img_head))
         holder.setText(R.id.tv_name, item.nickname).setText(R.id.tv_content, item.content)
-            .setText(R.id.tv_date, item.createTime).setText(R.id.tv_favorite_number, item.praised.toString())
+            .setText(R.id.tv_date, item.createTime)
+            .setText(R.id.tv_favorite_number, item.praised.toString())
         if (item.isPraised) {
             holder.setImageResource(R.id.icon_favorite, R.drawable.icon_favorite)
         } else {
@@ -58,7 +61,5 @@ class CommentAdapterr(data: MutableList<CommentBean>?) :
         }
     }
 
-    companion object {
-        private const val PAYLOAD = 100
-    }
+
 }

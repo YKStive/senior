@@ -3,6 +3,7 @@ package com.youloft.senior.ui.detail
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.shuyu.gsyvideoplayer.GSYVideoManager
@@ -14,6 +15,7 @@ import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import com.youloft.coolktx.launchIOWhenCreated
 import com.youloft.core.base.BaseFragment
+import com.youloft.core.base.BaseVMFragment
 import com.youloft.senior.R
 import com.youloft.senior.bean.ItemData
 import com.youloft.senior.net.ApiHelper
@@ -38,11 +40,12 @@ import kotlinx.coroutines.withContext
  * @UpdateRemark:   更新说明：
  * @Version:        1.0
  */
-class GIFDetailFragment : BaseFragment() {
+class GIFDetailFragment : BaseVMFragment() {
     var url = "http://7xjmzj.com1.z0.glb.clouddn.com/20171026175005_JObCxCE2.mp4"
     lateinit var orientationUtils: OrientationUtils
     private var isPlay = false
     private var isPause = false
+    var mViewModel: DetailViewModel? = null
     lateinit var detailPlayer: StandardGSYVideoPlayer;
     var id: String = ""//帖子id
 //    var detailPlayer: StandardGSYVideoPlayer? = null
@@ -129,16 +132,21 @@ class GIFDetailFragment : BaseFragment() {
         })
     }
 
+    override fun startObserve() {
+        mViewModel = activity?.let { ViewModelProvider(it).get(DetailViewModel::class.java) }
+    }
+
     fun getDetailData(id: String) {
         lifecycleScope.launchIOWhenCreated({
             it.message?.logD()
         }, {
 //            val stickers = ApiHelper.api.getStickers()
-            val stickers = NetResponse<ItemData>(ApiHelper.api.getItem(id).data, "", "", 200)
+            val res = ApiHelper.api.getItem(id)
             withContext(Dispatchers.Main) {
-                ApiHelper.executeResponse(stickers, {
+                ApiHelper.executeResponse(res, {
                     activity?.let { it1 -> Glide.with(it1).load(it?.avatar).into(iv_head) }
                     tv_name.setText(it.nickname)
+                    mViewModel?.postInfo?.value = it
                     tv_browse_number.setText("${it.viewed}次浏览")
                     tv_content_video.setText(it.textContent)
 //                    detailPlayer.setUp(it.mediaContent[0], true, "")

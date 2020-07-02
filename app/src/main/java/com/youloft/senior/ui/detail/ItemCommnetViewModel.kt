@@ -22,20 +22,5 @@ import kotlinx.coroutines.withContext
  */
 class ItemCommnetViewModel : BaseViewModel() {
 
-    //结果
-    var resultData = MutableLiveData<List<CommentBean>>()
-    fun getData(
-        params: Map<String, String>
-    ) {
-        viewModelScope.launch(Dispatchers.IO) {
-//            val listData = ApiHelper.api.getMineList(index, direction, limit)
-            val listData = ApiHelper.api.getCommentList(params)
-            withContext(Dispatchers.Main) {
-                ApiHelper.executeResponse(listData, {
-                    resultData.value = it
-                })
-            }
 
-        }
-    }
 }

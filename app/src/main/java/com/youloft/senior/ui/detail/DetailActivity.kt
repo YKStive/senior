@@ -7,29 +7,31 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.PopupWindow
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.youloft.coolktx.launchIOWhenCreated
-import com.youloft.core.base.BaseActivity
 import com.youloft.core.base.BaseVMActivity
 import com.youloft.senior.R
+import com.youloft.senior.bean.ItemData
 import com.youloft.senior.bean.MineDataBean
+import com.youloft.senior.bean.PraiseBean
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.ui.adapter.CommentAdapterr
-import com.youloft.senior.ui.home.HomeModel
+import com.youloft.senior.ui.login.LoginDialog
 import com.youloft.senior.utils.UserManager
 import com.youloft.senior.utils.logD
 import com.youloft.socialize.SOC_MEDIA
 import com.youloft.socialize.share.ShareImage
 import com.youloft.socialize.share.ShareWeb
 import com.youloft.socialize.share.UmengShareActionImpl
+import com.youloft.util.ToastMaster
 import kotlinx.android.synthetic.main.activity_video_detail.*
 import kotlinx.android.synthetic.main.conmon_title.*
+import kotlinx.android.synthetic.main.pop_post_more.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -50,6 +52,11 @@ class DetailActivity : BaseVMActivity() {
     lateinit var videoFragment: GIFDetailFragment
     lateinit var mPopupWindow: PopupWindow
     lateinit var mViewModel: DetailViewModel
+
+    //帖子发布人id
+    var postData: ItemData? = null
+//    var postUserId: String = ""
+
 
     companion object {
         fun start(
@@ -76,8 +83,8 @@ class DetailActivity : BaseVMActivity() {
         informationId = intent.getStringExtra("informationId")
         informationType = intent.getIntExtra("informationType", 0)
         fragments.add(ItemCommentFragment.newInstance(informationId))
-        fragments.add(FavoriteFragment.newInstance())
-        tablayout.setViewPager(viewPager, arrayOf("全部评论", "点赞"), this, fragments)
+        fragments.add(FavoriteFragment.newInstance(informationId))
+        tablayout.setViewPager(viewPager, arrayOf("全部评论(0)", "点赞(0)"), this, fragments)
         if (informationType == MineDataBean.MOVIE_TYPE) {
             //影集
             supportFragmentManager.beginTransaction()
@@ -116,73 +123,51 @@ class DetailActivity : BaseVMActivity() {
                 )
                 .commit()
         }
-        btn_share_com.setOnClickListener {
-//            UmengShareActionImpl(this@DetailActivity).platform(SOC_MEDIA.WEIXIN_CIRCLE).web(
-//                ShareWeb("www.baidu.com").setThumb(ShareImage(this@DetailActivity, ""))
-//                    .setDescription("内容").setTitle("标题")
-//            ).perform()
-            UmengShareActionImpl(this).platform(SOC_MEDIA.WEIXIN_CIRCLE).web(
-                ShareWeb("http://www.baidu.com").setThumb(
-                    ShareImage(
-                        this,
-                        "http://mmbiz.qpic.cn/mmbiz/PwIlO51l7wuFyoFwAXfqPNETWCibjNACIt6ydN7vw8LeIwT7IjyG3eeribmK4rhibecvNKiaT2qeJRIWXLuKYPiaqtQ/0"
-                    )
-                )
-                    .setDescription("内容").setTitle("标题")
-            ).perform()
-//                .prepare(object :
-//                    AbstractShareAction.PrepareListener {
-//                    override fun onWorkThread(): Any {
-//                        return Any();
-//                    }
-//
-//                    override fun onMainThread(value: Any?) {
-//                    }
-//
-//                })
-//            )
-//           var board= Socialize.getIns().newShareBoard(this@VideoDetailActivity);
-//            board.withPlatform(SOC_MEDIA.WEIXIN).web(
-//                ShareWeb("www.baidu.com").setThumb(ShareImage(this@VideoDetailActivity, ""))
-//                    .setDescription("内容").setTitle("标题")
-//            )
-//            board.shareWithUI()
-
-//            tablayout.getTitleView()
-
-        }
-//        supportFragmentManager.beginTransaction()
-//            .add(R.id.fl_tab_containar, ItemCommentFragment.newInstance())
-////            .add(R.id.fl_tab_containar, FavoriteFragment.newInstance())
-//            .commit()
-//
-//        initListeners()
-
+        //分享到朋友圈全是链接
         ll_share_to_circle.setOnClickListener(View.OnClickListener {
-
+            shareWithH5(SOC_MEDIA.WEIXIN_CIRCLE)
 
         })
+        ll_share_to_friend.setOnClickListener {
+            if (informationType != MineDataBean.GIF_TYPE) {
+                shareWithH5(SOC_MEDIA.WEIXIN)
+            } else {
+                //todo 分享给好友，除了表情是一张图外，其它也是链接；
+            }
+        }
         //点赞帖子
-        ll_favorite.setOnClickListener(View.OnClickListener {
-            var params = HashMap<String, String>()
-            params.put("postId", informationId)
-            params.put("userId", UserManager.instance.getUserId())
-//                params.put("avatar", itemBean.id)
-//                params.put("nickname", itemBean.id)
-            mViewModel.addFavorite(params)
-        })
+        ll_favorite.setOnClickListener {
+            val userManager = UserManager.instance
+            mViewModel.addFavorite(
+                PraiseBean(
+                    userManager.getAvatar(),
+                    userManager.getNickname(),
+                    informationId,
+                    postData?.userId,
+                    userManager.getUserId()
+                )
+            )
+        }
 
 
-//发表评论
-        tv_sen_comment.setOnClickListener(View.OnClickListener {
-            var params = HashMap<String, String>()
-            params.put("postId", informationId)
-            params.put("userId", UserManager.instance.getUserId())
-////                params.put("avatar", itemBean.id)
-////                params.put("nickname", itemBean.id)
-            params.put("content", edt_comment.text.toString())
-            mViewModel.comment(params)
-        })
+        //发表评论
+        tv_sen_comment.setOnClickListener {
+            if (!UserManager.instance.hasLogin()) {
+                LoginDialog(this, lifecycleScope).show()
+                return@setOnClickListener
+            }
+            var userMaster = UserManager.instance
+            mViewModel.comment(
+                PraiseBean(
+                    userMaster.getAvatar(),
+                    userMaster.getNickname(),
+                    informationId,
+                    postData?.userId,
+                    userMaster.getUserId(),
+                    edt_comment.text.toString()
+                )
+            )
+        }
         edt_comment.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 if (s.toString().isNotEmpty()) {
@@ -205,40 +190,17 @@ class DetailActivity : BaseVMActivity() {
         }
     }
 
-//    private fun initListeners() {
-//        //获取内容总高度
-//        val vto: ViewTreeObserver = ll_content.getViewTreeObserver()
-//        vto.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-//            override fun onGlobalLayout() {
-//                stickScrollHeight = ll_content.getHeight()
-//                //注意要移除
-//                ll_content.getViewTreeObserver()
-//                    .removeOnGlobalLayoutListener(this)
-//            }
-//        })
-//
-////        //获取Fragment高度
-////        val viewTreeObserver: ViewTreeObserver = viewpager.getViewTreeObserver()
-////        viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-////            override fun onGlobalLayout() {
-////                stickScrollHeight = stickScrollHeight - viewpager.getHeight()
-////                //注意要移除
-////                viewpager.getViewTreeObserver()
-////                    .removeOnGlobalLayoutListener(this)
-////            }
-////        })
-//
-//        //获取title高度
-//        val viewTreeObserver1: ViewTreeObserver = constraintlayout_title.getViewTreeObserver()
-//        viewTreeObserver1.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-//            override fun onGlobalLayout() {
-//                stickScrollHeight =
-//                    stickScrollHeight - constraintlayout_title.getHeight() - getStatusHeight(this@DetailActivity) //计算滑动的总距离
-//                scrollView.setStickTop(constraintlayout_title.getHeight());//设置距离多少悬浮
-//            }
-//        })
-//    }
-
+    private fun shareWithH5(target: SOC_MEDIA) {
+        UmengShareActionImpl(this).platform(target).web(
+            ShareWeb("http://www.baidu.com").setThumb(
+                ShareImage(
+                    this,
+                    "http://mmbiz.qpic.cn/mmbiz/PwIlO51l7wuFyoFwAXfqPNETWCibjNACIt6ydN7vw8LeIwT7IjyG3eeribmK4rhibecvNKiaT2qeJRIWXLuKYPiaqtQ/0"
+                )
+            )
+                .setDescription("内容").setTitle("标题")
+        ).perform()
+    }
 
     override fun initData() {
 
@@ -246,6 +208,11 @@ class DetailActivity : BaseVMActivity() {
 
     override fun startObserve() {
         mViewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
+        mViewModel.postInfo.observe(this, Observer {
+            postData = it
+            tablayout.getTitleView(0).setText("全部评论(${it.commented})")
+            tablayout.getTitleView(1).setText("点赞(${it.praised})")
+        })
     }
 
     override fun onBackPressed() {
@@ -259,9 +226,37 @@ class DetailActivity : BaseVMActivity() {
     }
 
     private fun showPop() {
+        if (!UserManager.instance.hasLogin()) {
+            LoginDialog(this, lifecycleScope).show()
+            return
+        }
         mPopupWindow = PopupWindow(this)
+        var popView = LayoutInflater.from(this).inflate(R.layout.pop_post_more, null)
         // 设置布局文件
-        mPopupWindow.setContentView(LayoutInflater.from(this).inflate(R.layout.pop_post_more, null))
+        mPopupWindow.setContentView(popView)
+        if (postData?.userId.equals(UserManager.instance.getUserId())) {
+            popView.tv_delete_report.setText("删除")
+            popView.tv_delete_report.setOnClickListener {
+                lifecycleScope.launchIOWhenCreated({
+                    ToastMaster.showShortToast(this, it.message)
+                    it.message?.logD()
+                }, {
+                    val deleteRes = ApiHelper.api.deletePost(informationId)
+                    withContext(Dispatchers.Main) {
+                        ApiHelper.executeResponse(deleteRes, {
+                            if (it) {
+                                finish()
+                            }
+                        })
+                    }
+                })
+            }
+        } else {
+            popView.tv_delete_report.setOnClickListener {
+                //todo 举报
+            }
+        }
+
         // 为了避免部分机型不显示，我们需要重新设置一下宽高
         mPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
         mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT)

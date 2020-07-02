@@ -1,6 +1,8 @@
 package com.youloft.senior.ui.detail
 
 import android.os.Bundle
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import cc.shinichi.library.ImagePreview
@@ -9,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.youloft.coolktx.dp2px
 import com.youloft.coolktx.launchIOWhenCreated
 import com.youloft.core.base.BaseFragment
+import com.youloft.core.base.BaseVMFragment
 import com.youloft.senior.R
 import com.youloft.senior.bean.ItemData
 import com.youloft.senior.net.ApiHelper
@@ -31,9 +34,10 @@ import kotlinx.coroutines.withContext
  * @UpdateRemark:   更新说明：
  * @Version:        1.0
  */
-class PictureAndTextFragment : BaseFragment() {
+class PictureAndTextFragment : BaseVMFragment() {
     lateinit var myAdapter: PictureAdapter
     var id = ""
+    var mViewModel: DetailViewModel? = null
 
     override fun getLayoutResId(): Int = R.layout.fragment_text_and_picture_layout
 
@@ -84,7 +88,26 @@ class PictureAndTextFragment : BaseFragment() {
         if (!itemId.isNullOrBlank()) {
             id = itemId
         }
-        getDetailData(id)
+    }
+
+    override fun startObserve() {
+        mViewModel = activity?.let {
+            ViewModelProvider(it).get(DetailViewModel::class.java)
+        }
+        mViewModel?.getDetailData(id)
+        activity?.let { ctx ->
+            mViewModel?.postInfo?.observe(ctx, Observer {
+                Glide.with(ctx).load(it?.avatar).into(iv_head)
+                tv_name.setText(it.nickname)
+                tv_browse_number.setText("${it.viewed}次浏览")
+                tv_content.setText(it.textContent)
+//                    detailPlayer.setUp(it.mediaContent[0], true, "")
+                tv_create_time.setText(it.createTime)
+                myAdapter.data = it.mediaContent
+                myAdapter.notifyDataSetChanged()
+            })
+        }
+
     }
 
     companion object {
@@ -97,43 +120,6 @@ class PictureAndTextFragment : BaseFragment() {
         }
     }
 
-//    fun addImg(img: MutableList<String>) {
-//        var view = LayoutInflater.from(activity).inflate(R.layout.imageview, rl_imagcontent, false)
-//        for (index in 1..3) {//几层
-//            var v: View
-//            for ()
-//        }
-//    }
-
-    fun getDetailData(id: String) {
-        lifecycleScope.launchIOWhenCreated({
-            it.message?.logD()
-        }, {
-//            val stickers = ApiHelper.api.getStickers()
-            val stickers = NetResponse<ItemData>(ApiHelper.api.getItem(id).data, "", "", 200)
-            withContext(Dispatchers.Main) {
-                ApiHelper.executeResponse(stickers, {
-                    activity?.let { it1 -> Glide.with(it1).load(it?.avatar).into(iv_head) }
-                    tv_name.setText(it.nickname)
-                    tv_browse_number.setText("${it.viewed}次浏览")
-                    tv_content.setText(it.textContent)
-//                    detailPlayer.setUp(it.mediaContent[0], true, "")
-                    tv_create_time.setText(it.createTime)
-                    var data = mutableListOf<String>()
-                    data.add("http://mmbiz.qpic.cn/mmbiz/PwIlO51l7wuFyoFwAXfqPNETWCibjNACIt6ydN7vw8LeIwT7IjyG3eeribmK4rhibecvNKiaT2qeJRIWXLuKYPiaqtQ/0")
-                    data.add("http://mmbiz.qpic.cn/mmbiz/PwIlO51l7wuFyoFwAXfqPNETWCibjNACIt6ydN7vw8LeIwT7IjyG3eeribmK4rhibecvNKiaT2qeJRIWXLuKYPiaqtQ/0")
-                    data.add("http://mmbiz.qpic.cn/mmbiz/PwIlO51l7wuFyoFwAXfqPNETWCibjNACIt6ydN7vw8LeIwT7IjyG3eeribmK4rhibecvNKiaT2qeJRIWXLuKYPiaqtQ/0")
-                    data.add("http://mmbiz.qpic.cn/mmbiz/PwIlO51l7wuFyoFwAXfqPNETWCibjNACIt6ydN7vw8LeIwT7IjyG3eeribmK4rhibecvNKiaT2qeJRIWXLuKYPiaqtQ/0")
-                    data.add("http://mmbiz.qpic.cn/mmbiz/PwIlO51l7wuFyoFwAXfqPNETWCibjNACIt6ydN7vw8LeIwT7IjyG3eeribmK4rhibecvNKiaT2qeJRIWXLuKYPiaqtQ/0")
-                    data.add("http://mmbiz.qpic.cn/mmbiz/PwIlO51l7wuFyoFwAXfqPNETWCibjNACIt6ydN7vw8LeIwT7IjyG3eeribmK4rhibecvNKiaT2qeJRIWXLuKYPiaqtQ/0")
-                    data.add("http://mmbiz.qpic.cn/mmbiz/PwIlO51l7wuFyoFwAXfqPNETWCibjNACIt6ydN7vw8LeIwT7IjyG3eeribmK4rhibecvNKiaT2qeJRIWXLuKYPiaqtQ/0")
-                    myAdapter.data = data
-                    myAdapter.notifyDataSetChanged()
-//                    GSYVideoType.setShowType(GSYVideoType.SCREEN_TYPE_4_3)
-                })
-            }
-        })
-    }
 
 }
 

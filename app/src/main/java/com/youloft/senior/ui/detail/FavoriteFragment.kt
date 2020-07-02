@@ -4,13 +4,11 @@ import android.os.Bundle
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.scwang.smart.refresh.footer.ClassicsFooter
-import com.scwang.smart.refresh.header.ClassicsHeader
-import com.scwang.smart.refresh.layout.api.RefreshLayout
-import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.youloft.core.base.BaseVMFragment
+import com.youloft.senior.ConstConfig
 import com.youloft.senior.R
 import com.youloft.senior.ui.adapter.FavoriteAdapter
+import com.youloft.senior.utils.UserManager
 import kotlinx.android.synthetic.main.fragment_item_comment.*
 
 
@@ -25,9 +23,13 @@ import kotlinx.android.synthetic.main.fragment_item_comment.*
  * @Version:        1.0
  */
 class FavoriteFragment : BaseVMFragment() {
+    var optionType = ConstConfig.REQUEST_REFRESH
+    var postId: String = ""
+
     companion object {
-        fun newInstance(): FavoriteFragment {
+        fun newInstance(postId: String): FavoriteFragment {
             val args = Bundle()
+            args.putString("postId", postId)
             val fragment = FavoriteFragment()
             fragment.arguments = args
             return fragment
@@ -35,34 +37,62 @@ class FavoriteFragment : BaseVMFragment() {
     }
 
     private val mViewModel by viewModels<ItemFavoriteViewModel>()
-    lateinit var adapterr: FavoriteAdapter
+    lateinit var adapter: FavoriteAdapter
     override fun getLayoutResId(): Int = R.layout.fragment_item_comment
 
 
     override fun initView() {
-//        refreshLayout.setRefreshHeader(ClassicsHeader(activity))
-//        refreshLayout.setRefreshFooter(ClassicsFooter(activity))
-//        refreshLayout.setOnRefreshListener { refreshlayout ->
-//            refreshlayout.finishRefresh(2000 /*,false*/) //传入false表示刷新失败
-//        }
-//        refreshLayout.setOnLoadMoreListener(this)
-        adapterr = FavoriteAdapter(null)
+        adapter = FavoriteAdapter(null)
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.adapter = adapterr
-
+        recyclerView.adapter = adapter
+        initLoadMore()
     }
 
     override fun initData() {
-        mViewModel.getData(HashMap<String, String>())
+        var recivePostId = arguments?.getString("postId");
+        if (!recivePostId.isNullOrBlank()) {
+            postId = recivePostId
+        }
+        var params = HashMap<String, String>()
+        params.put("postId", postId)
+        params.put("limit", ConstConfig.limit.toString())
+//        if (UserManager.instance.hasLogin()) {
+//            params.put("userId", UserManager.instance.getUserId())
+//        }
+        mViewModel.getData(params)
     }
 
     override fun startObserve() {
         mViewModel.resultData.observe(this, Observer {
-            with(adapterr) { setList(it) }
+            if (it.size < ConstConfig.limit) {
+                adapter.loadMoreModule.loadMoreEnd()
+            }
+            if (optionType == ConstConfig.REQUEST_REFRESH) {
+                adapter.setList(it)
+            } else {
+                adapter.addData(it)
+            }
         })
     }
 
-//    override fun onLoadMore(refreshLayout: RefreshLayout) {
-//        refreshLayout.finishLoadMore(2000 /*,false*/) //传入false表示加载失败
-//    }
+    fun initLoadMore() {
+        adapter.loadMoreModule.setOnLoadMoreListener {
+            optionType = ConstConfig.REQUEST_MOREDATA
+            var recivePostId = arguments?.getString("postId");
+            if (!recivePostId.isNullOrBlank()) {
+                postId = recivePostId
+            }
+            var params = HashMap<String, String>()
+            params.put("postId", postId)
+            params.put("limit", ConstConfig.limit.toString())
+            params.put("index", adapter.data[adapter.data.lastIndex].id)
+//            if (UserManager.instance.hasLogin()) {
+//                params.put("userId", UserManager.instance.getUserId())
+//            }
+            mViewModel.getData(params)
+        }
+//        adapter.loadMoreModule.isAutoLoadMore = true
+        //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
+//        adapterr.loadMoreModule.isEnableLoadMore(false)
+    }
 }

@@ -3,12 +3,19 @@ package com.youloft.senior.ui.detail
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide
 import com.youloft.coolktx.launchIOWhenCreated
 import com.youloft.core.base.BaseViewModel
+import com.youloft.net.bean.CommentBean
+import com.youloft.senior.bean.ItemData
+import com.youloft.senior.bean.PraiseBean
 import com.youloft.senior.net.ApiHelper
+import com.youloft.senior.ui.login.LoginDialog
+import com.youloft.senior.utils.UserManager
 import com.youloft.senior.utils.logD
 import com.youloft.senior.utils.logE
 import kotlinx.android.synthetic.main.activity_video_detail.*
+import kotlinx.android.synthetic.main.fragment_text_and_picture_layout.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,12 +37,17 @@ class DetailViewModel : BaseViewModel() {
         private const val TAG = "DetailViewModel"
     }
 
+    //帖子信息
+    var postInfo = MutableLiveData<ItemData>()
     var addFavorite = MutableLiveData<Int>()
     var addComment = MutableLiveData<Int>()
-    fun addFavorite(params: HashMap<String, String>) {
+
+    //结果
+    var commentResultData = MutableLiveData<List<CommentBean>>()
+    fun addFavorite(params: PraiseBean) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val res = ApiHelper.api.parse(params)
+                val res = ApiHelper.api.parsePost(params)
                 withContext(Dispatchers.Main) {
                     if (res.status == 200) {
                         addFavorite.value = 200
@@ -47,7 +59,7 @@ class DetailViewModel : BaseViewModel() {
         }
     }
 
-    fun comment(params: HashMap<String, String>) {
+    fun comment(params: PraiseBean) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val res = ApiHelper.api.commnet(params)
@@ -61,5 +73,37 @@ class DetailViewModel : BaseViewModel() {
             }
         }
     }
+
+
+    fun getCommentList(
+        params: Map<String, String>
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+//            val listData = ApiHelper.api.getMineList(index, direction, limit)
+            val listData = ApiHelper.api.getCommentList(params)
+            withContext(Dispatchers.Main) {
+                ApiHelper.executeResponse(listData, {
+                    commentResultData.value = it
+                })
+            }
+
+        }
+    }
+
+
+    fun getDetailData(
+        id: String
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val res = ApiHelper.api.getItem(id)
+            withContext(Dispatchers.Main) {
+                ApiHelper.executeResponse(res, {
+                    postInfo.value = it
+                })
+            }
+
+        }
+    }
+
 
 }

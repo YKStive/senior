@@ -100,6 +100,26 @@ class UserManager {
     }
 
     /**
+     * 获取头像
+     */
+    fun getAvatar(): String? {
+        if (bean == null) {
+            return ""
+        }
+        return bean!!.avatar
+    }
+
+    /**
+     * 获取昵称
+     */
+    fun getNickname(): String? {
+        if (bean == null) {
+            return ""
+        }
+        return bean!!.nickname
+    }
+
+    /**
      * AccessToken是否过期
      */
     fun hasExpiration(): Boolean {

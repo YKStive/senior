@@ -1,32 +1,25 @@
 package com.youloft.senior.ui.detail
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.JsResult
-import android.webkit.WebChromeClient
 import android.webkit.WebSettings
-import android.webkit.WebView
-import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.youloft.coolktx.launchIOWhenCreated
 import com.youloft.coolktx.toJsonString
 import com.youloft.core.base.BaseFragment
+import com.youloft.core.base.BaseVMFragment
 import com.youloft.senior.R
 import com.youloft.senior.bean.ItemData
 import com.youloft.senior.bean.MineDataBean
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.net.NetResponse
 import com.youloft.senior.ui.gif.ChoiceImageActivity
-import com.youloft.senior.ui.gif.GifPreviewActivity
 import com.youloft.senior.utils.logD
 import com.youloft.senior.utils.logE
-import com.youloft.util.Base64
-import com.youloft.util.FileUtil
 import kotlinx.android.synthetic.main.fragment_movie_detail.*
-import kotlinx.android.synthetic.main.imageview.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -41,13 +34,11 @@ import kotlinx.coroutines.withContext
  * @UpdateRemark:   更新说明：
  * @Version:        1.0
  */
-class MovieAndGifDetailFragment : BaseFragment() {
+class MovieAndGifDetailFragment : BaseVMFragment() {
     //    private val mViewModel by viewModels<MovieViewModel>()
     var type = MineDataBean.GIF_TYPE;
     var id: String = ""
-
-    //单挑帖子详情 json
-    var mItemInfo: String? = ""
+    var mViewModel: DetailViewModel? = null
 
     companion object {
         //        const val isGif = 1;
@@ -72,7 +63,6 @@ class MovieAndGifDetailFragment : BaseFragment() {
     override fun initView() {
         arguments?.let {
             type = it.getInt("type", MineDataBean.GIF_TYPE)
-            mItemInfo = it.getString("itemInfo")
             var itemId = it.getString("id")
             if (!itemId.isNullOrBlank()) {
                 id = itemId
@@ -140,16 +130,21 @@ class MovieAndGifDetailFragment : BaseFragment() {
         getDetailData(id)
     }
 
+    override fun startObserve() {
+        mViewModel = activity?.let { ViewModelProvider(it).get(DetailViewModel::class.java) }
+    }
+
     fun getDetailData(id: String) {
         lifecycleScope.launchIOWhenCreated({
             it.message?.logD()
         }, {
 //            val stickers = ApiHelper.api.getStickers()
-            val stickers = NetResponse<ItemData>(ApiHelper.api.getItem(id).data, "", "", 200)
+            val res = ApiHelper.api.getItem(id)
             withContext(Dispatchers.Main) {
-                ApiHelper.executeResponse(stickers, {
+                ApiHelper.executeResponse(res, {
                     activity?.let { it1 -> Glide.with(it1).load(it?.avatar).into(iv_head) }
                     tv_name.setText(it.nickname)
+                    mViewModel?.postInfo?.value = it
                     tv_browse_number.setText("${it.viewed}次浏览")
                     tv_content.setText(it.textContent)
                     if (type == MineDataBean.GIF_TYPE) {
