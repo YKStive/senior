@@ -2,6 +2,7 @@ package com.youloft.core.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.youloft.core.Analytics
 
 /**
  * @author you
@@ -28,4 +29,15 @@ abstract class BaseVMActivity :
 
     fun showLoading() {}
     fun dismissLoading() {}
+
+
+    override fun onResume() {
+        super.onResume()
+        Analytics.postActivityResume(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Analytics.postActivityPause(this)
+    }
 }
