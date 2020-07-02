@@ -29,6 +29,7 @@ android {
     buildTypes {
         release {
             zipAlignEnabled true
+            minifyEnabled true
             signingConfig signingConfigs.myConfig
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
