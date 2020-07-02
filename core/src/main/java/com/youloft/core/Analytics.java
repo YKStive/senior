@@ -5,6 +5,7 @@ import android.app.Application;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.meituan.android.walle.WalleChannelReader;
 import com.tendcloud.tenddata.TCAgent;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class Analytics {
 
     public static void init(Application application) {
         Analytics.application = application;
-        TCAgent.init(application, "96D4EEEB23D944C48A3E84B4D59742E0", "1000");
+        TCAgent.init(application, "2D1E09A6E9E64B9688C3034343950789", WalleChannelReader.getChannel(application, "0"));
     }
 
     /**
