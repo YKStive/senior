@@ -12,13 +12,17 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.youloft.coolktx.launchIOWhenCreated
 import com.youloft.core.base.BaseActivity
+import com.youloft.core.base.BaseVMActivity
 import com.youloft.senior.R
 import com.youloft.senior.bean.MineDataBean
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.ui.adapter.CommentAdapterr
+import com.youloft.senior.ui.home.HomeModel
+import com.youloft.senior.utils.UserManager
 import com.youloft.senior.utils.logD
 import com.youloft.socialize.SOC_MEDIA
 import com.youloft.socialize.share.ShareImage
@@ -39,12 +43,13 @@ import kotlinx.coroutines.withContext
  * @UpdateRemark:   更新说明：
  * @Version:        1.0
  */
-class DetailActivity : BaseActivity() {
+class DetailActivity : BaseVMActivity() {
     lateinit var informationId: String
     var informationType: Int = 0
     lateinit var adapterr: CommentAdapterr
     lateinit var videoFragment: GIFDetailFragment
     lateinit var mPopupWindow: PopupWindow
+    lateinit var mViewModel: DetailViewModel
 
     companion object {
         fun start(
@@ -112,13 +117,19 @@ class DetailActivity : BaseActivity() {
                 .commit()
         }
         btn_share_com.setOnClickListener {
-            Toast.makeText(this@DetailActivity, "点击", Toast.LENGTH_SHORT).show()
-            UmengShareActionImpl(this@DetailActivity).platform(SOC_MEDIA.WEIXIN_CIRCLE).web(
-                ShareWeb("www.baidu.com").setThumb(ShareImage(this@DetailActivity, ""))
+//            UmengShareActionImpl(this@DetailActivity).platform(SOC_MEDIA.WEIXIN_CIRCLE).web(
+//                ShareWeb("www.baidu.com").setThumb(ShareImage(this@DetailActivity, ""))
+//                    .setDescription("内容").setTitle("标题")
+//            ).perform()
+            UmengShareActionImpl(this).platform(SOC_MEDIA.WEIXIN_CIRCLE).web(
+                ShareWeb("http://www.baidu.com").setThumb(
+                    ShareImage(
+                        this,
+                        "http://mmbiz.qpic.cn/mmbiz/PwIlO51l7wuFyoFwAXfqPNETWCibjNACIt6ydN7vw8LeIwT7IjyG3eeribmK4rhibecvNKiaT2qeJRIWXLuKYPiaqtQ/0"
+                    )
+                )
                     .setDescription("内容").setTitle("标题")
             ).perform()
-
-
 //                .prepare(object :
 //                    AbstractShareAction.PrepareListener {
 //                    override fun onWorkThread(): Any {
@@ -153,54 +164,24 @@ class DetailActivity : BaseActivity() {
         })
         //点赞帖子
         ll_favorite.setOnClickListener(View.OnClickListener {
-            lifecycleScope.launchIOWhenCreated({
-                it.message?.logD()
-            }, {
-//            val stickers = ApiHelper.api.getStickers()
-                var params = HashMap<String, String>()
-//TODO
-//                params.put("postId", informationId)
-//                params.put("userId", itemBean.id)
+            var params = HashMap<String, String>()
+            params.put("postId", informationId)
+            params.put("userId", UserManager.instance.getUserId())
 //                params.put("avatar", itemBean.id)
 //                params.put("nickname", itemBean.id)
-//                            val res = NetResponse<String>(ApiHelper.api.parse(params).data, "", "", 200)
-                val res = ApiHelper.api.parse(params)
-                withContext(Dispatchers.Main) {
-                    if (res.status == 200) {
-
-                    }
-//                                ApiHelper.executeResponse(res, {
-//                                    if (res.status==200)
-//                                })
-                }
-            })
+            mViewModel.addFavorite(params)
         })
 
 
 //发表评论
         tv_sen_comment.setOnClickListener(View.OnClickListener {
-            lifecycleScope.launchIOWhenCreated({
-                it.message?.logD()
-            }, {
-//            val stickers = ApiHelper.api.getStickers()
-                var params = HashMap<String, String>()
-//TODO
-//                params.put("postId", informationId)
-//                params.put("userId", itemBean.id)
-//                params.put("avatar", itemBean.id)
-//                params.put("nickname", itemBean.id)
-                params.put("content", edt_comment.text.toString())
-//                            val res = NetResponse<String>(ApiHelper.api.parse(params).data, "", "", 200)
-                val res = ApiHelper.api.commnet(params)
-                withContext(Dispatchers.Main) {
-                    if (res.status == 200) {
-
-                    }
-//                                ApiHelper.executeResponse(res, {
-//                                    if (res.status==200)
-//                                })
-                }
-            })
+            var params = HashMap<String, String>()
+            params.put("postId", informationId)
+            params.put("userId", UserManager.instance.getUserId())
+////                params.put("avatar", itemBean.id)
+////                params.put("nickname", itemBean.id)
+            params.put("content", edt_comment.text.toString())
+            mViewModel.comment(params)
         })
         edt_comment.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -259,12 +240,12 @@ class DetailActivity : BaseActivity() {
 //    }
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
     override fun initData() {
 
+    }
+
+    override fun startObserve() {
+        mViewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
     }
 
     override fun onBackPressed() {

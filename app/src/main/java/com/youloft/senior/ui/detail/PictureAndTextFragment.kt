@@ -35,8 +35,6 @@ class PictureAndTextFragment : BaseFragment() {
     lateinit var myAdapter: PictureAdapter
     var id = ""
 
-    //TODO 需要初始化
-//    lateinit var imageList: List<String>
     override fun getLayoutResId(): Int = R.layout.fragment_text_and_picture_layout
 
     override fun initView() {

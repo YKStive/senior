@@ -63,7 +63,6 @@ class GIFDetailFragment : BaseFragment() {
     }
 
     override fun initView() {
-//        web_movie.loadUrl("https://www.baidu.com/")
         detailPlayer = activity?.findViewById(R.id.detail_player) as StandardGSYVideoPlayer
     }
 
@@ -93,7 +92,6 @@ class GIFDetailFragment : BaseFragment() {
             .setNeedLockFull(true)
             .setUrl(url)
             .setCacheWithPlay(false)
-            .setVideoTitle("测试视频")
             .setVideoAllCallBack(object : GSYSampleCallBack() {
                 override fun onPrepared(url: String, vararg objects: Any) {
                     super.onPrepared(url, *objects)

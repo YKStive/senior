@@ -1,27 +1,18 @@
 package com.youloft.senior.ui.home
 
-import android.view.Gravity
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import cc.shinichi.library.ImagePreview
 import cc.shinichi.library.bean.ImageInfo
 import com.youloft.core.base.BaseVMFragment
+import com.youloft.senior.ConstConfig
 import com.youloft.senior.R
 import com.youloft.senior.bean.MineDataBean
 import com.youloft.senior.ui.adapter.MineItemAdapter
 import com.youloft.senior.ui.detail.DetailActivity
-import com.youloft.senior.ui.login.LoginDialog
 import com.youloft.senior.utils.UserManager
-import com.youloft.senior.widgt.LoginPopup
-import com.youloft.socialize.SOC_MEDIA
-import com.youloft.socialize.Socialize
-import com.youloft.socialize.share.ShareEventTracker
-import com.youloft.socialize.share.ShareImage
-import com.youloft.socialize.share.ShareWeb
-import com.youloft.socialize.share.UmengShareActionImpl
 import com.youloft.util.ToastMaster
 import kotlinx.android.synthetic.main.fragment_main.*
 
@@ -31,6 +22,10 @@ import kotlinx.android.synthetic.main.fragment_main.*
  * @desc 我的 列表三种类型，影集 图文照片 GIF
  */
 class MainFragment : BaseVMFragment() {
+    var optionType = ConstConfig.REQUEST_REFRESH
+
+    //获取用户列表网络请求参数
+    var userPostListParams = HashMap<String, String>()
     private val mViewModel by viewModels<MainViewModel>()
     private val mAdapter: MineItemAdapter =
         MineItemAdapter(::itemClick, ::itemShare, ::itemFavorite, ::imageClick)
@@ -42,7 +37,7 @@ class MainFragment : BaseVMFragment() {
     fun itemClick(id: String, type: Int) {
         activity?.let { it1 ->
 //            DetailActivity.start(it1, id, type)
-            DetailActivity.start(it1, id, MineDataBean.IMAGE_TYPE)
+            DetailActivity.start(it1, id, type)
         }
     }
 
@@ -105,15 +100,6 @@ class MainFragment : BaseVMFragment() {
 //
 //                }.shareWithUI()
 //            }
-            UmengShareActionImpl(activity).platform(SOC_MEDIA.WEIXIN_CIRCLE).web(
-                ShareWeb("http://www.baidu.com").setThumb(
-                    ShareImage(
-                        context,
-                        "http://mmbiz.qpic.cn/mmbiz/PwIlO51l7wuFyoFwAXfqPNETWCibjNACIt6ydN7vw8LeIwT7IjyG3eeribmK4rhibecvNKiaT2qeJRIWXLuKYPiaqtQ/0"
-                    )
-                )
-                    .setDescription("内容").setTitle("标题")
-            ).perform()
         }
         tv_recive_commnet.setOnClickListener(View.OnClickListener {
             activity?.let { DetailActivity.start(it, "3", MineDataBean.MOVIE_TYPE) }
@@ -127,18 +113,59 @@ class MainFragment : BaseVMFragment() {
 //            }
 
         })
+        refreshLayout.setEnableRefresh(false)
+        //加载更多监听
+        refreshLayout.setOnLoadMoreListener {
+            optionType = ConstConfig.REQUEST_MOREDATA
+            userPostListParams.put("userId", UserManager.instance.getUserId())
+            userPostListParams.put("index", mAdapter.data[mAdapter.data?.lastIndex]?.id)
+            userPostListParams.put("direction", "1")
+            userPostListParams.put("limit", ConstConfig.limit.toString())
+            mViewModel.getData(userPostListParams)
+        }
+//        refreshLayout.setOnRefreshListener {
+//            optionType = ConstConfig.REQUEST_REFRESH
+//            userPostListParams.put("userId", UserManager.instance.getUserId())
+//            if(mAdapter.data.size>0){
+//                userPostListParams.put("index", mAdapter.data.get(0).id)
+//            }
+//            userPostListParams.put("direction", "0")
+//            userPostListParams.put("limit", ConstConfig.limit.toString())
+//            mViewModel.getData(userPostListParams)
+//        }
     }
 
     override fun initData() {
-        var params = HashMap<String, String>()
-        params.put("userId", UserManager.instance.getUserId())
-        mViewModel.getData(params)
-//mViewModel
+        userPostListParams.put("userId", UserManager.instance.getUserId())
+        userPostListParams.put("limit", ConstConfig.limit.toString())
+        mViewModel.getData(userPostListParams)
     }
 
     override fun startObserve() {
         mViewModel.resultData.observe(this, Observer {
-            mAdapter.setList(it)
+            if (optionType == ConstConfig.REQUEST_REFRESH) {//是初始化或者下拉刷新
+                mAdapter.setList(it)
+                if (it.size < ConstConfig.limit) {//说明不满足一页，不能加载更多了
+                    refreshLayout.setEnableLoadMore(false)
+                } else {
+                    refreshLayout.setEnableLoadMore(true)
+                }
+            } else {//是上拉加载更多
+                mAdapter.addData(it)
+                if (it.size < ConstConfig.limit) {//说明不满足一页，不能加载更多了
+                    refreshLayout.setEnableLoadMore(false)
+                } else {
+                    refreshLayout.setEnableLoadMore(true)
+                }
+            }
+        })
+        mViewModel.errorStr.observe(this, Observer {
+            ToastMaster.showShortToast(activity, it)
+            if (optionType == ConstConfig.REQUEST_MOREDATA) {//说明是加载更多失败了
+                refreshLayout.finishLoadMore(false)
+            } else {//下拉刷新失败了，或者初始化就失败了
+                refreshLayout.setEnableLoadMore(false)
+            }
         })
     }
 
