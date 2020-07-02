@@ -34,7 +34,9 @@ object UploadFileManager {
         paths.forEach {
             uploadManager.put(it, File(it).path, token,
                 { key, info, response ->
-
+                    if(info.isOK){
+                        info.duration
+                    }
 
                 }, null
             )

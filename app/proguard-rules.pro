@@ -705,3 +705,7 @@ public static ** valueOf(java.lang.String);
 -keep class * extends com.baidu.searchbox.veloce.common.INoProGuard {
     *;
 }
+
+-keep class com.qiniu.**{*;}
+-keep class com.qiniu.**{public <init>();}
+-ignorewarnings
