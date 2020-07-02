@@ -1,6 +1,7 @@
 package com.youloft.senior.base
 
 import android.app.Application
+import com.meituan.android.walle.WalleChannelReader
 import com.umeng.commonsdk.UMConfigure
 import com.umeng.socialize.PlatformConfig
 import com.youloft.core.Analytics
@@ -27,6 +28,10 @@ class App : Application() {
     var avatar: String by Preference(Preference.USER_AVATAR, "")
     var nickName: String by Preference(Preference.USER_NICK_NAME, "")
     var user by Preference(Preference.USER_GSON, User.test())
+    val channel by lazy {
+        WalleChannelReader.getChannel(App.instance, "0")
+    }
+
     override fun onCreate() {
         super.onCreate()
         instance = this
@@ -34,8 +39,8 @@ class App : Application() {
 //        初始化友盟分享
         UMConfigure.init(
             this,
-            "5ef993fbdbc2ec08212b6815",
-            "",
+            "5eec77680cafb2860d0001e1",
+            channel,
             UMConfigure.DEVICE_TYPE_PHONE,
             "2438c7b5bd38b294f4ceb1f9c0f8c796"
         )
@@ -55,7 +60,7 @@ class App : Application() {
         })
         ProtocolDispatcher.registerProtocolHandle("protocol", WebComponentHandle::class.java)
         ActivityManager.instance.init(this)
-        Analytics.init(this)
+        Analytics.init(this, channel)
     }
 
     private fun bindParams1(urlBuilder: HttpUrl.Builder, params: Set<String>?) {

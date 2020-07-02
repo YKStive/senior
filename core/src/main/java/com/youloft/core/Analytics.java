@@ -24,9 +24,9 @@ public class Analytics {
 
     private static Application application;
 
-    public static void init(Application application) {
+    public static void init(Application application, String channel) {
         Analytics.application = application;
-        TCAgent.init(application, "2D1E09A6E9E64B9688C3034343950789", WalleChannelReader.getChannel(application, "0"));
+        TCAgent.init(application, "2D1E09A6E9E64B9688C3034343950789", channel);
     }
 
     /**

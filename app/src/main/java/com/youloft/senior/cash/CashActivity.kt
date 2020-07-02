@@ -237,7 +237,6 @@ class CashActivity : BaseActivity() {
         GlobalScope.launch(Dispatchers.Main) {
             val selectType = selectCashItem!!.getIntValue("type")
             val result = withContext(Dispatchers.IO) {
-                Thread.sleep(2000)
                 kotlin.runCatching {
                     ApiHelper.api.withDraw(
                         selectCashItem!!.getIntValue("cash"),

@@ -8,6 +8,7 @@ import com.youloft.coolktx.toJsonString
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.LoginBean
 import com.youloft.senior.coin.CoinManager
+import com.youloft.senior.push.PushWrapper
 import com.youloft.senior.ui.login.LoginDialog
 import com.youloft.util.ToastMaster
 import kotlinx.coroutines.Dispatchers
@@ -37,6 +38,7 @@ class UserManager {
         userInfo = bean.toJsonString()
         userInfoTime = System.currentTimeMillis()
         CoinManager.instance.loadData()
+        PushWrapper.updateAlias()
     }
 
     /**
@@ -58,6 +60,7 @@ class UserManager {
         this.bean = null
         userInfo = ""
         userInfoTime = -1
+        PushWrapper.updateAlias()
         CoinManager.instance.loadData()
         if (reLogin) {
             //重新拉起登录界面

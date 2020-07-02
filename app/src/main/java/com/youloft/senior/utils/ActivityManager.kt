@@ -3,6 +3,7 @@ package com.youloft.senior.utils
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import com.youloft.senior.push.PushWrapper
 
 /**
  * @author xll
@@ -52,6 +53,7 @@ internal class ActivityManager : Application.ActivityLifecycleCallbacks {
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         mActiveActivityCount++
         topActivity = activity
+        PushWrapper.onActivityCreate()
     }
 
     override fun onActivityResumed(activity: Activity) {
