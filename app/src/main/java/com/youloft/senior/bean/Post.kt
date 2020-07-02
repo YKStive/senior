@@ -3,23 +3,24 @@ package com.youloft.senior.bean
 import android.os.Parcelable
 import com.youloft.coolktx.dp2px
 import com.youloft.senior.base.App
+import com.youloft.senior.utils.UserManager
 import com.youloft.util.UiUtil
 import java.io.Serializable
 
 data class Post(
     var height: Int = 200.dp2px,
     var width: Int = UiUtil.getScreenHeight(App.instance()),
-    var avatar: String = App.instance().avatar,
+    var avater: String = UserManager.instance.getAvatar(),
     var createTime: String = "",
     var id: String = "",
     var mediaContent: List<String> = arrayListOf(),
-    var nickname: String = App.instance().nickName,
+    var nickname: String = UserManager.instance.getNickName(),
     var postType: Int = 0,
     var praised: Int = 0,
     var template: String = "",
-    var templateId: Int = 0,
+    var templateId: String = "",
     var textContent: String = "",
-    var userId: String = App.instance().userId,
+    var userId: String = UserManager.instance.getUserId(),
     var viewed: Int = 0,
     var commented: Int = 0,
     var isPraised: Boolean = false
@@ -58,7 +59,7 @@ data class Post(
             PostType.IMAGE_TEXT,
             20,
             "魔板内容",
-            898,
+            "",
             "电视里的繁华盛开的粉红色跨境电啊就会受到老师",
             "123",
             3000
@@ -82,7 +83,7 @@ data class Post(
             PostType.ALBUM,
             20,
             "魔板内容",
-            898,
+            "",
             "电视里的繁华盛开的粉红色跨境电啊就会受到老师",
             "123",
             3000
@@ -102,7 +103,7 @@ data class Post(
             PostType.IMAGE_TEXT,
             20,
             "魔板内容",
-            898,
+            "",
             "电视里的繁华盛开的粉红色跨境电啊就会受到老师",
             "123",
             3000
@@ -121,7 +122,7 @@ data class Post(
             PostType.VIDEO,
             20,
             "魔板内容",
-            898,
+            "",
             "这是测试视频~",
             "123",
             3000
@@ -140,7 +141,7 @@ data class Post(
             PostType.GIF,
             20,
             "魔板内容",
-            898,
+            "",
             "电视里的繁华盛开的粉红色跨境电啊就会受到老师",
             "123",
             3000
@@ -157,21 +158,21 @@ data class Post(
                 imagePath,
                 imagePath
             ), "", PostType.LOCAL_ALBUM, 0,
-            "", 0, "", "", 0
+            "", "", "", "", 0
         )
 
         var inviteData: Post = Post(
             200.dp2px,
             UiUtil.getScreenHeight(App.instance()),
             avatar, "", "", arrayListOf(""), "", PostType.INVITE, 0,
-            "", 0, "", "", 0
+            "", "", "", "", 0
         )
 
         var punchData: Post = Post(
             200.dp2px,
             UiUtil.getScreenHeight(App.instance()),
             avatar, "", "", arrayListOf(""), "", PostType.PUNCH, 0,
-            "", 0, "", "", 0
+            "", "", "", "", 0
         )
     }
 }

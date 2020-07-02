@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.graphics.convertTo
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -45,12 +46,13 @@ class ChoiceMultiImageItemBinder(
 
         holder.itemView.run {
 
-            item.duration?.apply {
+            if (item.duration == null) {
+                tv_duration.text = null
+            } else {
                 val min = item.duration!! / 1000 / 60
                 val sec = item.duration!! / 1000 % 60
                 tv_duration.text = "${min.addZero()}:${sec.addZero()}"
             }
-
             if (item.isSelected) {
                 iv_check.setImageResource(R.drawable.ic_image_checked)
             } else {

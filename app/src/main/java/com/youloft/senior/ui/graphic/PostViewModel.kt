@@ -31,8 +31,11 @@ class PostViewModel : BaseViewModel() {
         viewModelScope.launchIO(onError = {
             liveData.value = BaseUiModel(showLoading = false, showError = it.message)
         }) {
-            if (filePaths.isNotEmpty()) {
-                UploadFileManager.uploadFile(filePaths, {
+            val filter = filePaths.filter {
+                !it.startsWith("http")
+            }
+            if (filter.isNotEmpty()) {
+                UploadFileManager.uploadFile(filter, {
                     viewModelScope.launchIO {
                         post.mediaContent = it
                         realPost(post)
@@ -50,7 +53,7 @@ class PostViewModel : BaseViewModel() {
         val result = ApiHelper.api.publishPost(post)
         withContext(Dispatchers.Main) {
             ApiHelper.executeResponse(result, {
-                liveData.value = BaseUiModel(showLoading = false)
+                liveData.value = BaseUiModel(showLoading = false, isSuccess = true)
             }, {
                 liveData.value = BaseUiModel(showLoading = false, showError = it)
             })

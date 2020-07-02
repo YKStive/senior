@@ -156,15 +156,24 @@ class ContentPublishActivity : BaseVMActivity() {
 
 
     override fun initData() {
+        mViewModel
     }
 
     override fun startObserve() {
         mViewModel.liveData.observe(this, Observer {
             if (it.showLoading) {
-                "加载。。。".logD()
+                showLoading()
             } else {
-                "完成".logD()
+                dismissLoading()
             }
+
+            it.showError?.apply { toast(this) }
+
+            if (it.isSuccess) {
+                toast("帖子发表成功，审核通过后别人就可以看到啦")
+                finish()
+            }
+
         })
     }
 

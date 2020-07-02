@@ -38,6 +38,7 @@ abstract class BaseVMActivity :
     fun dismissLoading() {
         if (mLoadingDialog != null && mLoadingDialog!!.isShowing) {
             mLoadingDialog!!.dismiss()
+            mLoadingDialog = null
         }
     }
 

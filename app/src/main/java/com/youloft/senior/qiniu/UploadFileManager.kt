@@ -2,9 +2,11 @@ package com.youloft.senior.qiniu
 
 import com.qiniu.android.storage.Configuration
 import com.qiniu.android.storage.UploadManager
+import com.youloft.senior.base.App
 import com.youloft.senior.net.ApiHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import top.zibin.luban.Luban
 import java.io.File
 
 /**
@@ -14,8 +16,6 @@ import java.io.File
  */
 
 object UploadFileManager {
-
-    private val token = "http://shequ.51wnl-cq.com/api/user/getqnuploadtoken"
 
     private val config: Configuration by lazy {
         Configuration.Builder()
@@ -37,16 +37,17 @@ object UploadFileManager {
         onError: ((msg: String) -> Unit)?
     ) {
         withContext(Dispatchers.IO) {
+            //todo 视频不压缩
+            val compressFilePaths = Luban.with(App.instance()).load(paths).get()
             val qnToken = ApiHelper.api.getQNToken()
             ApiHelper.executeResponse(qnToken, { tokenJson ->
                 val token = tokenJson.getString("token")
                 val baseUrl = tokenJson.getString("BaseUrl")
                 val result = mutableListOf<String>()
-                paths.forEach {
-                    val file = File(it)
-                    val key = createKey(it)
+                compressFilePaths.forEach {
+                    val key = createKey(it.absolutePath)
                     uploadManager.put(
-                        file, key, token,
+                        it, key, token,
                         { remoteKey, info, _ ->
                             if (info.isOK) {
                                 synchronized(UploadFileManager.javaClass) {
