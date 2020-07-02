@@ -35,16 +35,18 @@ public class ProgressHUD extends Dialog {
         ProgressHUD dialog = new ProgressHUD(context, R.style.ProgressHUD);
         dialog.setTitle("");
         dialog.setContentView(R.layout.base_progress_loading);
-        if (message == null || message.length() == 0) {
-            dialog.findViewById(R.id.message).setVisibility(View.GONE);
-        } else {
-            dialog.findViewById(R.id.message).setVisibility(View.VISIBLE);
-            TextView txt = (TextView) dialog.findViewById(R.id.message);
-            txt.setText(message);
-        }
+//        if (dialog.findViewById(R.id.message) != null) {
+//            if (message == null || message.length() == 0) {
+//                dialog.findViewById(R.id.message).setVisibility(View.GONE);
+//            } else {
+//                dialog.findViewById(R.id.message).setVisibility(View.VISIBLE);
+//                TextView txt = (TextView) dialog.findViewById(R.id.message);
+//                txt.setText(message);
+//            }
+//        }
         Glide.with(context)
                 .load(R.drawable.ic_progress_loading)
-                .into((ImageView) dialog.findViewById(R.id.spinnerImageView));
+                .into((ImageView) dialog.findViewById(R.id.iv_loading));
         dialog.setCancelable(cancelable);
         dialog.setOnCancelListener(cancelListener);
         dialog.getWindow().getAttributes().gravity = Gravity.CENTER;

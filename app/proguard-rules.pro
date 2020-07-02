@@ -695,6 +695,9 @@ public static ** valueOf(java.lang.String);
    public static final int *;
 }
 
+-keep class com.youloft.senior.bean.**{*;}
+-keep class com.youloft.senior.net.NetResponse{*;}
+
 -dontwarn com.vivo.push.**
 -keep class com.vivo.push.**{*; }
 -keep class com.vivo.vms.**{*; }
