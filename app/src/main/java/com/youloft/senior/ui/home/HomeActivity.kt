@@ -70,19 +70,19 @@ class HomeActivity : BaseVMActivity() {
                         }, 3000)
                     }
                 }
-                if (com.youloft.senior.utils.UserManager.instance.hasLogin()) {
+//                if (com.youloft.senior.utils.UserManager.instance.hasLogin()) {
                     supportFragmentManager.beginTransaction()
                         .hide(homeFragment)
                         .hide(notLoginFragment)
                         .show(mainFragment)
                         .commit()
-                } else {
-                    supportFragmentManager.beginTransaction()
-                        .hide(homeFragment)
-                        .hide(mainFragment)
-                        .show(notLoginFragment)
-                        .commit()
-                }
+//                } else {
+//                    supportFragmentManager.beginTransaction()
+//                        .hide(homeFragment)
+//                        .hide(mainFragment)
+//                        .show(notLoginFragment)
+//                        .commit()
+//                }
                 isSelected = true
                 main_coin_page.visibility = View.GONE
                 btn_home.isSelected = false

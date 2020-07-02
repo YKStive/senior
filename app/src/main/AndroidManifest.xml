@@ -48,6 +48,7 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+        <activity android:name=".ui.detail.WebViewActivity" />
 
         <receiver
             android:name="com.youloft.calendar.MeizuMessageReceiver"

@@ -111,15 +111,15 @@ class MainFragment : BaseVMFragment() {
             ).perform()
         }
         tv_recive_commnet.setOnClickListener(View.OnClickListener {
-//            activity?.let {   DetailActivity.start(it, "3", MineDataBean.VIDEO_TYPE)}
+            activity?.let {   DetailActivity.start(it, "3", MineDataBean.MOVIE_TYPE)}
 
 //            UserManager.instance.loginOut()
 //            var pupup = LoginPopup(activity, lifecycleScope)
 //            pupup.showAtLocation(recyclerView, Gravity.CENTER, 0, 0)
-            activity?.let {
-                var dialog=LoginDialog(it,lifecycleScope)
-                dialog.show()
-            }
+//            activity?.let {
+//                var dialog=LoginDialog(it,lifecycleScope)
+//                dialog.show()
+//            }
 
         })
     }
