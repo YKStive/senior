@@ -15,15 +15,14 @@ data class Post(
     var mediaContent: List<String> = arrayListOf(),
     var nickname: String = App.instance().nickName,
     var postType: Int = 0,
-
     var praised: Int = 0,
     var template: String = "",
     var templateId: Int = 0,
     var textContent: String = "",
     var userId: String = App.instance().userId,
     var viewed: Int = 0,
-    var commented: Int = 20,
-    var isPraised: Boolean = true
+    var commented: Int = 0,
+    var isPraised: Boolean = false
 
 ) : Serializable {
 
