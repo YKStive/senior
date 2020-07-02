@@ -1,10 +1,10 @@
 package com.youloft.senior.qiniu
 
-import com.qiniu.android.http.ResponseInfo
 import com.qiniu.android.storage.Configuration
-import com.qiniu.android.storage.UpCompletionHandler
 import com.qiniu.android.storage.UploadManager
-import org.json.JSONObject
+import com.youloft.senior.net.ApiHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 
 /**
@@ -15,7 +15,7 @@ import java.io.File
 
 object UploadFileManager {
 
-    private val token = ""
+    private val token = "http://shequ.51wnl-cq.com/api/user/getqnuploadtoken"
 
     private val config: Configuration by lazy {
         Configuration.Builder()
@@ -30,16 +30,51 @@ object UploadFileManager {
         UploadManager(config, 3)
     }
 
-    fun uploadFile(paths: List<String>) {
-        paths.forEach {
-            uploadManager.put(it, File(it).path, token,
-                { key, info, response ->
-                    if(info.isOK){
-                        info.duration
-                    }
 
-                }, null
-            )
+    suspend fun uploadFile(
+        paths: List<String>,
+        onComplete: (remotePath: List<String>) -> Unit,
+        onError: ((msg: String) -> Unit)?
+    ) {
+        withContext(Dispatchers.IO) {
+            val qnToken = ApiHelper.api.getQNToken()
+            ApiHelper.executeResponse(qnToken, { tokenJson ->
+                val token = tokenJson.getString("token")
+                val baseUrl = tokenJson.getString("BaseUrl")
+                val result = mutableListOf<String>()
+                paths.forEach {
+                    val file = File(it)
+                    val key = createKey(it)
+                    uploadManager.put(
+                        file, key, token,
+                        { remoteKey, info, _ ->
+                            if (info.isOK) {
+                                synchronized(UploadFileManager.javaClass) {
+                                    result.add("${baseUrl}/${remoteKey}")
+                                    if (result.size == paths.size) {
+                                        onComplete(result)
+                                    }
+                                }
+                            } else {
+                                onError?.invoke("QN${info.error}")
+                            }
+
+                        }, null
+                    )
+                }
+            }, {
+                onError?.invoke("请求token异常--${it}")
+            })
+        }
+
+
+    }
+
+    private fun createKey(path: String): String {
+        return if (path.contains("/") && path.contains(".")) {
+            path.substring(path.lastIndexOf("/") + 1, path.lastIndexOf("."))
+        } else {
+            path
         }
     }
 
