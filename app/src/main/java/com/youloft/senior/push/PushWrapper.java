@@ -3,16 +3,18 @@ package com.youloft.senior.push;
 import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.text.TextUtils;
 
+import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 import com.umeng.message.tag.TagManager;
-import com.youloft.util.AppUtil;
+import com.youloft.senior.utils.CommonUtils;
+import com.youloft.senior.utils.UserManager;
 
 import org.android.agoo.huawei.HuaWeiRegister;
-import org.android.agoo.mezu.MeizuRegister;
 import org.android.agoo.oppo.OppoRegister;
 import org.android.agoo.vivo.VivoRegister;
 import org.android.agoo.xiaomi.MiPushRegistar;
@@ -26,7 +28,6 @@ import java.util.concurrent.Executors;
 
 import rx.Observable;
 import rx.Observer;
-import rx.schedulers.Schedulers;
 
 /**
  * 注册推送信息
@@ -40,6 +41,7 @@ public class PushWrapper {
     //初始化极光推送
     public static void init(Application context) {
         PushWrapper.context = context;
+        UMConfigure.setLogEnabled(true);
         //获取消息推送代理示例
         PushAgent mPushAgent = PushAgent.getInstance(context);
         //注册推送服务，每次调用register方法都会回调该接口
@@ -54,29 +56,35 @@ public class PushWrapper {
                 //注册成功会返回deviceToken deviceToken是推送消息的唯一标志
                 updateTags();
                 updateAlias();
-                System.out.println("umpush   " + deviceToken);
             }
 
             @Override
             public void onFailure(String s, String s1) {
             }
         });
-
-        //        //注册小米推送
+        //注册小米推送
         MiPushRegistar.register(context, "2882303761518452186", "5671845243186");
-//        //注册华为推送
+        //注册华为推送
         HuaWeiRegister.register(context);
-//        //注册魅族推送
+        //注册魅族推送
 //        MeizuRegister.register(context, "113855", "95933be55b5c4a2582aef8351b7bd2d4");
-
         OppoRegister.register(context, "cf3c82536f01416699d220c7503bb9f0", "17840f84c5134bcea37a0b335642db08");
-
         //vivo 通道
         VivoRegister.register(context);
     }
 
-    private static void updateAlias() {
+    public static void updateAlias() {
+        String userId = UserManager.Companion.getInstance().getUserId();
+        if (TextUtils.isEmpty(userId)) {
+            userId = CommonUtils.getDeviceId();
+        }
+        PushAgent.getInstance(context).setAlias(userId, "user_id", (b, s) -> {
 
+        });
+    }
+
+    private static SharedPreferences getSP() {
+        return context.getSharedPreferences("um_push_sp", Context.MODE_PRIVATE);
     }
 
     public static void onActivityCreate() {
@@ -111,23 +119,22 @@ public class PushWrapper {
      * 更新推送的标签
      */
     public static void updateTags() {
-        //查询标签
-
-        List<String> tagList = new ArrayList<>();
-        //加入用户id
-        String imei = AppUtil.getIMEI(context);
-        if (!TextUtils.isEmpty(imei)) {
-            tagList.add(imei);
-        }
-        updateTags(toArray(tagList))
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(Schedulers.newThread())
-                .onExceptionResumeNext(Observable.empty())
-                .onErrorResumeNext(Observable.empty())
-                .doOnError(throwable -> {
-
-                })
-                .subscribe();
+//        //查询标签
+//        List<String> tagList = new ArrayList<>();
+//        //加入用户id
+//        String imei = AppUtil.getIMEI(context);
+//        if (!TextUtils.isEmpty(imei)) {
+//            tagList.add(imei);
+//        }
+//        updateTags(toArray(tagList))
+//                .subscribeOn(Schedulers.newThread())
+//                .observeOn(Schedulers.newThread())
+//                .onExceptionResumeNext(Observable.empty())
+//                .onErrorResumeNext(Observable.empty())
+//                .doOnError(throwable -> {
+//
+//                })
+//                .subscribe();
     }
 
 
@@ -149,20 +156,6 @@ public class PushWrapper {
 
     private static String[] toArray(List<String> items) {
         return items.toArray(new String[]{});
-    }
-
-    /**
-     * 设置别名
-     *
-     * @param alias
-     */
-    public static void setAlias(String alias) {
-        if (TextUtils.isEmpty(alias)) {
-            return;
-        }
-        PushAgent.getInstance(context).setAlias(alias, "alias_tag", (isSuccess, s) -> {
-
-        });
     }
 
     /**
