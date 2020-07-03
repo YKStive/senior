@@ -1,12 +1,18 @@
 package com.youloft.senior.widgt
 
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import com.youloft.coolktx.toast
 import com.youloft.senior.R
+import com.youloft.util.ToastMaster
+import kotlinx.android.synthetic.main.activity_invite_friend.*
 import kotlinx.android.synthetic.main.popup_comment_option.view.*
 
 /**
@@ -19,7 +25,10 @@ import kotlinx.android.synthetic.main.popup_comment_option.view.*
  * @Version: 1.0
  */
 class CommentOptionPopup(
-    mContext: Activity?
+    mContext: Activity?,
+    deleteOrReport: () -> Unit,
+    val content: String,
+    val str: String
 ) : PopupWindow() {
     private val mContext: Activity? = null
     private val view: View
@@ -28,15 +37,22 @@ class CommentOptionPopup(
     init {
         view = LayoutInflater.from(mContext)
             .inflate(R.layout.popup_comment_option, null)
-        view.tv_copy.setOnClickListener(View.OnClickListener {
-
-        })
-        view.tv_report.setOnClickListener(View.OnClickListener {
-
-        })
-        view.tv_cancle.setOnClickListener(View.OnClickListener {
+        view.tv_copy.setOnClickListener {
+            val clipboardManager: ClipboardManager =
+                mContext?.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip: ClipData = ClipData.newPlainText("评论内容", content)
+            clipboardManager.setPrimaryClip(clip)
+            ToastMaster.showShortToast(mContext, "复制成功")
             dismiss()
-        })
+        }
+        view.tv_report.setText(str)
+        view.tv_report.setOnClickListener {
+            deleteOrReport()
+            dismiss()
+        }
+        view.tv_cancle.setOnClickListener {
+            dismiss()
+        }
         // 设置外部可点击
         this.isOutsideTouchable = true
         // mMenuView添加OnTouchListener监听判断获取触屏位置如果在选择框外面则销毁弹出框

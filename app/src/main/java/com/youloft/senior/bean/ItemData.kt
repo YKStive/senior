@@ -47,5 +47,6 @@ data class ItemData(
     var templateId: String,
     var textContent: String,
     var userId: String,
-    var viewed: Int
+    var viewed: Int,
+    var isPraised: Boolean
 )

@@ -15,7 +15,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.youloft.coolktx.addZero
 import com.youloft.coolktx.launchIOWhenCreated
 import com.youloft.core.base.BaseVMActivity
 import com.youloft.senior.R
@@ -23,7 +22,6 @@ import com.youloft.senior.bean.ItemData
 import com.youloft.senior.bean.MineDataBean
 import com.youloft.senior.bean.PraiseBean
 import com.youloft.senior.net.ApiHelper
-import com.youloft.senior.ui.adapter.CommentAdapterr
 import com.youloft.senior.ui.login.LoginDialog
 import com.youloft.senior.utils.UserManager
 import com.youloft.senior.utils.logD
@@ -49,16 +47,16 @@ import kotlinx.coroutines.withContext
  * @Version:        1.0
  */
 class DetailActivity : BaseVMActivity() {
-    lateinit var informationId: String
-    var informationType: Int = 0
-    lateinit var adapterr: CommentAdapterr
-    lateinit var videoFragment: GIFDetailFragment
-    lateinit var mPopupWindow: PopupWindow
+    private lateinit var informationId: String
+    private var informationType: Int = 0
+    private lateinit var videoFragment: GIFDetailFragment
+    private lateinit var mPopupWindow: PopupWindow
     lateinit var mViewModel: DetailViewModel
-    var inputManager: InputMethodManager? = null
+    private var inputManager: InputMethodManager? = null
+    private var isPraised = false//点前用户是否点赞标志
 
     //帖子发布人id
-    var postData: ItemData? = null
+    private var postData: ItemData? = null
 //    var postUserId: String = ""
 
 
@@ -84,7 +82,7 @@ class DetailActivity : BaseVMActivity() {
     override fun initView() {
         inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         image_more.visibility = View.VISIBLE
-        var fragments = ArrayList<Fragment>()
+        val fragments = ArrayList<Fragment>()
         informationId = intent.getStringExtra("informationId")
         informationType = intent.getIntExtra("informationType", 0)
         fragments.add(ItemCommentFragment.newInstance(informationId))
@@ -129,10 +127,9 @@ class DetailActivity : BaseVMActivity() {
                 .commit()
         }
         //分享到朋友圈全是链接
-        ll_share_to_circle.setOnClickListener(View.OnClickListener {
+        ll_share_to_circle.setOnClickListener {
             shareWithH5(SOC_MEDIA.WEIXIN_CIRCLE)
-
-        })
+        }
         ll_share_to_friend.setOnClickListener {
             if (informationType != MineDataBean.GIF_TYPE) {
                 shareWithH5(SOC_MEDIA.WEIXIN)
@@ -161,7 +158,7 @@ class DetailActivity : BaseVMActivity() {
                 LoginDialog(this, lifecycleScope).show()
                 return@setOnClickListener
             }
-            var userMaster = UserManager.instance
+            val userMaster = UserManager.instance
             mViewModel.comment(
                 PraiseBean(
                     userMaster.getAvatar(),
@@ -193,6 +190,9 @@ class DetailActivity : BaseVMActivity() {
         image_more.setOnClickListener {
             showPop()
         }
+        image_back.setOnClickListener {
+            finish()
+        }
     }
 
     private fun shareWithH5(target: SOC_MEDIA) {
@@ -215,16 +215,39 @@ class DetailActivity : BaseVMActivity() {
         mViewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
         mViewModel.postInfo.observe(this, Observer {
             postData = it
+            isPraised = it.isPraised
+            if (isPraised) {
+                image_praised.setImageResource(R.drawable.icon_favorite)
+            } else {
+                image_praised.setImageResource(R.drawable.icon_not_favorite)
+            }
             tablayout.getTitleView(0).setText("全部评论(${it.commented})")
             tablayout.getTitleView(1).setText("点赞(${it.praised})")
         })
-        mViewModel.addComment.observe(this, Observer {
-            //评论发表成功了
-            edt_comment.setText("")
-            inputManager?.hideSoftInputFromWindow(edt_comment.windowToken, 0)
-            tablayout.getTitleView(0).setText("全部评论(${postData?.commented?.plus(1)})")
+        mViewModel.addOrDeleteComment.observe(this, Observer {
+            if (it.isNotEmpty()) {
+                //评论发表成功了
+                edt_comment.setText("")
+                inputManager?.hideSoftInputFromWindow(edt_comment.windowToken, 0)
+                tablayout.getTitleView(0).setText("全部评论(${postData?.commented?.plus(1)})")
+            } else {
+                //评论删除成功了
+                tablayout.getTitleView(0).setText("全部评论(${postData?.commented?.minus(1)})")
+            }
+
         })
-        mViewModel.addFavorite.observe(this, Observer {
+
+        //点赞
+        mViewModel.addOrCancleFavorite.observe(this, Observer {
+            if (isPraised) {
+                isPraised = !isPraised
+                image_praised.setImageResource(R.drawable.icon_not_favorite)
+                tablayout.getTitleView(1).setText("点赞(${postData?.praised?.minus(1)})")
+            } else {//没有点赞的情况下点赞
+                isPraised = !isPraised
+                image_praised.setImageResource(R.drawable.icon_favorite)
+                tablayout.getTitleView(1).setText("点赞(${postData?.praised?.plus(1)})")
+            }
 
         })
     }
@@ -236,7 +259,6 @@ class DetailActivity : BaseVMActivity() {
             }
         }
         super.onBackPressed()
-//        finish()
     }
 
     private fun showPop() {
@@ -245,7 +267,7 @@ class DetailActivity : BaseVMActivity() {
             return
         }
         mPopupWindow = PopupWindow(this)
-        var popView = LayoutInflater.from(this).inflate(R.layout.pop_post_more, null)
+        val popView = LayoutInflater.from(this).inflate(R.layout.pop_post_more, null)
         // 设置布局文件
         mPopupWindow.setContentView(popView)
         if (postData?.userId.equals(UserManager.instance.getUserId())) {
@@ -259,6 +281,7 @@ class DetailActivity : BaseVMActivity() {
                     withContext(Dispatchers.Main) {
                         ApiHelper.executeResponse(deleteRes, {
                             if (it) {
+                                ToastMaster.showShortToast(this@DetailActivity, "删除成功")
                                 finish()
                             }
                         })
@@ -272,18 +295,18 @@ class DetailActivity : BaseVMActivity() {
         }
 
         // 为了避免部分机型不显示，我们需要重新设置一下宽高
-        mPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
-        mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
+        mPopupWindow.width = ViewGroup.LayoutParams.WRAP_CONTENT
+        mPopupWindow.height = ViewGroup.LayoutParams.WRAP_CONTENT
         // 设置pop透明效果
         mPopupWindow.setBackgroundDrawable(ColorDrawable(0x0000))
         // 设置pop出入动画
-        mPopupWindow.setAnimationStyle(R.style.pop_add)
+        mPopupWindow.animationStyle = R.style.pop_add
         // 设置pop获取焦点，如果为false点击返回按钮会退出当前Activity，如果pop中有Editor的话，focusable必须要为true
-        mPopupWindow.setFocusable(true)
+        mPopupWindow.isFocusable = true
         // 设置pop可点击，为false点击事件无效，默认为true
-        mPopupWindow.setTouchable(true)        // 设置点击pop外侧消失，默认为false；在focusable为true时点击外侧始终消失
+        mPopupWindow.isTouchable = true        // 设置点击pop外侧消失，默认为false；在focusable为true时点击外侧始终消失
 
-        mPopupWindow.setOutsideTouchable(true)
+        mPopupWindow.isOutsideTouchable = true
         // 相对于 + 号正下面，同时可以设置偏移量
         mPopupWindow.showAsDropDown(image_more)
         // 设置pop关闭监听，用于改变背景透明度

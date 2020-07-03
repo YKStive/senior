@@ -149,10 +149,8 @@ interface Api {
      * 删除评论
      */
     @POST("api/post/comment/delete")
-    @FormUrlEncoded
-    fun deletePost(
-        @Field("postId") postId: String,
-        @Field("commentId") commentId: String
+    fun deleteComment(
+        @Body params: DeleteCommentUploadParams
     ): NetResponse<String>
 
 

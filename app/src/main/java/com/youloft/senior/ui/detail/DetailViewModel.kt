@@ -1,25 +1,17 @@
 package com.youloft.senior.ui.detail
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide
-import com.youloft.coolktx.launchIOWhenCreated
 import com.youloft.core.base.BaseViewModel
 import com.youloft.net.bean.CommentBean
+import com.youloft.senior.bean.FavoriteHeadBean
 import com.youloft.senior.bean.ItemData
 import com.youloft.senior.bean.PraiseBean
 import com.youloft.senior.net.ApiHelper
-import com.youloft.senior.ui.login.LoginDialog
-import com.youloft.senior.utils.UserManager
-import com.youloft.senior.utils.logD
 import com.youloft.senior.utils.logE
-import kotlinx.android.synthetic.main.activity_video_detail.*
-import kotlinx.android.synthetic.main.fragment_text_and_picture_layout.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 
 
 /**
@@ -39,18 +31,24 @@ class DetailViewModel : BaseViewModel() {
 
     //帖子信息
     var postInfo = MutableLiveData<ItemData>()
-    var addFavorite = MutableLiveData<Int>()
-    var addComment = MutableLiveData<Int>()
+
+    //添加帖子赞
+    var addOrCancleFavorite = MutableLiveData<String>()
+    var addOrDeleteComment = MutableLiveData<String>()
 
     //结果
     var commentResultData = MutableLiveData<List<CommentBean>>()
+
+    /**
+     * 点赞帖子
+     */
     fun addFavorite(params: PraiseBean) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val res = ApiHelper.api.parsePost(params)
                 withContext(Dispatchers.Main) {
                     if (res.status == 200) {
-                        addFavorite.value = 200
+                        addOrCancleFavorite.value = res.data
                     }
                 }
             } catch (e: Exception) {
@@ -59,13 +57,16 @@ class DetailViewModel : BaseViewModel() {
         }
     }
 
+    /**
+     * 添加帖子评论
+     */
     fun comment(params: PraiseBean) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val res = ApiHelper.api.commnet(params)
                 withContext(Dispatchers.Main) {
                     if (res.status == 200) {
-                        addComment.value = 200
+                        addOrDeleteComment.value = "发表评论"
                     }
                 }
             } catch (e: Exception) {
@@ -74,12 +75,13 @@ class DetailViewModel : BaseViewModel() {
         }
     }
 
-
+    /**
+     * 获取帖子评论列表
+     */
     fun getCommentList(
         params: Map<String, String>
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-//            val listData = ApiHelper.api.getMineList(index, direction, limit)
             val listData = ApiHelper.api.getCommentList(params)
             withContext(Dispatchers.Main) {
                 ApiHelper.executeResponse(listData, {
@@ -90,7 +92,9 @@ class DetailViewModel : BaseViewModel() {
         }
     }
 
-
+    /**
+     * 帖子详情
+     */
     fun getDetailData(
         id: String
     ) {
@@ -101,6 +105,36 @@ class DetailViewModel : BaseViewModel() {
                     postInfo.value = it
                 })
             }
+
+        }
+    }
+
+
+    //点赞结果
+    var favoriteResultData = MutableLiveData<List<FavoriteHeadBean>>()
+
+    /**
+     * 点赞评论
+     */
+    fun favorite(
+        params: Map<String, String>,
+        error: (msg: String) -> Unit
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val listData = ApiHelper.api.getFavoritetList(params)
+                withContext(Dispatchers.Main) {
+                    ApiHelper.executeResponse(listData, {
+                        favoriteResultData.value = it
+                    }, error)
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    error(e.message.toString())
+                }
+                e.message.toString().logE(TAG)
+            }
+
 
         }
     }

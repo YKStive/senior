@@ -39,7 +39,7 @@ class InviteFriendActivity : BaseActivity() {
 
         tv_copy_code.setOnClickListener {
             val clipboardManager: ClipboardManager =
-                getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val clip: ClipData = ClipData.newPlainText("邀请码", tv_invite_code.text)
             clipboardManager.setPrimaryClip(clip)
             toast("复制成功")

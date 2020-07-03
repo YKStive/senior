@@ -1,34 +1,37 @@
 package com.youloft.senior.ui.detail
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
-import com.chad.library.adapter.base.listener.OnLoadMoreListener
-import com.google.gson.Gson
 import com.youloft.coolktx.launchIOWhenCreated
 import com.youloft.core.base.BaseVMFragment
+import com.youloft.net.bean.CommentBean
 import com.youloft.senior.ConstConfig
 import com.youloft.senior.R
-import com.youloft.senior.bean.PraiseBean
+import com.youloft.senior.bean.DeleteCommentUploadParams
 import com.youloft.senior.bean.PraiseComment
-import com.youloft.senior.bean.User
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.ui.adapter.CommentAdapterr
 import com.youloft.senior.ui.login.LoginDialog
 import com.youloft.senior.utils.DiffCommentCallback
-import com.youloft.senior.utils.Preference
 import com.youloft.senior.utils.UserManager
 import com.youloft.senior.utils.logD
+import com.youloft.senior.widgt.CommentOptionPopup
 import com.youloft.util.ToastMaster
 import kotlinx.android.synthetic.main.fragment_item_comment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.*
+import kotlin.collections.HashMap
+import kotlin.collections.MutableList
+import kotlin.collections.lastIndex
+import kotlin.collections.set
 
 
 /**
@@ -45,6 +48,9 @@ class ItemCommentFragment : BaseVMFragment() {
     var postId: String = ""
     var postUserId: String = ""
     var optionType = ConstConfig.REQUEST_REFRESH
+
+    //是否是用户当前增加评论
+    private var addNewComment = false
 
     companion object {
         fun newInstance(postId: String): ItemCommentFragment {
@@ -86,9 +92,8 @@ class ItemCommentFragment : BaseVMFragment() {
                             it.message?.logD()
                         }, {
 //            val stickers = ApiHelper.api.getStickers()
-                            var itemBean = adapter.data[position]
-//TODO
-                            var userManager = UserManager.instance
+                            val itemBean = adapter.data[position]
+                            val userManager = UserManager.instance
                             val res = ApiHelper.api.parse(
                                 PraiseComment(
                                     itemBean.id,
@@ -111,7 +116,6 @@ class ItemCommentFragment : BaseVMFragment() {
                                     } else {
                                         itemBean.praised += 1
                                         itemBean.isPraised = true
-                                        //点赞
                                     }
                                     adapter.notifyItemChanged(position, CommentAdapterr.PAYLOAD)
                                 }
@@ -121,12 +125,50 @@ class ItemCommentFragment : BaseVMFragment() {
                 }
             }
         })
+        adapter.setOnItemLongClickListener { _, _, position ->
+            if (!UserManager.instance.hasLogin()) {
+                activity?.let { LoginDialog(it, lifecycleScope).show() }
+                return@setOnItemLongClickListener true
+            }
+            val commnetBean = adapter.data[position]
+            if (UserManager.instance.getUserId().equals(commnetBean.userId)) {
+                val popup = CommentOptionPopup(activity, {
+                    lifecycleScope.launchIOWhenCreated({
+                        it.message?.logD()
+                    }, {
+                        val result = ApiHelper.api.deleteComment(
+                            DeleteCommentUploadParams(
+                                commnetBean.id,
+                                postId
+                            )
+                        )
+                        withContext(Dispatchers.Main) {
+                            ApiHelper.executeResponse(result, {
+                                if (result.isSuccess()) {
+                                    ToastMaster.showShortToast(activity, "删除成功")
+                                    mViewModel?.addOrDeleteComment?.value = ""
+                                    adapter.removeAt(position)
+                                } else {
+                                    ToastMaster.showShortToast(activity, result.msg)
+                                }
+                            })
+                        }
+                    })
+                }, adapter.data[position].content, "删除")
+                popup.showAtLocation(recyclerView, Gravity.CENTER, 0, 0)
+            } else {
+                val popup = CommentOptionPopup(activity, {
+//TODO 埋点
+                }, adapter.data[position].content, "举报")
+                popup.showAtLocation(recyclerView, Gravity.CENTER, 0, 0)
+            }
+
+            true
+        }
     }
 
     override fun initData() {
-        val userStr by Preference(Preference.USER_INFO, "")
-//        userInfo = gson.fromJson(userStr, User.javaClass)
-        var recivePostId = arguments?.getString("postId");
+        val recivePostId = arguments?.getString("postId")
         if (!recivePostId.isNullOrBlank()) {
             postId = recivePostId
         }
@@ -134,41 +176,52 @@ class ItemCommentFragment : BaseVMFragment() {
 
     override fun startObserve() {
         mViewModel = activity?.let { ViewModelProvider(it).get(DetailViewModel::class.java) }
-        var params = HashMap<String, String>()
-        params.put("postId", postId)
-        params.put("limit", ConstConfig.limit.toString())
+        val params = HashMap<String, String>()
+        params["postId"] = postId
+        params["limit"] = ConstConfig.limit.toString()
         if (UserManager.instance.hasLogin()) {
-            params.put("userId", UserManager.instance.getUserId())
+            params["userId"] = UserManager.instance.getUserId()
         }
+        addNewComment = false
         mViewModel?.getCommentList(params)
         activity?.let { ctx ->
             mViewModel?.let { viewModle ->
+                //评论列表
                 viewModle.commentResultData.observe(ctx, Observer {
-                    if (optionType == ConstConfig.REQUEST_REFRESH) {
-                        adapter.setList(it)
+                    if (addNewComment) {
+                        // 先拷贝出数据
+                        val data: MutableList<CommentBean> = ArrayList(adapter.data)
+                        data.addAll(it)
+                        // 使用 diif 刷新数据
+                        adapter.setDiffNewData(data)
                     } else {
-                        adapter.addData(it)
-                        adapter.loadMoreModule.loadMoreComplete()
-                    }
-                    if (it.size < ConstConfig.limit) {
-                        adapter.loadMoreModule.loadMoreEnd()
+                        if (optionType == ConstConfig.REQUEST_REFRESH) {
+                            adapter.setList(it)
+                        } else {
+                            adapter.addData(it)
+                            adapter.loadMoreModule.loadMoreComplete()
+                        }
+                        if (it.size < ConstConfig.limit) {
+                            adapter.loadMoreModule.loadMoreEnd()
+                        }
                     }
                 })
-
+                //监听帖子信息
                 viewModle.postInfo.observe(ctx, Observer {
                     postUserId = it.userId
                 })
-
-                viewModle.addComment.observe(ctx, Observer {
-                    if (it == 200) {//添加评论成功了
-                        optionType = ConstConfig.REQUEST_REFRESH
-                        var params = HashMap<String, String>()
-                        params.put("postId", postId)
-                        params.put("limit", "1")
+                //当前用户评论了这条帖子 todo 只增加一条，不能直接setList
+                viewModle.addOrDeleteComment.observe(ctx, Observer {
+                    if (it.isNotEmpty()) {//添加评论成功了
+                        //拉去用户最新一条评论，即刚才发表的那条评论
+                        addNewComment = true
+                        val addCommnetParams = HashMap<String, String>()
+                        addCommnetParams["postId"] = postId
+                        addCommnetParams["limit"] = "1"
                         if (UserManager.instance.hasLogin()) {
-                            params.put("userId", UserManager.instance.getUserId())
+                            addCommnetParams["userId"] = UserManager.instance.getUserId()
                         }
-                        viewModle.getCommentList(params)
+                        viewModle.getCommentList(addCommnetParams)
                     }
                 })
             }
@@ -187,13 +240,14 @@ class ItemCommentFragment : BaseVMFragment() {
 //            if (!recivePostId.isNullOrBlank()) {
 //                postId = recivePostId
 //            }
-            var params = HashMap<String, String>()
-            params.put("postId", postId)
-            params.put("limit", ConstConfig.limit.toString())
-            params.put("index", adapter.data[adapter.data.lastIndex].id)
+            val params = HashMap<String, String>()
+            params["postId"] = postId
+            params["limit"] = ConstConfig.limit.toString()
+            params["index"] = adapter.data[adapter.data.lastIndex].id
             if (UserManager.instance.hasLogin()) {
-                params.put("userId", UserManager.instance.getUserId())
+                params["userId"] = UserManager.instance.getUserId()
             }
+            addNewComment = false
             mViewModel?.getCommentList(params)
         }
 //        adapter.loadMoreModule.isAutoLoadMore = true

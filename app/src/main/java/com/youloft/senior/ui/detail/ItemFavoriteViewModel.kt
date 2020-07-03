@@ -21,23 +21,9 @@ import kotlinx.coroutines.withContext
  * @UpdateRemark:   更新说明：
  * @Version:        1.0
  */
+@Deprecated("与DetailActivity公用viewmodel")
 class ItemFavoriteViewModel : BaseViewModel() {
 
-    //结果
-    var resultData = MutableLiveData<List<FavoriteHeadBean>>()
-    fun getData(
-        params: Map<String, String>
-    ) {
-        viewModelScope.launch(Dispatchers.IO) {
-//            val listData = ApiHelper.api.getMineList(index, direction, limit)
-            val listData = ApiHelper.api.getFavoritetList(params)
-            withContext(Dispatchers.Main) {
-                ApiHelper.executeResponse(listData, {
-                    resultData.value = it
-                })
-            }
 
-        }
-    }
 
 }

@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingTop="10dp"
-            android:paddingBottom="45dp"
+            android:paddingBottom="10dp"
             android:text="取消"
             android:textColor="#fff7612c"
             android:textSize="20sp" />
