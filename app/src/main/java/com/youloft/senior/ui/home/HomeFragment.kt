@@ -119,9 +119,21 @@ class HomeFragment : BaseVMFragment() {
     }
 
     override fun startObserve() {
-        mViewModel.data.observe(this, Observer {
-            mAdapter.items = it
-            mAdapter.notifyDataSetChanged()
+        mViewModel.data.observe(this, Observer { liveData ->
+            activity?.let { hostActivity ->
+                val homeActivity = hostActivity as HomeActivity
+                if (liveData.showLoading) {
+                    homeActivity.showLoading()
+                } else {
+                    homeActivity.dismissLoading()
+                }
+                liveData.showError?.let { homeActivity.toast(it) }
+
+                liveData.showSuccess?.let {
+                    mAdapter.items = it
+                    mAdapter.notifyDataSetChanged()
+                }
+            }
         })
     }
 

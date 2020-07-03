@@ -23,12 +23,11 @@
             tools:src="@drawable/ic_placeholder_error" />
 
         <ImageView
-            android:layout_gravity="center"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_gravity="center"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_avatar_border"
-            />
+            android:src="@drawable/ic_avatar_border" />
     </FrameLayout>
 
     <TextView
@@ -36,6 +35,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="7dp"
+        android:maxLength="15"
+        android:maxLines="1"
         android:textColor="#FF555555"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@id/avatar_container"
@@ -49,6 +50,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
+        android:maxLength="15"
+        android:maxLines="1"
         android:textColor="#FF999999"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@id/avatar_container"
