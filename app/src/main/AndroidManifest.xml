@@ -16,7 +16,7 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:allowBackup">
+        tools:replace="android:allowBackup,android:networkSecurityConfig">
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5eec77680cafb2860d0001e1" />
