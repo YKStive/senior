@@ -72,4 +72,9 @@
     <string name="privacy">《隐私政策》</string>
     <string name="disagree">不同意</string>
     <string name="agree">同意</string>
+    <string name="confirm_logout">确定退出登录？</string>
+    <string name="company">重庆可兰达科技有限公司</string>
+    <string name="post_cancel_confirm">您的内容还没有发表出去\n确定要放弃吗？</string>
+    <string name="cancel">取消</string>
+    <string name="confirm_abandon">确定放弃</string>
 </resources>

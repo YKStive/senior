@@ -100,10 +100,7 @@ class UserManager {
      * 获取用户id
      */
     fun getUserId(): String {
-        if (bean == null) {
-            return ""
-        }
-        return bean!!.userId
+        return bean?.userId ?: ""
     }
 
 
@@ -121,20 +118,14 @@ class UserManager {
      * 获取用户id
      */
     fun getAvatar(): String {
-        if (bean == null) {
-            return ""
-        }
-        return bean!!.avatar
+        return bean?.avatar ?: ""
     }
 
     /**
      * 获取用户id
      */
     fun getNickName(): String {
-        if (bean == null) {
-            return ""
-        }
-        return bean!!.nickname
+        return bean?.nickname ?: ""
     }
 
     /**

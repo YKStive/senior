@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.item_post_local_album.view.*
  */
 open class PostLocalAlbumViewBinder(
     val onItemClick: () -> Unit,
-    val onShare: () -> Unit
+    val onShare: (paths: List<String>) -> Unit
 
 ) :
     ItemViewBinder<Post, PostLocalAlbumViewBinder.ViewHolder>() {
@@ -52,7 +52,7 @@ open class PostLocalAlbumViewBinder(
 
             //分享
             btn_share.setOnClickListener {
-                onShare()
+                onShare(item.mediaContent)
             }
 
 

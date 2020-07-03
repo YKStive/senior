@@ -11,9 +11,12 @@ import com.youloft.senior.base.App
 import com.youloft.senior.bean.Post
 import com.youloft.senior.bean.PostType
 import com.youloft.coolktx.dp2px
+import com.youloft.coolktx.toast
 import com.youloft.senior.itembinder.*
 import com.youloft.senior.ui.detail.DetailActivity
 import com.youloft.senior.ui.graphic.InviteFriendActivity
+import com.youloft.senior.ui.graphic.PostViewModel
+import com.youloft.senior.ui.login.LoginDialog
 import com.youloft.senior.utils.logD
 import com.youloft.senior.widgt.RecycleViewDivider
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -26,6 +29,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 class HomeFragment : BaseVMFragment() {
 
     private val mViewModel by viewModels<HomeViewModel>()
+    private val mPostViewModel by viewModels<PostViewModel>()
     private val mAdapter: MultiTypeAdapter = MultiTypeAdapter()
 
     override fun getLayoutResId(): Int {
@@ -49,9 +53,29 @@ class HomeFragment : BaseVMFragment() {
             }),
 
             PostLocalAlbumViewBinder({
-                "去发表页面".logD()
-            }, {
-                "立即分享".logD()
+                context?.toast("去影集")
+            }, { localPhotoPaths ->
+                this.activity?.let { hostActivity ->
+                    LoginDialog.tryLogin(hostActivity) {
+                        val post = Post(postType = PostType.ALBUM)
+                        mPostViewModel.publishPost(post, localPhotoPaths)
+                        mPostViewModel.liveData.observe(this, Observer {
+                            if (it.showLoading) {
+                                (hostActivity as HomeActivity).showLoading()
+                            } else {
+                                (hostActivity as HomeActivity).dismissLoading()
+                            }
+                            if (it.isSuccess) {
+                                hostActivity.toast("去影集")
+                            }
+                            it.showError?.let { errorMsg ->
+                                hostActivity.toast(errorMsg)
+                            }
+                        })
+                    }
+                }
+
+
             }),
 
             PostPunchViewBinder { btnPunch ->

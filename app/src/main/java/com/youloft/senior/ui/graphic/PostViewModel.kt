@@ -26,7 +26,7 @@ class PostViewModel : BaseViewModel() {
      * @param post Post 帖子
      * @param filePaths MutableList<String> 文件地址列表
      */
-    fun publishPost(post: Post, filePaths: MutableList<String>) {
+    fun publishPost(post: Post, filePaths: List<String>) {
         liveData.value = BaseUiModel(showLoading = true)
         viewModelScope.launchIO(onError = {
             liveData.value = BaseUiModel(showLoading = false, showError = it.message)

@@ -10,8 +10,10 @@ import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
 import com.youloft.core.base.BaseVMActivity
 import com.youloft.senior.R
+import com.youloft.senior.ui.login.LoginDialog
 import com.youloft.senior.ui.login.LoginFragment
 import com.youloft.senior.utils.Preference
+import com.youloft.senior.utils.UserManager
 import com.youloft.senior.widgt.OperateDialog
 import com.youloft.senior.widgt.PrivacyDialog
 import kotlinx.android.synthetic.main.activity_home.*
@@ -107,10 +109,9 @@ class HomeActivity : BaseVMActivity() {
         }
 
         btn_function.setOnClickListener {
-            OperateDialog(this).show()
-        }
-        img_publish.setOnClickListener {
-            OperateDialog(this).show()
+            LoginDialog.tryLogin(this) {
+                OperateDialog(this).show()
+            }
         }
     }
 
