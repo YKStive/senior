@@ -328,6 +328,10 @@ public class MissionResult implements IJsonObject {
                 return !TextUtils.isEmpty(code) && code.equalsIgnoreCase("xs_001");
             }
 
+            public boolean isInvite2(){
+                return !TextUtils.isEmpty(code) && code.equalsIgnoreCase("rc_001");
+            }
+
             public boolean isWriteCode() {
                 return !TextUtils.isEmpty(code) && code.equalsIgnoreCase("xs_004");
             }

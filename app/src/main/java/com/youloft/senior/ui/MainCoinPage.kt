@@ -457,7 +457,7 @@ internal class MainCoinPage(
                     TaskManager.instance.completeZanPhoto(itemView.context)
                     return@setOnClickListener
                 }
-                if (bean!!.isInvite) {
+                if (bean!!.isInvite || bean!!.isInvite2) {
                     //邀请好友
                     InviteFriendActivity.start(context as FragmentActivity)
                     return@setOnClickListener
