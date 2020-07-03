@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.text.TextUtils
 import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.alibaba.fastjson.JSONObject
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.DoubleBean
@@ -425,9 +427,58 @@ internal class TaskManager {
         }
         for (item in tasks) {
             if (item.isKeyTask(key)) {
-                completeTask(item, ctx)
+                completeTaskByCount(item, ctx)
                 return
             }
+        }
+    }
+
+    public fun getCompleteCountByCode(code: String, maxCount: Int): Int {
+        val sp = getTaskSp()
+        val count = sp.getInt(code, 0)
+        return maxCount.coerceAtMost(count)
+    }
+
+    /**
+     * 数据改变监听
+     */
+    var taskCountLiveData: MutableLiveData<Boolean> = MutableLiveData()
+
+    /**
+     * 监听数据发生变化
+     *
+     * @return
+     */
+    fun asTaskCountChange(): LiveData<Boolean> {
+        return taskCountLiveData
+    }
+
+    public fun clear() {
+        getTaskSp().edit().clear().apply()
+    }
+
+    private fun completeTaskByCount(item: MissionsBean, ctx: Context) {
+        if (item.subItems == null || item.subItems.isEmpty()) {
+            return
+        }
+        if (item.hasDone()) {
+            //已经完成了
+            return
+        }
+        val sp = getTaskSp()
+        var count = sp.getInt(item.code, 0)
+        taskCountLiveData.postValue(true)
+        val completeCount = item.subItems[0].workCount
+        if (count < completeCount) {
+            count++
+            sp.edit().putInt(item.code, count).apply()
+        }
+        if (completeCount <= 1) {
+            completeTask(item, ctx)
+            return
+        }
+        if (count >= completeCount) {
+            completeTask(item, ctx)
         }
     }
 
