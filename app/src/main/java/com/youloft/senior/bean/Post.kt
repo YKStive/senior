@@ -23,7 +23,8 @@ data class Post(
     var userId: String = UserManager.instance.getUserId(),
     var viewed: Int = 0,
     var commented: Int = 0,
-    var isPraised: Boolean = false
+    var isPraised: Boolean = false,
+    var hint: Boolean = false
 
 ) : Serializable {
 

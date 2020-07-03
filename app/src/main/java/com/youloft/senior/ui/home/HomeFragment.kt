@@ -5,6 +5,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
+import com.scwang.smart.refresh.footer.ClassicsFooter
+import com.scwang.smart.refresh.header.ClassicsHeader
 import com.youloft.core.base.BaseVMFragment
 import com.youloft.senior.R
 import com.youloft.senior.base.App
@@ -18,6 +20,7 @@ import com.youloft.senior.ui.graphic.InviteFriendActivity
 import com.youloft.senior.ui.graphic.PostViewModel
 import com.youloft.senior.ui.login.LoginDialog
 import com.youloft.senior.utils.logD
+import com.youloft.senior.utils.logE
 import com.youloft.senior.widgt.RecycleViewDivider
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -37,6 +40,18 @@ class HomeFragment : BaseVMFragment() {
     }
 
     override fun initView() {
+        refreshLayout.setRefreshHeader(ClassicsHeader(App.instance()))
+        refreshLayout.setRefreshFooter(ClassicsFooter(App.instance()))
+        refreshLayout.setOnRefreshListener {
+            mViewModel.getData(direction = 0)
+        }
+
+        refreshLayout.setOnLoadMoreListener {
+            mViewModel.getData(direction = 1)
+        }
+
+
+
         mAdapter.register(Post::class).to(
             PostRemoteViewBinder({ userId ->
                 "个人界面".logD()
@@ -80,6 +95,7 @@ class HomeFragment : BaseVMFragment() {
 
             PostPunchViewBinder { btnPunch ->
                 "立即签到".logD()
+
                 btnPunch.isSelected = true
             },
 
@@ -89,10 +105,7 @@ class HomeFragment : BaseVMFragment() {
             }
         ).withKotlinClassLinker { _, item ->
             when (item.postType) {
-                PostType.IMAGE_TEXT -> PostRemoteViewBinder::class
-                PostType.GIF -> PostRemoteViewBinder::class
-                PostType.ALBUM -> PostRemoteViewBinder::class
-                PostType.VIDEO -> PostRemoteViewBinder::class
+                PostType.IMAGE_TEXT, PostType.GIF, PostType.ALBUM, PostType.VIDEO -> PostRemoteViewBinder::class
                 PostType.LOCAL_ALBUM -> PostLocalAlbumViewBinder::class
                 PostType.INVITE -> PostInviteViewBinder::class
                 PostType.PUNCH -> PostPunchViewBinder::class
@@ -115,17 +128,20 @@ class HomeFragment : BaseVMFragment() {
     }
 
     override fun initData() {
-        mViewModel.getData()
+        val autoRefresh = refreshLayout.autoRefresh()
+        "刷新成功--${autoRefresh}".logE()
     }
 
     override fun startObserve() {
         mViewModel.data.observe(this, Observer { liveData ->
             activity?.let { hostActivity ->
                 val homeActivity = hostActivity as HomeActivity
-                if (liveData.showLoading) {
-                    homeActivity.showLoading()
-                } else {
-                    homeActivity.dismissLoading()
+                if (!liveData.showLoading) {
+                    if (refreshLayout.isRefreshing) {
+                        refreshLayout.finishRefresh()
+                    } else if (refreshLayout.isLoading) {
+                        refreshLayout.finishLoadMore()
+                    }
                 }
                 liveData.showError?.let { homeActivity.toast(it) }
 

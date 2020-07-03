@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.youloft.coolktx.launchIO
+import com.youloft.coolktx.mapInPlace
 import com.youloft.core.base.BaseViewModel
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.ImageCursor
@@ -12,6 +13,7 @@ import com.youloft.senior.bean.Post
 import com.youloft.senior.bean.Post.Companion.inviteData
 import com.youloft.senior.bean.Post.Companion.localAlbumData
 import com.youloft.senior.bean.Post.Companion.punchData
+import com.youloft.senior.bean.PostType
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.utils.Preference
 import com.youloft.senior.utils.logD
@@ -40,7 +42,6 @@ class HomeViewModel : BaseViewModel() {
         get() = _data
 
     fun getData(
-        index: Int? = null,
         direction: Int? = null,
         userId: String? = null
     ) {
@@ -50,15 +51,40 @@ class HomeViewModel : BaseViewModel() {
         }) {
             //每次拉取数据后，把强插的数据清空后，再次强插
             emitLiveData(showLoading = true)
+            val index = initIndex(if (mPosts.isEmpty()) null else direction)
             val result = ApiHelper.api.getPosts(index, direction, limit = 30, userId = userId)
             ApiHelper.executeResponse(result, { newPosts ->
-                clearFocusInsertItems()
-                addNewData(direction, newPosts)
-                focusInsert()
+                if (newPosts.isNotEmpty()) {
+                    clearFocusInsertItems()
+                    addNewData(direction, newPosts)
+                    focusInsert()
+                }
                 emitLiveData(showLoading = false, showSuccess = mPosts)
             }, { errorMsg ->
                 emitLiveData(showLoading = false, showError = errorMsg)
             })
+
+        }
+    }
+
+    /**
+     * 清除强插的某种类型的item
+     * @param postType Int item的类型
+     */
+    fun clearPost(postType: Int) {
+        mPosts.mapInPlace { post ->
+            if (post.postType != postType) post else post.apply {
+                this.postType = PostType.HINT
+            }
+        }
+        viewModelScope.emitLiveData(showSuccess = mPosts)
+    }
+
+    private fun initIndex(direction: Int?): String? {
+        return when (direction) {
+            0 -> mPosts[0].id
+            1 -> mPosts[mPosts.size - 1].id
+            else -> null
 
         }
     }
@@ -82,8 +108,12 @@ class HomeViewModel : BaseViewModel() {
      * 清除强插的条目
      */
     private fun clearFocusInsertItems() {
-        mPosts.filter {
-            it.id.isNotEmpty()
+        mPosts.let {
+            val filter = it.filter { post ->
+                post.id.isNotBlank()
+            }
+            it.clear()
+            it.addAll(filter)
         }
     }
 

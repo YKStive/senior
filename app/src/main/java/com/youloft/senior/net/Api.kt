@@ -125,7 +125,7 @@ interface Api {
      */
     @GET("/api/post")
     fun getPosts(
-        @Query("index") index: Int? = null,
+        @Query("index") index: String? = null,
         @Query("direction") direction: Int? = null,
         @Query("limit") limit: Int? = null,
         @Query("userId") userId: String? = null
