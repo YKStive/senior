@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.youloft.core.base.BaseViewModel
 import com.youloft.senior.bean.MineDataBean
 import com.youloft.senior.net.ApiHelper
+import com.youloft.senior.utils.logE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,24 +23,34 @@ import java.lang.Exception
  * @Version:        1.0
  */
 class MainViewModel : BaseViewModel() {
+    companion object {
+        private const val TAG = "MainViewModel"
+    }
+
     //结果
     var resultData = MutableLiveData<List<MineDataBean>>()
+
+    //结果 异常结果
+    var errorStr = MutableLiveData<String>()
     fun getData(
-        index: Int,
-        direction: Int,
-        limit: Int,
-        userId: String
+        params: HashMap<String, String>
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
 //            val listData = ApiHelper.api.getMineList(index, direction, limit)
-                val listData = ApiHelper.api.getMineList(userId)
+                val listData = ApiHelper.api.getMineList(params)
                 withContext(Dispatchers.Main) {
                     ApiHelper.executeResponse(listData, {
                         resultData.value = it
+                    }, {
+                        errorStr.value = it
                     })
                 }
             } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    errorStr.value = e.message.toString()
+                }
+                e.message.toString().logE(TAG)
             }
 
         }

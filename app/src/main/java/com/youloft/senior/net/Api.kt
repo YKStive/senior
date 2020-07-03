@@ -12,9 +12,9 @@ import retrofit2.http.*
  */
 interface Api {
     companion object {
-        //        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
+//        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
 //        const val BASE_URL = "http://120.27.20.114:8090/"
-        const val BASE_URL = "http://shequ.51wnl-cq.com/"
+        const val BASE_URL = "https://shequ.51wnl-cq.com/"
     }
 
     @GET(BASE_URL + "api/Coin_Activity/GetMissions")
@@ -107,9 +107,9 @@ interface Api {
 //        @Query("direction") direction: Int,
 //        @Query("limit") limit: Int
 //    ): NetResponse<List<MineDataBean>>
-    @GET("api/post/user/{userId}/list")
+    @GET("api/post/user/list")
     fun getMineList(
-        @Path("userId") id: String
+        @QueryMap params: HashMap<String, String>
     ): NetResponse<List<MineDataBean>>
 
     /**
@@ -121,25 +121,29 @@ interface Api {
     fun publishPost(@Body post: Post): NetResponse<Any>
 
     /**
-     * 点赞帖子
+     * 点赞评论
      */
     @POST("api/post/comment/praise")
-    @FormUrlEncoded
-    fun parse(@FieldMap params: HashMap<String, String>): NetResponse<String>
+    fun parse(@Body params: PraiseComment): NetResponse<String>
+
+    /**
+     * 点赞帖子
+     */
+    @POST("api/post/praise")
+    fun parsePost(@Body params: PraiseBean): NetResponse<String>
 
     /**
      * 评论贴子
      */
     @POST("api/post/comment")
-    @FormUrlEncoded
-    fun commnet(@FieldMap params: HashMap<String, String>): NetResponse<String>
+    fun commnet(@Body params: PraiseBean): NetResponse<String>
 
     /**
      * 删除贴子
      */
     @POST("api/post/delete")
-    @FormUrlEncoded
-    fun deletePost(@Field("postId") params: String): NetResponse<String>
+    @Headers("Content-Type: application/json;charset=UTF-8")
+    fun deletePost(@Body postId: String): NetResponse<Boolean>
 
     /**
      * 删除评论
@@ -164,5 +168,6 @@ interface Api {
      */
     @GET("/api/user/getqnuploadtoken")
     fun getQNToken(): NetResponse<JSONObject>
+
 
 }

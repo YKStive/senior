@@ -18,6 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
@@ -50,6 +51,24 @@
         android:textColor="#ff333333"
         android:textSize="18sp"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_publish"
+        android:layout_width="wrap_content"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:background="@drawable/bg_yellow_round"
+        android:gravity="center"
+        android:text="去发表"
+        android:textColor="#ffffffff"
+        android:textSize="17sp"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

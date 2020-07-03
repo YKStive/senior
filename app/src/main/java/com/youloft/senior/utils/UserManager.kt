@@ -103,6 +103,18 @@ class UserManager {
         return bean!!.userId
     }
 
+
+
+    /**
+     * 获取昵称
+     */
+    fun getNickname(): String? {
+        if (bean == null) {
+            return ""
+        }
+        return bean!!.nickname
+    }
+
     /**
      * 获取用户id
      */

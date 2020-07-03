@@ -44,7 +44,7 @@ data class ItemData(
     var postType: Int,
     var praised: Int,
     var template: String,
-    var templateId: Int,
+    var templateId: String,
     var textContent: String,
     var userId: String,
     var viewed: Int

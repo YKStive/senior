@@ -68,6 +68,28 @@ class TextAndImageItem(
                 ivList.get(i).visibility = View.VISIBLE
                 valideIv.add(ivList.get(i))
             }
+            if (valideIv.size >= 7) {
+                if (helper.getView<ImageView>(R.id.iv8).visibility == View.GONE) {
+                    helper.getView<ImageView>(R.id.iv8).visibility = View.INVISIBLE
+                }
+                if (helper.getView<ImageView>(R.id.iv9).visibility == View.GONE) {
+                    helper.getView<ImageView>(R.id.iv9).visibility = View.INVISIBLE
+                }
+            } else if (valideIv.size >= 4) {
+                if (helper.getView<ImageView>(R.id.iv5).visibility == View.GONE) {
+                    helper.getView<ImageView>(R.id.iv5).visibility = View.INVISIBLE
+                }
+                if (helper.getView<ImageView>(R.id.iv6).visibility == View.GONE) {
+                    helper.getView<ImageView>(R.id.iv6).visibility = View.INVISIBLE
+                }
+            } else {
+                if (helper.getView<ImageView>(R.id.iv2).visibility == View.GONE) {
+                    helper.getView<ImageView>(R.id.iv2).visibility = View.INVISIBLE
+                }
+                if (helper.getView<ImageView>(R.id.iv3).visibility == View.GONE) {
+                    helper.getView<ImageView>(R.id.iv3).visibility = View.INVISIBLE
+                }
+            }
         }
         for (i in 0..item.mediaContent?.lastIndex!!) {
             Glide.with(context).load(item.mediaContent?.get(i)).into(valideIv.get(i))

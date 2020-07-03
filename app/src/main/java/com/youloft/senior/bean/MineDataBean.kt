@@ -19,9 +19,9 @@ data class MineDataBean(
     var postType: Int,
     var praised: Int,
     var template: String,
-    var templateId: Int,
+    var templateId: String,
     var textContent: String,
-    var timestamps: Int,
+    var timestamps: String,
     var viewed: Int
 ) {
     companion object {
