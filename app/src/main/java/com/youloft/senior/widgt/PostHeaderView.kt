@@ -15,21 +15,30 @@ import com.youloft.senior.utils.ImageLoader
  * @create 2020/6/23
  * @desc 头部
  */
-class PostHeaderView(context: Context, attributeSet: AttributeSet?) :
-    ConstraintLayout(context, attributeSet) {
+class PostHeaderView :
+    ConstraintLayout {
     private var isMy: Boolean = false
     private var avatar: String? = null
     private var title: String? = null
     private var desc: String? = null
-    private var ivAvatar: ImageView
-    private var tvTitle: TextView
-    private var tvDesc: TextView
+    private lateinit var ivAvatar: ImageView
+    private lateinit var tvTitle: TextView
+    private lateinit var tvDesc: TextView
 
-    constructor(context: Context, main: Boolean) : this(context, null) {
-        isMy = main
+    constructor(context: Context) : super(context) {
+        init(null)
     }
 
-    init {
+    constructor(context: Context, attributeSet: AttributeSet?) : super(context, attributeSet) {
+        init(attributeSet)
+    }
+
+    constructor(context: Context, main: Boolean) :  super(context)  {
+        isMy = main
+        init(null)
+    }
+
+    fun init(attributeSet: AttributeSet?) {
         attributeSet?.apply {
             val types = context.obtainStyledAttributes(attributeSet, R.styleable.PostHeaderView)
             isMy = types.getBoolean(R.styleable.PostHeaderView_hv_is_main, false)
@@ -63,7 +72,7 @@ class PostHeaderView(context: Context, attributeSet: AttributeSet?) :
     fun setAvatar(avatar: String?) {
         avatar?.apply {
             Glide.with(context)
-                .load(avatar)
+                .load(this)
                 .circleCrop()
                 .into(ivAvatar)
         }
@@ -73,13 +82,13 @@ class PostHeaderView(context: Context, attributeSet: AttributeSet?) :
 
     fun setTitle(title: String?) {
         title?.apply {
-            tvTitle.text = title
+            tvTitle.text = this
         }
     }
 
     fun setDesc(desc: String?) {
         desc?.apply {
-            tvDesc.text = title
+            tvDesc.text = this
         }
     }
 }

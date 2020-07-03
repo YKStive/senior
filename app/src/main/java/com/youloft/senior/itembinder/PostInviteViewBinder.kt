@@ -38,7 +38,6 @@ open class PostInviteViewBinder(
     ) {
 
         holder.itemView.run {
-
             iv_avatar.setImageResource(R.drawable.ic_placeholder_error)
             tv_name.text = context.resources.getString(R.string.punch_every_day_money)
             tv_view_amount.text = String.format(

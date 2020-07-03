@@ -121,6 +121,18 @@ interface Api {
     fun publishPost(@Body post: Post): NetResponse<Any>
 
     /**
+     * 获取帖子信息流
+     */
+    @GET("/api/post")
+    fun getPosts(
+        @Query("index") index: Int? = null,
+        @Query("direction") direction: Int? = null,
+        @Query("limit") limit: Int? = null,
+        @Query("userId") userId: String? = null
+    ): NetResponse<MutableList<Post>>
+
+
+    /**
      * 点赞评论
      */
     @POST("api/post/comment/praise")

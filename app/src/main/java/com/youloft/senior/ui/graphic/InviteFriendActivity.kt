@@ -7,15 +7,21 @@ import android.graphics.Color
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
+import com.youloft.coolktx.launchIOWhenCreated
 import com.youloft.coolktx.toast
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.base.App
+import com.youloft.senior.net.Api
+import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.utils.UserManager
 import com.youloft.socialize.SOC_MEDIA
 import com.youloft.socialize.Socialize
 import com.youloft.socialize.UmengSocialize
 import kotlinx.android.synthetic.main.activity_invite_friend.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * @author you
@@ -35,7 +41,7 @@ class InviteFriendActivity : BaseActivity() {
             InviteRuleActivity.start(this)
         }
 
-        tv_invite_code.text = UserManager.instance.getUserId()
+
 
         tv_copy_code.setOnClickListener {
             val clipboardManager: ClipboardManager =
@@ -75,6 +81,17 @@ class InviteFriendActivity : BaseActivity() {
     }
 
     override fun initData() {
+        showLoading()
+        lifecycleScope.launchIOWhenCreated {
+            val jsonObject = kotlin.runCatching {
+                ApiHelper.api.getUserCoinInfo()
+            }.getOrNull()
+            withContext(Dispatchers.Main) {
+                dismissLoading()
+                tv_invite_code.text = jsonObject?.getString("promotecode") ?: "null"
+            }
+
+        }
     }
 
     companion object {
