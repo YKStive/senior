@@ -20,7 +20,9 @@ import com.youloft.senior.ui.home.MainViewModel
 import com.youloft.senior.utils.UserManager
 import com.youloft.senior.widgt.LoginPopup
 import com.youloft.util.ToastMaster
+import kotlinx.android.synthetic.main.activity_other_user_info.*
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.fragment_main.recyclerView
 
 
 /**

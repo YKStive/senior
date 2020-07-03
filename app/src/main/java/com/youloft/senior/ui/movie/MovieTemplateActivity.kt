@@ -65,7 +65,7 @@ class MovieTemplateActivity : BaseActivity() {
                 val imageRes = it.toJsonString()
                 WebViewActivity.start(
                     this,
-                    itemBean.material,
+                    "${itemBean.material}/preview-album.html?autoplay=1",
                     imageRes,
                     WebViewActivity.MOVIE_WEB_PREVIEW,
                     itemBean.code
