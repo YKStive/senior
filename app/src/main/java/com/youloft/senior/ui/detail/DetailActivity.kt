@@ -1,5 +1,6 @@
 package com.youloft.senior.ui.detail
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.text.Editable
@@ -7,12 +8,14 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.PopupWindow
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.youloft.coolktx.addZero
 import com.youloft.coolktx.launchIOWhenCreated
 import com.youloft.core.base.BaseVMActivity
 import com.youloft.senior.R
@@ -52,6 +55,7 @@ class DetailActivity : BaseVMActivity() {
     lateinit var videoFragment: GIFDetailFragment
     lateinit var mPopupWindow: PopupWindow
     lateinit var mViewModel: DetailViewModel
+    var inputManager: InputMethodManager? = null
 
     //帖子发布人id
     var postData: ItemData? = null
@@ -78,6 +82,7 @@ class DetailActivity : BaseVMActivity() {
     override fun getLayoutResId(): Int = R.layout.activity_video_detail
 
     override fun initView() {
+        inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         image_more.visibility = View.VISIBLE
         var fragments = ArrayList<Fragment>()
         informationId = intent.getStringExtra("informationId")
@@ -212,6 +217,15 @@ class DetailActivity : BaseVMActivity() {
             postData = it
             tablayout.getTitleView(0).setText("全部评论(${it.commented})")
             tablayout.getTitleView(1).setText("点赞(${it.praised})")
+        })
+        mViewModel.addComment.observe(this, Observer {
+            //评论发表成功了
+            edt_comment.setText("")
+            inputManager?.hideSoftInputFromWindow(edt_comment.windowToken, 0)
+            tablayout.getTitleView(0).setText("全部评论(${postData?.commented?.plus(1)})")
+        })
+        mViewModel.addFavorite.observe(this, Observer {
+
         })
     }
 
