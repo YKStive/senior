@@ -68,6 +68,7 @@ class WebViewActivity : BaseActivity() {
             tv_publish.visibility = View.VISIBLE
             tv_publish.setOnClickListener {
                 //TODO
+
             }
         }
         if (url.isNotEmpty()) {

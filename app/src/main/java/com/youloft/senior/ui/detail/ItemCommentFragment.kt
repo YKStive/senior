@@ -115,9 +115,6 @@ class ItemCommentFragment : BaseVMFragment() {
                                     }
                                     adapter.notifyItemChanged(position, CommentAdapterr.PAYLOAD)
                                 }
-//                                ApiHelper.executeResponse(res, {
-//                                    if (res.status==200)
-//                                })
                             }
                         })
                     }

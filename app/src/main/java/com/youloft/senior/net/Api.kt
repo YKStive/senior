@@ -12,7 +12,7 @@ import retrofit2.http.*
  */
 interface Api {
     companion object {
-//        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
+        //        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
 //        const val BASE_URL = "http://120.27.20.114:8090/"
         const val BASE_URL = "https://shequ.51wnl-cq.com/"
     }
@@ -168,6 +168,15 @@ interface Api {
      */
     @GET("/api/user/getqnuploadtoken")
     fun getQNToken(): NetResponse<JSONObject>
+
+    /**
+     * 获取影集模板列表
+     */
+    @GET("api/Post/Albums")
+    fun getMovieTemplateList(
+        @Query("pageIndex") pageIndex: Int,
+        @Query("pageSize") pageSize: Int
+    ): NetResponse<List<MovieTemplateBean>>
 
 
 }

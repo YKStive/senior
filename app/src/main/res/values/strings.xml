@@ -72,4 +72,5 @@
     <string name="privacy">《隐私政策》</string>
     <string name="disagree">不同意</string>
     <string name="agree">同意</string>
+    <string name="select_movie_template">选择模版</string>
 </resources>

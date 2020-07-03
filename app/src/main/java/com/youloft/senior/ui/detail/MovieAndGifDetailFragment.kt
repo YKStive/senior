@@ -9,13 +9,10 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.youloft.coolktx.launchIOWhenCreated
 import com.youloft.coolktx.toJsonString
-import com.youloft.core.base.BaseFragment
 import com.youloft.core.base.BaseVMFragment
 import com.youloft.senior.R
-import com.youloft.senior.bean.ItemData
 import com.youloft.senior.bean.MineDataBean
 import com.youloft.senior.net.ApiHelper
-import com.youloft.senior.net.NetResponse
 import com.youloft.senior.ui.gif.ChoiceImageActivity
 import com.youloft.senior.utils.logD
 import com.youloft.senior.utils.logE
@@ -63,7 +60,7 @@ class MovieAndGifDetailFragment : BaseVMFragment() {
     override fun initView() {
         arguments?.let {
             type = it.getInt("type", MineDataBean.GIF_TYPE)
-            var itemId = it.getString("id")
+            val itemId = it.getString("id")
             if (!itemId.isNullOrBlank()) {
                 id = itemId
             }

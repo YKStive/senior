@@ -37,6 +37,7 @@
 
         <activity android:name=".ui.gif.ChoiceImageActivity" />
         <activity android:name=".ui.gif.GifActivity" />
+        <activity android:name=".ui.movie.MovieTemplateActivity" />
         <activity android:name=".ui.otherUsers.OtherUserInfoActivity" />
         <activity
             android:name=".wxapi.WXEntryActivity"

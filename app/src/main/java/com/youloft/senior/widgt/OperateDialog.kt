@@ -13,6 +13,7 @@ import com.youloft.senior.R
 import com.youloft.senior.ui.gif.GifActivity
 import com.youloft.senior.ui.gif.GifListActivity
 import com.youloft.senior.ui.graphic.ContentPublishActivity
+import com.youloft.senior.ui.movie.MovieTemplateActivity
 import com.youloft.senior.utils.logD
 import kotlinx.android.synthetic.main.dialog_operate.*
 
@@ -39,7 +40,7 @@ class OperateDialog(val context: FragmentActivity) : BaseDialog(context) {
         }
 
         btn_album.setOnClickListener {
-
+            MovieTemplateActivity.start(context)
         }
 
         btn_gif.setOnClickListener {

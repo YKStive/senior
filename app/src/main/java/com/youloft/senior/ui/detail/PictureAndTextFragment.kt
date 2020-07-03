@@ -3,26 +3,17 @@ package com.youloft.senior.ui.detail
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import cc.shinichi.library.ImagePreview
 import cc.shinichi.library.bean.ImageInfo
 import com.bumptech.glide.Glide
 import com.youloft.coolktx.dp2px
-import com.youloft.coolktx.launchIOWhenCreated
-import com.youloft.core.base.BaseFragment
 import com.youloft.core.base.BaseVMFragment
 import com.youloft.senior.R
-import com.youloft.senior.bean.ItemData
-import com.youloft.senior.net.ApiHelper
-import com.youloft.senior.net.NetResponse
 import com.youloft.senior.ui.adapter.PictureAdapter
 import com.youloft.senior.ui.adapter.PictureAdapter.ImageOpertor
-import com.youloft.senior.utils.logD
 import com.youloft.senior.widgt.GridSpaceItemDecoration
 import kotlinx.android.synthetic.main.fragment_text_and_picture_layout.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 /**
  *
