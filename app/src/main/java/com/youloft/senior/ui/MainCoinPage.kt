@@ -120,7 +120,7 @@ internal class MainCoinPage(
             //打开
             isClickable = true
             bottom_layout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-            val height = getHeight() - top_group.height - UiUtil.dp2Px(context, 40f)
+            val height = getHeight() - top_group.height - UiUtil.dp2Px(context, 50f)
             val animation: ValueAnimator = ValueAnimator.ofInt(height)
             animation.duration = 300
             content_group.visibility = View.VISIBLE
