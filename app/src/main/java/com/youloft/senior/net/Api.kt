@@ -101,12 +101,12 @@ interface Api {
         @Query("cashtype") cashtype: Int?
     ): JSONObject?
 
-    //    @GET("/api/post/user/list")
-//    fun getMineList(  方向up:0|down:1
-//        @Query("index") index: Int,
-//        @Query("direction") direction: Int,
-//        @Query("limit") limit: Int
-//    ): NetResponse<List<MineDataBean>>
+
+    /**
+     * 获取个人发布的帖子
+     * @param params HashMap<String, String>
+     * @return NetResponse<List<MineDataBean>>
+     */
     @GET("api/post/user/list")
     fun getMineList(
         @QueryMap params: HashMap<String, String>

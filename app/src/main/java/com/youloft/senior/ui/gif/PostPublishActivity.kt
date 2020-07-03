@@ -1,11 +1,13 @@
 package com.youloft.senior.ui.gif
 
+import android.app.Activity
 import android.content.Intent
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import com.youloft.coolktx.toast
 import com.youloft.core.base.BaseActivity
+import com.youloft.core.jump.JumpResult
 import com.youloft.senior.R
 import com.youloft.senior.bean.Post
 import com.youloft.senior.bean.PostType
@@ -56,12 +58,12 @@ class PostPublishActivity : BaseActivity() {
 
     override fun onBackPressed() {
         ConfirmCancelDialog(this, getString(R.string.post_cancel_confirm), {
-            finish()
+            normalFinish()
             it.dismiss()
         }).apply {
+            show()
             setConfirmText(getString(R.string.confirm_abandon))
             setCancelText(getString(R.string.cancel))
-            show()
         }
     }
 
@@ -81,18 +83,35 @@ class PostPublishActivity : BaseActivity() {
             it.showError?.let { it1 -> toast(it1) }
             if (it.isSuccess) {
                 toast("帖子发表成功，审核通过后别人就可以看到啦")
-                finish()
+                publishFinish()
             }
         })
+    }
+
+    private fun publishFinish() {
+        setResult(Activity.RESULT_OK)
+        finish()
+    }
+
+    private fun normalFinish() {
+        setResult(Activity.RESULT_CANCELED)
+        finish()
     }
 
 
     companion object {
         private const val POST = "post"
-        fun start(context: FragmentActivity, post: Post) {
+        fun start(
+            context: FragmentActivity,
+            post: Post,
+            onFinish: ((resultCode: Int) -> Unit)? = null
+        ) {
             val intent = Intent(context, PostPublishActivity::class.java)
             intent.putExtra(POST, post)
-            context.startActivity(intent)
+            JumpResult(context).startForResult(intent) { resultCode, _ ->
+                onFinish?.invoke(resultCode)
+            }
+
         }
     }
 
