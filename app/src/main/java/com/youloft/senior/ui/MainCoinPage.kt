@@ -23,6 +23,7 @@ import com.youloft.senior.cash.CashActivity
 import com.youloft.senior.coin.*
 import com.youloft.senior.tuia.TuiaUtil
 import com.youloft.senior.tuia.TuiaWebActivity
+import com.youloft.senior.ui.graphic.InviteFriendActivity
 import com.youloft.senior.ui.login.LoginDialog
 import com.youloft.senior.utils.UserManager
 import com.youloft.util.ToastMaster
@@ -454,6 +455,7 @@ internal class MainCoinPage(
                 }
                 if (bean!!.isInvite) {
                     //邀请好友
+                    InviteFriendActivity.start(context as FragmentActivity)
                     return@setOnClickListener
                 }
                 if (bean!!.isWriteCode) {

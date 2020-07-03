@@ -213,7 +213,7 @@
                                 android:textColor="#cc5b2020"
                                 android:textSize="18dp" />
 
-                            <TextView
+                            <com.youloft.senior.widgt.PressTextView
                                 android:id="@+id/submit"
                                 android:layout_width="93dp"
                                 android:layout_height="36dp"
