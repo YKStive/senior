@@ -88,7 +88,8 @@ class InviteFriendActivity : BaseActivity() {
             }.getOrNull()
             withContext(Dispatchers.Main) {
                 dismissLoading()
-                tv_invite_code.text = jsonObject?.getString("promotecode") ?: "null"
+                val data = jsonObject?.getJSONObject("data")
+                tv_invite_code.text = data?.getString("promotecode") ?: "null"
             }
 
         }
