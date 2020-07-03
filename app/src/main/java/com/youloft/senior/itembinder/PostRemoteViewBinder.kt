@@ -188,7 +188,7 @@ open class PostRemoteViewBinder(
          */
         private fun setSingleImage(post: Post) {
             val imageView = ImageView(App.instance())
-            imageView.scaleType = ImageView.ScaleType.FIT_XY
+            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
             val layoutParams = ViewGroup.LayoutParams(
                 App.instance().resources.getDimension(R.dimen.app_post_gif_width).toInt(),
                 App.instance().resources.getDimension(R.dimen.app_post_gif_height).toInt()
@@ -208,12 +208,7 @@ open class PostRemoteViewBinder(
             headerContainer.addView(PostHeaderView(App.instance(), post.userId.isByUser()).apply {
                 setAvatar(post.avater)
                 setTitle(post.nickname)
-                setDesc(
-                    String.format(
-                        App.instance().resources.getString(R.string.viewed_amount),
-                        post.viewed
-                    )
-                )
+                setDesc("${post.viewed}次浏览")
                 onAvatarClick { goPersonPage(post.userId) }
             })
         }

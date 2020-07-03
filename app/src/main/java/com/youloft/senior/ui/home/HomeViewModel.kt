@@ -4,19 +4,24 @@ import android.provider.MediaStore
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.youloft.coolktx.launchIO
+import com.youloft.coolktx.mapInPlace
 import com.youloft.core.base.BaseViewModel
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.ImageCursor
-import com.youloft.senior.bean.ImageRes
 import com.youloft.senior.bean.Post
 import com.youloft.senior.bean.Post.Companion.inviteData
 import com.youloft.senior.bean.Post.Companion.localAlbumData
 import com.youloft.senior.bean.Post.Companion.punchData
-import com.youloft.senior.utils.DateUtil
+import com.youloft.senior.bean.PostType
+import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.utils.Preference
 import com.youloft.senior.utils.logD
 import com.youloft.senior.utils.moreThanOneDay
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.lang.StringBuilder
 import java.util.*
 
@@ -26,32 +31,105 @@ import java.util.*
  * @desc 首页viewModel
  */
 class HomeViewModel : BaseViewModel() {
-
-    private var index = 1
-    private val limit = 10
     private var isPunch by Preference(Preference.IS_PUNCH, false)
     private val albumData: List<List<String>>? by lazy {
         getAlbumDate()
     }
     private var lastPublishAlbumTime by Preference(Preference.LAST_PUBLISH_ALBUM_TIME, "")
-    private val posts = mutableListOf<Post>()
-    private val _data: MutableLiveData<MutableList<Post>> = MutableLiveData()
-    val data: LiveData<MutableList<Post>>
+    private val mPosts = mutableListOf<Post>()
+    private val _data: MutableLiveData<BaseUiModel<List<Post>>> = MutableLiveData()
+    val data: LiveData<BaseUiModel<List<Post>>>
         get() = _data
 
-    fun getData() {
-        viewModelScope.launch {
-            for (index in 0..30) {
-                when {
-                    index % 2 == 1 -> posts.add(Post.multiData)
-                    index % 3 == 1 -> posts.add(Post.singleData)
-                    index % 5 == 1 -> posts.add(Post.gifData)
-                    index % 7 == 1 -> posts.add(Post.albumData)
-                    index % 2 == 0 -> posts.add(Post.videoData)
+    fun getData(
+        direction: Int? = null,
+        userId: String? = null
+    ) {
+
+        viewModelScope.launchIO(onError = {
+            viewModelScope.emitLiveData(showLoading = false, showError = it.message ?: "拉取数据异常")
+        }) {
+            //每次拉取数据后，把强插的数据清空后，再次强插
+            emitLiveData(showLoading = true)
+            val index = initIndex(if (mPosts.isEmpty()) null else direction)
+            val result = ApiHelper.api.getPosts(index, direction, limit = 30, userId = userId)
+            ApiHelper.executeResponse(result, { newPosts ->
+                if (newPosts.isNotEmpty()) {
+                    clearFocusInsertItems()
+                    addNewData(direction, newPosts)
+                    focusInsert()
                 }
+                emitLiveData(showLoading = false, showSuccess = mPosts)
+            }, { errorMsg ->
+                emitLiveData(showLoading = false, showError = errorMsg)
+            })
+
+        }
+    }
+
+    /**
+     * 清除强插的某种类型的item
+     * @param postType Int item的类型
+     */
+    fun clearPost(postType: Int) {
+        mPosts.mapInPlace { post ->
+            if (post.postType != postType) post else post.apply {
+                this.postType = PostType.HINT
             }
-            focusInsert()
-            _data.value = posts
+        }
+        viewModelScope.emitLiveData(showSuccess = mPosts)
+    }
+
+    private fun initIndex(direction: Int?): String? {
+        return when (direction) {
+            0 -> mPosts[0].id
+            1 -> mPosts[mPosts.size - 1].id
+            else -> null
+
+        }
+    }
+
+    /**
+     * 添加新的数据
+     * @param direction Int? 方向
+     * @param newPosts MutableList<Post> 新帖子
+     */
+    private fun addNewData(
+        direction: Int?,
+        newPosts: MutableList<Post>
+    ) {
+        when (direction) {
+            null, 1 -> mPosts.addAll(newPosts)
+            0 -> mPosts.addAll(0, newPosts)
+        }
+    }
+
+    /**
+     * 清除强插的条目
+     */
+    private fun clearFocusInsertItems() {
+        mPosts.let {
+            val filter = it.filter { post ->
+                post.id.isNotBlank()
+            }
+            it.clear()
+            it.addAll(filter)
+        }
+    }
+
+    private fun CoroutineScope.emitLiveData(
+        showLoading: Boolean = false,
+        isSuccess: Boolean = false,
+        showError: String? = null,
+        showSuccess: List<Post>? = null,
+        showEnd: Boolean = false, // 加载更多
+        isRefresh: Boolean = false
+    ) {
+        this.launch {
+            withContext(Dispatchers.Main) {
+                _data.value =
+                    BaseUiModel(showLoading, isSuccess, showError, showSuccess, showEnd, isRefresh)
+            }
         }
     }
 
@@ -59,7 +137,7 @@ class HomeViewModel : BaseViewModel() {
      * 强插逻辑
      */
     private fun focusInsert() {
-        val size = posts.size
+        val size = mPosts.size
         if (size < 10) {
             return
         }
@@ -75,7 +153,7 @@ class HomeViewModel : BaseViewModel() {
                     when (index / 10 % 2) {
                         //插入影集
                         1 -> {
-                            posts.add(
+                            mPosts.add(
                                 index,
                                 localAlbumData.apply { mediaContent = albumData!![albumIndex] })
                             albumIndex++
@@ -85,7 +163,7 @@ class HomeViewModel : BaseViewModel() {
                         }
                         //插入邀请
                         0 -> {
-                            posts.add(index, inviteData)
+                            mPosts.add(index, inviteData)
                         }
                     }
 
@@ -94,7 +172,7 @@ class HomeViewModel : BaseViewModel() {
             } else {
                 //只插入邀请item
                 for (index in 10..size step 10) {
-                    posts.add(index, inviteData)
+                    mPosts.add(index, inviteData)
                 }
             }
 
@@ -112,11 +190,11 @@ class HomeViewModel : BaseViewModel() {
                     when (index / 10 % 3) {
                         //插入邀请
                         0 -> {
-                            posts.add(index, inviteData)
+                            mPosts.add(index, inviteData)
                         }
                         //插入影集
                         2 -> {
-                            posts.add(
+                            mPosts.add(
                                 index,
                                 localAlbumData.apply { mediaContent = albumData!![albumIndex] })
                             albumIndex++
@@ -127,7 +205,7 @@ class HomeViewModel : BaseViewModel() {
 
                         //插入签到
                         1 -> {
-                            posts.add(index, punchData)
+                            mPosts.add(index, punchData)
                         }
 
                     }
@@ -140,11 +218,11 @@ class HomeViewModel : BaseViewModel() {
                     when (index / 10 % 2) {
                         //插入签到
                         1 -> {
-                            posts.add(index, punchData)
+                            mPosts.add(index, punchData)
                         }
                         //插入邀请
                         0 -> {
-                            posts.add(index, inviteData)
+                            mPosts.add(index, inviteData)
                         }
                     }
                 }

@@ -45,7 +45,7 @@ class PostItemMultiImage(context: Context, attributeSet: AttributeSet?) :
             val imageView = ImageView(parent.context)
             val screenWidth = UiUtil.getScreenWidth(App.instance())
             val width = (screenWidth - 60.dp2px - 10.dp2px) / 3
-            imageView.scaleType = ImageView.ScaleType.FIT_XY
+            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
             val layoutParams = LayoutParams(
                 width,
                 width

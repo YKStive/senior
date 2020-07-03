@@ -120,7 +120,7 @@ internal class MainCoinPage(
             //打开
             isClickable = true
             bottom_layout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-            val height = getHeight() - top_group.height - UiUtil.dp2Px(context, 30f)
+            val height = getHeight() - top_group.height - UiUtil.dp2Px(context, 40f)
             val animation: ValueAnimator = ValueAnimator.ofInt(height)
             animation.duration = 300
             content_group.visibility = View.VISIBLE
@@ -176,7 +176,8 @@ internal class MainCoinPage(
             my_coin_value.text = signInfo.gold.toString()
             my_cash_value.text = "约${signInfo.cash}元"
         }
-        next_coin_name.text = if (maxTask == null) "暂无" else maxTask.content
+        next_coin_name.text =
+            if (maxTask == null || maxTask.subItems == null || maxTask.subItems.isEmpty()) "暂无" else "${maxTask.content}+${maxTask.subItems[0].coin}"
     }
 
     /**
@@ -456,7 +457,7 @@ internal class MainCoinPage(
                     TaskManager.instance.completeZanPhoto(itemView.context)
                     return@setOnClickListener
                 }
-                if (bean!!.isInvite) {
+                if (bean!!.isInvite || bean!!.isInvite2) {
                     //邀请好友
                     InviteFriendActivity.start(context as FragmentActivity)
                     return@setOnClickListener
