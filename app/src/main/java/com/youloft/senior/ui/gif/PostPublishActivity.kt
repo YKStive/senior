@@ -9,6 +9,7 @@ import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.bean.Post
 import com.youloft.senior.bean.PostType
+import com.youloft.senior.dialog.ConfirmCancelDialog
 import com.youloft.senior.ui.graphic.PostViewModel
 import com.youloft.senior.utils.ImageLoader
 import kotlinx.android.synthetic.main.activity_gif_list.common_title
@@ -32,7 +33,7 @@ class PostPublishActivity : BaseActivity() {
 
     override fun initView() {
         common_title.onBack {
-            finish()
+            onBackPressed()
         }
 
         tv_publish.setOnClickListener {
@@ -53,6 +54,17 @@ class PostPublishActivity : BaseActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        ConfirmCancelDialog(this, getString(R.string.post_cancel_confirm), {
+            finish()
+            it.dismiss()
+        }).apply {
+            setConfirmText(getString(R.string.confirm_abandon))
+            setCancelText(getString(R.string.cancel))
+            show()
+        }
+    }
+
     override fun initData() {
         mPost = intent.getSerializableExtra(POST)!! as Post
         mPaths = mPost.mediaContent
@@ -61,7 +73,11 @@ class PostPublishActivity : BaseActivity() {
         }
 
         mViewModel.liveData.observe(this, Observer {
-            if (it.showLoading) {showLoading()} else {dismissLoading()}
+            if (it.showLoading) {
+                showLoading()
+            } else {
+                dismissLoading()
+            }
             it.showError?.let { it1 -> toast(it1) }
             if (it.isSuccess) {
                 toast("帖子发表成功，审核通过后别人就可以看到啦")

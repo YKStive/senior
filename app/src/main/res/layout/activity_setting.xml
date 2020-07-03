@@ -82,6 +82,58 @@
             app:layout_constraintTop_toBottomOf="@id/tv_logout" />
 
 
+        <TextView
+            android:id="@+id/tv_privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="10dp"
+            android:text="隐私政策"
+            android:textColor="#F7612C"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_company"
+            app:layout_constraintEnd_toStartOf="@id/line" />
+
+
+        <TextView
+            android:id="@+id/tv_protocol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="10dp"
+            android:text="用户协议"
+            android:textColor="#F7612C"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_company"
+            app:layout_constraintStart_toEndOf="@id/line" />
+
+        <View
+            android:id="@+id/line"
+            style="@style/line_vertical"
+            android:layout_height="0dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:background="#F7612C"
+            app:layout_constraintBottom_toBottomOf="@id/tv_privacy"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_privacy" />
+
+
+        <TextView
+            android:id="@+id/tv_company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:text="@string/company"
+            android:textColor="#999999"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
