@@ -8,9 +8,9 @@ import com.youloft.util.UiUtil
 import java.io.Serializable
 
 data class Post(
-    var height: Int = 200.dp2px,
-    var width: Int = UiUtil.getScreenHeight(App.instance()),
-    var avater: String = UserManager.instance.getAvatar(),
+    var height: Int = 0,
+    var width: Int = 0,
+    var avatar: String = UserManager.instance.getAvatar(),
     var createTime: String = "",
     var id: String = "",
     var mediaContent: List<String> = arrayListOf(),
