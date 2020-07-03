@@ -5,32 +5,38 @@
     android:layout_height="match_parent"
     android:background="#F3F3F3">
 
-    <FrameLayout
+    <com.youloft.senior.widgt.StatusBarLayout
         android:id="@+id/top_group"
-        style="@style/ActionBar"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:background="#ffff"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/ic_back"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:src="@drawable/theme_nav_back_icon"
-            android:tint="#333333" />
+        <FrameLayout
+            style="@style/ActionBar"
+            android:layout_width="match_parent"
+            android:background="#ffff">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="金币明细"
-            android:textColor="#ff333333"
-            android:textSize="18sp" />
-    </FrameLayout>
+            <ImageView
+                android:id="@+id/ic_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:src="@drawable/theme_nav_back_icon"
+                android:tint="#333333" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="金币明细"
+                android:textColor="#ff333333"
+                android:textSize="18sp" />
+        </FrameLayout>
+    </com.youloft.senior.widgt.StatusBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

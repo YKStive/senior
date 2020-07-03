@@ -37,4 +37,5 @@ dependencies {
     api rootProject.ext.dependencies['walle']
     api rootProject.ext.dependencies['glidewebp']
     implementation rootProject.ext.dependencies['glide']
+    implementation rootProject.ext.dependencies['wnl-utils']
 }
