@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 
 class TempFragment : Fragment() {
     private val code: Int = 1
-    private lateinit var mResult: (requestCode: Int, data: Intent?) -> Unit
+    private var mResult: ((requestCode: Int, data: Intent?) -> Unit)? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,9 +29,7 @@ class TempFragment : Fragment() {
                     .commit()
             }
         }
-        if (requestCode == code && resultCode == RESULT_OK && data != null) {
-            mResult.invoke(requestCode, data)
-        }
+        mResult?.invoke(resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
     }
 

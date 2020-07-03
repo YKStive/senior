@@ -120,9 +120,9 @@ class ContentPublishActivity : BaseVMActivity() {
             finish()
             it.dismiss()
         }).apply {
+            show()
             setConfirmText(getString(R.string.confirm_abandon))
             setCancelText(getString(R.string.cancel))
-            show()
         }
     }
 
