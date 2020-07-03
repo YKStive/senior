@@ -103,15 +103,7 @@ class UserManager {
         return bean!!.userId
     }
 
-    /**
-     * 获取头像
-     */
-    fun getAvatar(): String? {
-        if (bean == null) {
-            return ""
-        }
-        return bean!!.avatar
-    }
+
 
     /**
      * 获取昵称
