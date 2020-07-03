@@ -90,10 +90,16 @@ class TextAndImageItem(
                     helper.getView<ImageView>(R.id.iv3).visibility = View.INVISIBLE
                 }
             }
+            for (i in 0..item.mediaContent?.lastIndex!!) {
+                Glide.with(context).load(item.mediaContent?.get(i)).into(valideIv.get(i))
+            }
+        } else {
+            for (i in 0..item.mediaContent?.lastIndex!!) {
+                ivList.get(i).visibility = View.VISIBLE
+                Glide.with(context).load(item.mediaContent?.get(i)).into(ivList.get(i))
+            }
         }
-        for (i in 0..item.mediaContent?.lastIndex!!) {
-            Glide.with(context).load(item.mediaContent?.get(i)).into(valideIv.get(i))
-        }
+
     }
 
     override fun onClick(helper: BaseViewHolder, view: View, data: MineDataBean, position: Int) {

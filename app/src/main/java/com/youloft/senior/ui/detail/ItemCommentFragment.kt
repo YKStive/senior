@@ -144,13 +144,14 @@ class ItemCommentFragment : BaseVMFragment() {
         activity?.let { ctx ->
             mViewModel?.let { viewModle ->
                 viewModle.commentResultData.observe(ctx, Observer {
-                    if (it.size < ConstConfig.limit) {
-                        adapter.loadMoreModule.loadMoreEnd()
-                    }
                     if (optionType == ConstConfig.REQUEST_REFRESH) {
                         adapter.setList(it)
                     } else {
                         adapter.addData(it)
+                        adapter.loadMoreModule.loadMoreComplete()
+                    }
+                    if (it.size < ConstConfig.limit) {
+                        adapter.loadMoreModule.loadMoreEnd()
                     }
                 })
 
