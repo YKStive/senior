@@ -421,6 +421,10 @@ public class MissionResult implements IJsonObject {
                 @SerializedName("dayCount")
                 @Expose
                 public int dayCount;
+
+                @SerializedName("workCount")
+                @Expose
+                public int workCount;
             }
         }
     }

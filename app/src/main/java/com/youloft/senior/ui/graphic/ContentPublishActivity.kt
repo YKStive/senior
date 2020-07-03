@@ -17,11 +17,13 @@ import com.youloft.senior.R
 import com.youloft.senior.bean.ImageRes
 import com.youloft.senior.bean.Post
 import com.youloft.senior.bean.PostType
+import com.youloft.senior.dialog.ConfirmCancelDialog
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.ui.gif.ChoiceImageActivity
 import com.youloft.senior.ui.gif.ChoiceImageActivity.Companion.TYPE_ALL
 import com.youloft.senior.utils.logD
 import kotlinx.android.synthetic.main.activity_content_publish.*
+import kotlinx.android.synthetic.main.layout_invite_dialog.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -32,6 +34,7 @@ import kotlinx.coroutines.withContext
  * @desc
  */
 class ContentPublishActivity : BaseVMActivity() {
+    private var justJump: Boolean = true
     private var mCurrentMode: Int = 0
     private val imageCountLimit = 20
     private val MODE_ADD = 0
@@ -68,6 +71,7 @@ class ContentPublishActivity : BaseVMActivity() {
             setImageResource(R.drawable.ic_placeholder_error)
             setOnClickListener {
                 ChoiceImageActivity.start(this@ContentPublishActivity, imageCountLimit, TYPE_ALL) {
+                    justJump = false
                     when (it[0].type) {
                         ImageRes.TYPE_VIDEO -> {
                             showContent(MODE_VIDEO)
@@ -89,7 +93,7 @@ class ContentPublishActivity : BaseVMActivity() {
 
     override fun initView() {
         showContent(MODE_ADD)
-        common_title.onBack { finish() }
+        common_title.onBack { onBackPressed() }
 
         tv_publish.setOnClickListener {
             val text = et_content.text
@@ -100,6 +104,25 @@ class ContentPublishActivity : BaseVMActivity() {
             }
 
             publish(text.toString(), imageData)
+        }
+        mAddView.performClick()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        if (justJump) {
+            finish()
+        }
+    }
+
+    override fun onBackPressed() {
+        ConfirmCancelDialog(this, getString(R.string.post_cancel_confirm), {
+            finish()
+            it.dismiss()
+        }).apply {
+            setConfirmText(getString(R.string.confirm_abandon))
+            setCancelText(getString(R.string.cancel))
+            show()
         }
     }
 

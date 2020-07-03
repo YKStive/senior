@@ -23,6 +23,7 @@ import com.youloft.senior.cash.CashActivity
 import com.youloft.senior.coin.*
 import com.youloft.senior.tuia.TuiaUtil
 import com.youloft.senior.tuia.TuiaWebActivity
+import com.youloft.senior.ui.graphic.InviteFriendActivity
 import com.youloft.senior.ui.login.LoginDialog
 import com.youloft.senior.utils.UserManager
 import com.youloft.util.ToastMaster
@@ -48,6 +49,9 @@ internal class MainCoinPage(
         CoinManager.instance.loadData()
         CoinManager.instance.asDataChange().observe(context as FragmentActivity, Observer {
             refreshUI()
+        })
+        TaskManager.instance.asTaskCountChange().observe(context as FragmentActivity, Observer {
+            bindTask()
         })
         more.setOnClickListener {
             openOrCloseMore()
@@ -424,36 +428,37 @@ internal class MainCoinPage(
                 }
                 if (bean!!.isEmoj) {
                     //创建表情任务
-                    TaskManager.instance.completeTask(bean!!, itemView.context)
+                    TaskManager.instance.completeCreateEmoj(itemView.context)
                     return@setOnClickListener
                 }
                 if (bean!!.isImageText) {
                     //创建图文任务
-                    TaskManager.instance.completeTask(bean!!, itemView.context)
+                    TaskManager.instance.completeCreateImageText(itemView.context)
                     return@setOnClickListener
                 }
                 if (bean!!.isPhoto) {
                     //创建相册的任务
-                    TaskManager.instance.completeTask(bean!!, itemView.context)
+                    TaskManager.instance.completeCreatePhoto(itemView.context)
                     return@setOnClickListener
                 }
                 if (bean!!.isZanEmoj) {
                     //赞表情的任务
-                    TaskManager.instance.completeTask(bean!!, itemView.context)
+                    TaskManager.instance.completeZanEmoj(itemView.context)
                     return@setOnClickListener
                 }
                 if (bean!!.isZanImageText) {
                     //赞图文的任务
-                    TaskManager.instance.completeTask(bean!!, itemView.context)
+                    TaskManager.instance.completeZanImageText(itemView.context)
                     return@setOnClickListener
                 }
                 if (bean!!.isZanPhoto) {
                     //赞相册的任务
-                    TaskManager.instance.completeTask(bean!!, itemView.context)
+                    TaskManager.instance.completeZanPhoto(itemView.context)
                     return@setOnClickListener
                 }
                 if (bean!!.isInvite) {
                     //邀请好友
+                    InviteFriendActivity.start(context as FragmentActivity)
                     return@setOnClickListener
                 }
                 if (bean!!.isWriteCode) {
@@ -505,7 +510,13 @@ internal class MainCoinPage(
                     }
                 }
             } else {
-
+                if (bean.subItems[0].workCount > 1) {
+                    itemView.item_title.text =
+                        "(${TaskManager.instance.getCompleteCountByCode(
+                            bean.code,
+                            bean.subItems[0].workCount
+                        )}/${bean.subItems[0].workCount})${bean.content}"
+                }
             }
         }
 

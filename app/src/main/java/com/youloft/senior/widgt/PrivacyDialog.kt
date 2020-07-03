@@ -20,6 +20,8 @@ import com.youloft.coolktx.toast
 import com.youloft.core.base.BaseDialog
 import com.youloft.senior.R
 import com.youloft.senior.base.App
+import com.youloft.senior.base.URL_PRIVACY
+import com.youloft.senior.base.URL_PROTOCOL
 import com.youloft.senior.web.WebActivity
 import kotlinx.android.synthetic.main.dialog_privacy.*
 
@@ -55,7 +57,7 @@ class PrivacyDialog(val context: FragmentActivity, private val onAgree: () -> Un
                         WebActivity.start(context, WebActivity.WebSetting().apply {
                             isNeedTab = false
                             isIs_hide_title = true
-                            url = "https://docs.qq.com/doc/DWWtnTmhVWVRBY1Z2?pub=1&dver=2.1.0"
+                            url = URL_PROTOCOL
                         })
                     }
 
@@ -73,7 +75,7 @@ class PrivacyDialog(val context: FragmentActivity, private val onAgree: () -> Un
                         WebActivity.start(context, WebActivity.WebSetting().apply {
                             isNeedTab = false
                             isIs_hide_title = true
-                            url = "https://docs.qq.com/doc/DWWtsVEJzUm9FdmNO?pub=1&dver=2.1.0"
+                            url = URL_PRIVACY
                         })
                     }
 

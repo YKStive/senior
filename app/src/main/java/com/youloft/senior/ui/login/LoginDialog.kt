@@ -7,7 +7,9 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.lifecycleScope
 import com.youloft.coolktx.launchIOWhenCreated
 import com.youloft.core.R
 import com.youloft.core.base.BaseBottomDialog
@@ -39,7 +41,8 @@ import kotlinx.coroutines.withContext
 class LoginDialog(
     var activity: Activity,
     var lifecycleScop: LifecycleCoroutineScope,
-    style: Int = R.style.loginDialogStyle
+    style: Int = R.style.loginDialogStyle,
+    val onLogin: (() -> Unit)? = null
 ) : BaseBottomDialog(activity, style) {
     lateinit var view: View
     lateinit var edtPhone: EditText
@@ -100,6 +103,7 @@ class LoginDialog(
                                 if (result.isSuccess()) {
                                     ToastMaster.showShortToast(activity, "登录成功");
                                     UserManager.instance.login(it)
+                                    onLogin?.invoke()
                                 } else {
                                     ToastMaster.showShortToast(activity, "登录失败");
                                 }
@@ -124,5 +128,20 @@ class LoginDialog(
     override fun dismiss() {
         super.dismiss()
         UserManager.instance.showLogin = false
+    }
+
+    companion object {
+        /**
+         * 登录检查和返回
+         * @param activity FragmentActivity
+         * @param onLogin Function0<Unit>
+         */
+        fun tryLogin(activity: FragmentActivity, onLogin: () -> Unit) {
+            if (!UserManager.instance.hasLogin()) {
+                LoginDialog(activity, activity.lifecycleScope, onLogin = onLogin).show()
+            } else {
+                onLogin.invoke()
+            }
+        }
     }
 }

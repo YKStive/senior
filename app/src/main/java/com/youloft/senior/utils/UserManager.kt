@@ -8,6 +8,7 @@ import com.youloft.coolktx.toJsonString
 import com.youloft.senior.base.App
 import com.youloft.senior.bean.LoginBean
 import com.youloft.senior.coin.CoinManager
+import com.youloft.senior.coin.TaskManager
 import com.youloft.senior.push.PushWrapper
 import com.youloft.senior.ui.login.LoginDialog
 import com.youloft.util.ToastMaster
@@ -40,6 +41,7 @@ class UserManager {
         userInfoTime = System.currentTimeMillis()
         CoinManager.instance.loadData()
         PushWrapper.updateAlias()
+        TaskManager.instance.clear()
     }
 
     /**
@@ -63,6 +65,7 @@ class UserManager {
         userInfoTime = -1
         PushWrapper.updateAlias()
         CoinManager.instance.loadData()
+        TaskManager.instance.clear()
         if (reLogin) {
             //重新拉起登录界面
             synchronized(this) {
@@ -97,12 +100,8 @@ class UserManager {
      * 获取用户id
      */
     fun getUserId(): String {
-        if (bean == null) {
-            return ""
-        }
-        return bean!!.userId
+        return bean?.userId ?: ""
     }
-
 
 
     /**
@@ -119,20 +118,14 @@ class UserManager {
      * 获取用户id
      */
     fun getAvatar(): String {
-        if (bean == null) {
-            return ""
-        }
-        return bean!!.avatar
+        return bean?.avatar ?: ""
     }
 
     /**
      * 获取用户id
      */
     fun getNickName(): String {
-        if (bean == null) {
-            return ""
-        }
-        return bean!!.nickname
+        return bean?.nickname ?: ""
     }
 
     /**

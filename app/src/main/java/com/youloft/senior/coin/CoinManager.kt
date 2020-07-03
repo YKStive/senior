@@ -26,6 +26,7 @@ class CoinManager private constructor() {
      */
     var dataChangeLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
+
     /**
      * 获取签到信息
      *

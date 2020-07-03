@@ -10,6 +10,8 @@ import androidx.core.app.DialogCompat
 import androidx.fragment.app.FragmentActivity
 import com.youloft.core.base.BaseDialog
 import com.youloft.senior.R
+import com.youloft.senior.base.COUNT_CONTEXT_IMAGE
+import com.youloft.senior.ui.gif.ChoiceImageActivity
 import com.youloft.senior.ui.gif.GifActivity
 import com.youloft.senior.ui.gif.GifListActivity
 import com.youloft.senior.ui.graphic.ContentPublishActivity
