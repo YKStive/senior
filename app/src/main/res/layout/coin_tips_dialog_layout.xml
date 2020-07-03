@@ -125,7 +125,7 @@
             android:textSize="14dp" />
 
 
-        <FrameLayout
+        <com.youloft.senior.widgt.PressFrameLayout
             android:id="@+id/button_text_group"
             android:layout_width="131dp"
             android:layout_height="46dp"
@@ -175,7 +175,7 @@
                     android:textColor="#ffffffff"
                     android:textSize="19dp" />
             </LinearLayout>
-        </FrameLayout>
+        </com.youloft.senior.widgt.PressFrameLayout>
     </FrameLayout>
 
 </FrameLayout>
