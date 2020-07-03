@@ -53,7 +53,8 @@ class HomeFragment : BaseVMFragment() {
 
 
         mAdapter.register(Post::class).to(
-            PostRemoteViewBinder({ userId ->
+            //todo 参数缺失 打包不通过 临时用1
+            PostRemoteViewBinder(1, { userId ->
                 "个人界面".logD()
             }, { post, openComment ->
                 this.activity?.let { DetailActivity.start(it, post.id, post.postType, openComment) }
