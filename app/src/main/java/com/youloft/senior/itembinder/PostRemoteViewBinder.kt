@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.item_post_remote.view.*
  * @desc 远程贴子，处理多种类型
  */
 open class PostRemoteViewBinder(
+    private val postType: Int,
     private val goPersonPage: (userId: String) -> Unit,
     val onItemClick: (post: Post, openComment: Boolean?) -> Unit,
     val onShare: (postId: String) -> Unit,
@@ -44,6 +45,10 @@ open class PostRemoteViewBinder(
     ): RemoteViewHolder {
         val root: ConstraintLayout =
             inflater.inflate(R.layout.item_post_remote, parent, false) as ConstraintLayout
+//        root.findViewById<FrameLayout>(R.id.fl_content_container)
+//            .addView(when(postType){
+//                PostType.VIDEO ->
+//            })
         return RemoteViewHolder(root)
     }
 
@@ -206,7 +211,7 @@ open class PostRemoteViewBinder(
         fun addHeader(post: Post, goPersonPage: (userId: String) -> Unit) {
             headerContainer.removeAllViews()
             headerContainer.addView(PostHeaderView(App.instance(), post.userId.isByUser()).apply {
-                setAvatar(post.avater)
+                setAvatar(post.avatar)
                 setTitle(post.nickname)
                 setDesc("${post.viewed}次浏览")
                 onAvatarClick { goPersonPage(post.userId) }

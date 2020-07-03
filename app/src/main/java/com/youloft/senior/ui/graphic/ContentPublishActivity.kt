@@ -140,10 +140,15 @@ class ContentPublishActivity : BaseVMActivity() {
         }
         mViewModel.publishPost(
             Post(
-                postType = PostType.IMAGE_TEXT,
+                postType = if (dataIsVideo(imageData)) PostType.VIDEO else PostType.IMAGE_TEXT,
                 textContent = content
             ), filePath
         )
+    }
+
+    private fun dataIsVideo(imageData: List<ImageRes>?): Boolean {
+        return imageData != null && imageData.isNotEmpty() && imageData.size == 1 && imageData[0].type == ImageRes.TYPE_VIDEO
+
     }
 
 
