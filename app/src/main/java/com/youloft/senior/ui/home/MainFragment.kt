@@ -15,6 +15,9 @@ import com.youloft.senior.ui.detail.DetailActivity
 import com.youloft.senior.utils.UserManager
 import com.youloft.util.ToastMaster
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.header_mine_layout.*
+import kotlinx.android.synthetic.main.header_mine_layout.view.*
+import kotlinx.android.synthetic.main.header_mine_layout.view.tv_recive_commnet
 
 /**
  * @author you
@@ -84,9 +87,11 @@ class MainFragment : BaseVMFragment() {
     }
 
     override fun initView() {
+        val headerView = layoutInflater.inflate(R.layout.header_mine_layout, null, false)
         recyclerView.layoutManager = LinearLayoutManager(activity)
+        mAdapter.addHeaderView(headerView)
         recyclerView.adapter = mAdapter
-        tv_browse_number.setOnClickListener {
+        headerView.tv_browse_number.setOnClickListener {
 //            activity?.let { it1 ->
 ////                DetailActivity.start(it1, "3", MineDataBean.VIDEO_TYPE)
 //                Socialize.getIns().newShareBoard(activity).apply {
@@ -101,7 +106,7 @@ class MainFragment : BaseVMFragment() {
 //                }.shareWithUI()
 //            }
         }
-        tv_recive_commnet.setOnClickListener(View.OnClickListener {
+        headerView.tv_recive_commnet.setOnClickListener(View.OnClickListener {
             activity?.let { DetailActivity.start(it, "3", MineDataBean.MOVIE_TYPE) }
 
 //            UserManager.instance.loginOut()
@@ -136,9 +141,7 @@ class MainFragment : BaseVMFragment() {
     }
 
     override fun initData() {
-        userPostListParams.put("userId", UserManager.instance.getUserId())
-        userPostListParams.put("limit", ConstConfig.limit.toString())
-        mViewModel.getData(userPostListParams)
+       getMyPost()
     }
 
     override fun startObserve() {
@@ -167,6 +170,21 @@ class MainFragment : BaseVMFragment() {
                 refreshLayout.setEnableLoadMore(false)
             }
         })
+    }
+
+//    override fun onHiddenChanged(hidden: Boolean) {
+//        super.onHiddenChanged(hidden)
+//        if (hidden) {
+//           getMyPost()
+//        }
+//    }
+
+    private fun getMyPost(){
+        if (UserManager.instance.hasLogin()) {
+            userPostListParams.put("userId", UserManager.instance.getUserId())
+            userPostListParams.put("limit", ConstConfig.limit.toString())
+            mViewModel.getData(userPostListParams)
+        }
     }
 
 }

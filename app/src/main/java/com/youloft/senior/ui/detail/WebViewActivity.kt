@@ -12,6 +12,9 @@ import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.bean.ImageRes
 import com.youloft.senior.bean.MakeMovieBean
+import com.youloft.senior.bean.Post
+import com.youloft.senior.bean.PostType
+import com.youloft.senior.ui.gif.PostPublishActivity
 import com.youloft.senior.utils.logE
 import kotlinx.android.synthetic.main.activity_web.*
 import kotlinx.android.synthetic.main.conmon_title.*
@@ -36,6 +39,7 @@ class WebViewActivity : BaseActivity() {
     //如果是制作影集则需要影集模板id
     var movieTemplateId: String = ""
     var currentWebType = MOVIE_WEB_FULLSCREEN
+    var imagesPathList: List<String> = arrayListOf()
 
     override fun getLayoutResId(): Int {
         return R.layout.activity_web
@@ -45,13 +49,9 @@ class WebViewActivity : BaseActivity() {
         val webSettings: WebSettings = web_movie.getSettings()
         // 设置与Js交互的权限
         webSettings.javaScriptEnabled = true
-
-
         image_back.setOnClickListener {
             finish()
         }
-
-
     }
 
     override fun initData() {
@@ -68,7 +68,16 @@ class WebViewActivity : BaseActivity() {
             tv_publish.visibility = View.VISIBLE
             tv_publish.setOnClickListener {
                 //TODO
-
+                PostPublishActivity.start(
+                    this,
+                    Post(
+                        postType = PostType.ALBUM,
+                        mediaContent = imagesPathList,
+                        templateId = movieTemplateId
+                    )
+                ) {
+                    finish()
+                }
             }
         }
         if (url.isNotEmpty()) {
@@ -85,7 +94,9 @@ class WebViewActivity : BaseActivity() {
                 var schema = "data:image/png;base64,"
                 arrarList?.let {
                     for (index in 0..arrarList.lastIndex) {
-                        var imageName = arrarList.get(index)?.path
+                        val imageName = arrarList.get(index)?.path
+                        //todo 添加路径
+//                        imagesPathList.add(imageName)
                         imageName?.let {
                             if (imageName.indexOf(".") > 0) {
                                 if (imageName.contains(".jpg")) {

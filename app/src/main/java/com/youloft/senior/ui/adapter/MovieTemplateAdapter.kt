@@ -1,10 +1,13 @@
 package com.youloft.senior.ui.adapter
 
+import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.youloft.senior.R
 import com.youloft.senior.bean.MovieTemplateBean
+import com.youloft.senior.utils.ImageLoader
+import com.youloft.senior.utils.logE
 
 
 /**
@@ -22,6 +25,7 @@ class MovieTemplateAdapter :
         R.layout.item_movie_template
     ) {
     override fun convert(holder: BaseViewHolder, item: MovieTemplateBean) {
-        Glide.with(context).load(item.thumbnail).into(holder.getView(R.id.imageview))
+        var imageView = holder.getView<ImageView>(R.id.movie_imageview)
+        ImageLoader.loadImage(recyclerView, item.thumbnail, imageView)
     }
 }
