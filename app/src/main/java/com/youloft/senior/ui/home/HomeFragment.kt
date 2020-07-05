@@ -201,6 +201,7 @@ class HomeFragment : BaseVMFragment() {
 
             TYPE_PRAISE -> {
                 //todo 点赞
+                mViewModel.praisePost(position = post.position)
                 activity?.toast("点赞--${post.position}")
 
             }
@@ -282,12 +283,8 @@ class HomeFragment : BaseVMFragment() {
                 }
             }
         })
-    }
 
-    /**
-     * 点赞
-     */
-    private fun praise() {
+
 
         mViewModel.normalData.observe(this, Observer { normalLiveData ->
             activity?.let { hostActivity ->
@@ -298,8 +295,8 @@ class HomeFragment : BaseVMFragment() {
                     homeActivity.dismissLoading()
                 }
                 normalLiveData.showError?.let { homeActivity.toast(it) }
-                normalLiveData.showSuccess?.let {
-
+                normalLiveData.showSuccess?.let { changePosition ->
+                    mAdapter.notifyItemChanged(changePosition)
                 }
             }
         })

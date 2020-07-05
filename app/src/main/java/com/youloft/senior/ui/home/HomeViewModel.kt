@@ -40,11 +40,11 @@ class HomeViewModel : BaseViewModel() {
     private var lastPublishAlbumTime by Preference(Preference.LAST_PUBLISH_ALBUM_TIME, "")
     private val mPosts = mutableListOf<Post>()
     private val _listData: MutableLiveData<BaseUiModel<List<Post>>> = MutableLiveData()
-    private val _normalData: MutableLiveData<BaseUiModel<Boolean>> = MutableLiveData()
+    private val _normalData: MutableLiveData<BaseUiModel<Int>> = MutableLiveData()
     val listData: LiveData<BaseUiModel<List<Post>>>
         get() = _listData
 
-    val normalData: LiveData<BaseUiModel<Boolean>>
+    val normalData: LiveData<BaseUiModel<Int>>
         get() = _normalData
 
     fun getData(
@@ -96,11 +96,11 @@ class HomeViewModel : BaseViewModel() {
     }
 
 
-
     /**
      * 点赞
      */
-    fun praisePost(post: Post) {
+    fun praisePost(position: Int) {
+        val post = mPosts[position]
         viewModelScope.launchIO(onError = {
             viewModelScope.emitNormalLiveData(showLoading = false, showError = it.message ?: "点赞失败")
         }) {
@@ -115,13 +115,15 @@ class HomeViewModel : BaseViewModel() {
                 )
             )
             ApiHelper.executeResponse(result, {
-                emitNormalLiveData(showLoading = false)
+                post.isPraised = true
+                emitNormalLiveData(showLoading = false, showSuccess = position)
             }, { errorMsg ->
                 emitNormalLiveData(showLoading = false, showError = errorMsg)
             })
 
         }
     }
+
 
     /**
      * 添加新的数据
@@ -171,7 +173,7 @@ class HomeViewModel : BaseViewModel() {
         showLoading: Boolean = false,
         isSuccess: Boolean = false,
         showError: String? = null,
-        showSuccess: Boolean = false,
+        showSuccess: Int? = null,
         showEnd: Boolean = false,
         isRefresh: Boolean = false
     ) {

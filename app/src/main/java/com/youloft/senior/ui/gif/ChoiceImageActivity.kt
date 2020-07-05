@@ -25,6 +25,8 @@ import com.youloft.senior.widgt.GridSpaceItemDecoration
 import kotlinx.android.synthetic.main.activity_choice_image.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ChoiceImageActivity : BaseActivity() {
 
@@ -151,6 +153,9 @@ class ChoiceImageActivity : BaseActivity() {
         return result.apply {
             result.addAll(video)
             result.addAll(images)
+            result.sortWith(Comparator { o1: ImageRes?, o2: ImageRes? ->
+                if (o1!!.time < o2!!.time) -1 else 1
+            })
         }
     }
 
