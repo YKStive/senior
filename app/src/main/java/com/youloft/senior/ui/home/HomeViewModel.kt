@@ -14,8 +14,10 @@ import com.youloft.senior.bean.Post.Companion.inviteData
 import com.youloft.senior.bean.Post.Companion.localAlbumData
 import com.youloft.senior.bean.Post.Companion.punchData
 import com.youloft.senior.bean.PostType
+import com.youloft.senior.bean.PraiseBean
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.utils.Preference
+import com.youloft.senior.utils.UserManager
 import com.youloft.senior.utils.logD
 import com.youloft.senior.utils.moreThanOneDay
 import kotlinx.coroutines.CoroutineScope
@@ -37,9 +39,13 @@ class HomeViewModel : BaseViewModel() {
     }
     private var lastPublishAlbumTime by Preference(Preference.LAST_PUBLISH_ALBUM_TIME, "")
     private val mPosts = mutableListOf<Post>()
-    private val _data: MutableLiveData<BaseUiModel<List<Post>>> = MutableLiveData()
-    val data: LiveData<BaseUiModel<List<Post>>>
-        get() = _data
+    private val _listData: MutableLiveData<BaseUiModel<List<Post>>> = MutableLiveData()
+    private val _normalData: MutableLiveData<BaseUiModel<Boolean>> = MutableLiveData()
+    val listData: LiveData<BaseUiModel<List<Post>>>
+        get() = _listData
+
+    val normalData: LiveData<BaseUiModel<Boolean>>
+        get() = _normalData
 
     fun getData(
         direction: Int? = null,
@@ -47,10 +53,10 @@ class HomeViewModel : BaseViewModel() {
     ) {
 
         viewModelScope.launchIO(onError = {
-            viewModelScope.emitLiveData(showLoading = false, showError = it.message ?: "拉取数据异常")
+            viewModelScope.emitListLiveData(showLoading = false, showError = it.message ?: "拉取数据异常")
         }) {
             //每次拉取数据后，把强插的数据清空后，再次强插
-            emitLiveData(showLoading = true)
+            emitListLiveData(showLoading = true)
             val index = initIndex(if (mPosts.isEmpty()) null else direction)
             val result = ApiHelper.api.getPosts(index, direction, limit = 30, userId = userId)
             ApiHelper.executeResponse(result, { newPosts ->
@@ -59,9 +65,9 @@ class HomeViewModel : BaseViewModel() {
                     addNewData(direction, newPosts)
                     focusInsert()
                 }
-                emitLiveData(showLoading = false, showSuccess = mPosts)
+                emitListLiveData(showLoading = false, showSuccess = mPosts)
             }, { errorMsg ->
-                emitLiveData(showLoading = false, showError = errorMsg)
+                emitListLiveData(showLoading = false, showError = errorMsg)
             })
 
         }
@@ -77,7 +83,7 @@ class HomeViewModel : BaseViewModel() {
                 this.postType = PostType.HINT
             }
         }
-        viewModelScope.emitLiveData(showSuccess = mPosts)
+        viewModelScope.emitListLiveData(showSuccess = mPosts)
     }
 
     private fun initIndex(direction: Int?): String? {
@@ -85,6 +91,34 @@ class HomeViewModel : BaseViewModel() {
             0 -> mPosts[0].id
             1 -> mPosts[mPosts.size - 1].id
             else -> null
+
+        }
+    }
+
+
+
+    /**
+     * 点赞
+     */
+    fun praisePost(post: Post) {
+        viewModelScope.launchIO(onError = {
+            viewModelScope.emitNormalLiveData(showLoading = false, showError = it.message ?: "点赞失败")
+        }) {
+            emitNormalLiveData(showLoading = true)
+            val result = ApiHelper.api.praisePost(
+                PraiseBean(
+                    avatar = UserManager.instance.getAvatar(),
+                    nickname = UserManager.instance.getAvatar(),
+                    postId = post.id,
+                    postUserId = post.userId,
+                    userId = UserManager.instance.getUserId()
+                )
+            )
+            ApiHelper.executeResponse(result, {
+                emitNormalLiveData(showLoading = false)
+            }, { errorMsg ->
+                emitNormalLiveData(showLoading = false, showError = errorMsg)
+            })
 
         }
     }
@@ -117,7 +151,7 @@ class HomeViewModel : BaseViewModel() {
         }
     }
 
-    private fun CoroutineScope.emitLiveData(
+    private fun CoroutineScope.emitListLiveData(
         showLoading: Boolean = false,
         isSuccess: Boolean = false,
         showError: String? = null,
@@ -127,7 +161,23 @@ class HomeViewModel : BaseViewModel() {
     ) {
         this.launch {
             withContext(Dispatchers.Main) {
-                _data.value =
+                _listData.value =
+                    BaseUiModel(showLoading, isSuccess, showError, showSuccess, showEnd, isRefresh)
+            }
+        }
+    }
+
+    private fun CoroutineScope.emitNormalLiveData(
+        showLoading: Boolean = false,
+        isSuccess: Boolean = false,
+        showError: String? = null,
+        showSuccess: Boolean = false,
+        showEnd: Boolean = false,
+        isRefresh: Boolean = false
+    ) {
+        this.launch {
+            withContext(Dispatchers.Main) {
+                _normalData.value =
                     BaseUiModel(showLoading, isSuccess, showError, showSuccess, showEnd, isRefresh)
             }
         }

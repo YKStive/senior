@@ -54,7 +54,7 @@ internal class TaskManager {
         return result
     }
 
-    fun sign(ctx: Context) {
+    fun sign(ctx: Context, success: (() -> Unit)?=null) {
         val info = CoinManager.instance.signInfo ?: return
         if (info.status == 1) {
             //已签到
@@ -77,7 +77,7 @@ internal class TaskManager {
             doubleBean.posid = info.posId
             doubleBean.appid = info.appId
         }
-        completeTask(info.code, ctx, doubleBean)
+        completeTask(info.code, ctx, doubleBean, success = success)
     }
 
     var completeing = false

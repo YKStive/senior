@@ -11,18 +11,16 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_15"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="@dimen/dp_15"
         app:hv_is_main="false" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:background="@drawable/bg_item"
+        android:background="@drawable/bg_post_item_content"
         android:orientation="vertical"
-        android:padding="@dimen/dp_15">
+        android:paddingStart="15dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="15dp">
 
         <TextView
             android:id="@+id/tv_content"
@@ -30,36 +28,35 @@
             android:layout_height="wrap_content"
             android:textColor="#FF333333"
             android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="今天你还没有签到哦，马上签到得金币！" />
 
+
         <FrameLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp">
 
+
             <ImageView
-                android:id="@+id/player"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/app_post_item_video_vertical_width"
-                android:scaleType="centerCrop" />
+                android:id="@+id/iv_thumb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_placeholder_error" />
+                android:src="@drawable/ic_video_play" />
         </FrameLayout>
 
-
-
-        <include
-            layout="@layout/item_post_bottom_share"
+        <com.youloft.senior.widgt.PostBottomView
+            android:id="@+id/bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/flow" />
+            android:layout_marginTop="18dp" />
     </LinearLayout>
 
 

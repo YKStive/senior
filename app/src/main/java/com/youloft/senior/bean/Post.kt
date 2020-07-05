@@ -24,7 +24,8 @@ data class Post(
     var viewed: Int = 0,
     var commented: Int = 0,
     var isPraised: Boolean = false,
-    var hint: Boolean = false
+    var hint: Boolean = false,
+    var position: Int = 0
 
 ) : Serializable {
 

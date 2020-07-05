@@ -45,7 +45,7 @@ class DetailViewModel : BaseViewModel() {
     fun addFavorite(params: PraiseBean) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val res = ApiHelper.api.parsePost(params)
+                val res = ApiHelper.api.praisePost(params)
                 withContext(Dispatchers.Main) {
                     if (res.status == 200) {
                         addOrCancleFavorite.value = res.data

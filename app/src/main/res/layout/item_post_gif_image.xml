@@ -48,10 +48,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_content">
 
+            <ImageView
+                android:id="@+id/iv_gif"
+                android:layout_width="@dimen/app_post_gif_width"
+                android:layout_height="@dimen/app_post_gif_height"
+                android:scaleType="centerCrop" />
+
         </FrameLayout>
 
-        <com.youloft.senior.widgt.PostBottomView
-            android:id="@+id/bottom_view"
+        <include
+            layout="@layout/item_post_bottom_share"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"

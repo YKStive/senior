@@ -5,4 +5,5 @@
     <item name="tag_value" type="id" />
     <item name="tag_value1" type="id" />
     <item name="tag_value2" type="id" />
+    <item name="iv_post_item_content" type="id" />
 </resources>

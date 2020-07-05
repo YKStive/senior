@@ -13,12 +13,16 @@ import com.youloft.coolktx.toast
 import com.youloft.core.base.BaseActivity
 import com.youloft.senior.R
 import com.youloft.senior.base.App
+import com.youloft.senior.base.URL_INVITE_FRIEND
 import com.youloft.senior.net.Api
 import com.youloft.senior.net.ApiHelper
 import com.youloft.senior.utils.UserManager
 import com.youloft.socialize.SOC_MEDIA
 import com.youloft.socialize.Socialize
 import com.youloft.socialize.UmengSocialize
+import com.youloft.socialize.share.ShareImage
+import com.youloft.socialize.share.ShareWeb
+import com.youloft.socialize.share.UmengShareActionImpl
 import kotlinx.android.synthetic.main.activity_invite_friend.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -45,7 +49,7 @@ class InviteFriendActivity : BaseActivity() {
 
         tv_copy_code.setOnClickListener {
             val clipboardManager: ClipboardManager =
-            getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val clip: ClipData = ClipData.newPlainText("邀请码", tv_invite_code.text)
             clipboardManager.setPrimaryClip(clip)
             toast("复制成功")
@@ -54,28 +58,24 @@ class InviteFriendActivity : BaseActivity() {
         val improve = "提升300%"
         val front = getString(R.string.invite_improve)
         val spannableString = SpannableString("${front}${improve}")
-        val foregroundColorSpan = ForegroundColorSpan(Color.parseColor("#FC6C71"))
+        val foregroundColorSpan = ForegroundColorSpan(Color.parseColor("#F23854"))
         spannableString.setSpan(
             foregroundColorSpan,
-            front.length - improve.length,
+            front.length - improve.length - 2,
             spannableString.length,
             SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         tv_invite_improve.text = spannableString
 
         tv_invite_wx.setOnClickListener {
-            val checkPlatformInstall =
-                UmengSocialize.getIns().checkPlatformInstall(this, SOC_MEDIA.WEIXIN, true)
-            if (checkPlatformInstall) {
-                val action =
-                    Socialize.getIns().share(this)
-                        .platform(SOC_MEDIA.from(SOC_MEDIA.WEIXIN.platformName))
-
-            }
-            //todo 微信分享
+            UmengShareActionImpl(this).platform(SOC_MEDIA.WEIXIN).image(
+                ShareImage(App.instance(), URL_INVITE_FRIEND)
+            ).perform()
         }
         tv_invite_pyq.setOnClickListener {
-            //todo 朋友圈分享
+            UmengShareActionImpl(this).platform(SOC_MEDIA.WEIXIN_CIRCLE).image(
+                ShareImage(App.instance(), URL_INVITE_FRIEND)
+            ).perform()
         }
 
     }

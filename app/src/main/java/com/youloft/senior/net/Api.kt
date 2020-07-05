@@ -14,7 +14,7 @@ interface Api {
     companion object {
         //        const val BASE_URL = "http://192.168.1.85:3000/mock/703/"
 //        const val BASE_URL = "http://120.27.20.114:8090/"
-        const val BASE_URL = "https://shequ.51wnl-cq.com/"
+        const val BASE_URL = "http://shequ.51wnl-cq.com/"
     }
 
     @GET(BASE_URL + "api/Coin_Activity/GetMissions")
@@ -142,7 +142,7 @@ interface Api {
      * 点赞帖子
      */
     @POST("api/post/praise")
-    fun parsePost(@Body params: PraiseBean): NetResponse<String>
+    fun praisePost(@Body params: PraiseBean): NetResponse<String>
 
     /**
      * 评论贴子

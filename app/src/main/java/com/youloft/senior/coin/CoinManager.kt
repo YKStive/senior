@@ -4,6 +4,7 @@ import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alibaba.fastjson.JSONObject
+import com.alibaba.sdk.android.beacon.Beacon
 import com.youloft.senior.bean.MissionResult
 import com.youloft.senior.bean.MissionResult.DataBean
 import com.youloft.senior.bean.MissionResult.DataBean.MissionsBean
@@ -144,6 +145,16 @@ class CoinManager private constructor() {
                     dataChangeLiveData.postValue(true)
                 }
             }
+    }
+
+    /**
+     * 是否签到
+     */
+    fun isSign(): Boolean {
+        if (signInfo != null) {
+            return signInfo!!.coinSigninContentsDoublecode != null && signInfo!!.coinSigninContentsDoublecode.size > signInfo!!.continued
+        }
+        return false
     }
 
     companion object {

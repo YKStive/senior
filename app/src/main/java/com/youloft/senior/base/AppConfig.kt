@@ -20,3 +20,10 @@ const val URL_PRIVACY = "https://docs.qq.com/doc/DWWtsVEJzUm9FdmNO?pub=1&dver=2.
  */
 const val COUNT_CONTEXT_IMAGE = 20
 
+
+/**
+ * 好友邀请分享页
+ */
+const val URL_INVITE_FRIEND =
+    "https://pic-bucket.ws.126.net/photo/0009/2019-04-19/ED4HKOFA0AI20009NOS.jpg"
+

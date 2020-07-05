@@ -91,4 +91,9 @@ class PostHeaderView :
             tvDesc.text = this
         }
     }
+
+
+    fun setSelfLayout(isSelf:Boolean){
+
+    }
 }
