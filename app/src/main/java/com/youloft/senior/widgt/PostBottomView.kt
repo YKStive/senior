@@ -23,19 +23,13 @@ class PostBottomView(context: Context, attributeSet: AttributeSet) :
     }
 
 
-    fun setPost(post: Post, onItemClick: (type: Int, post: Post) -> Unit) {
+    fun setPost(post: Post, listener: OnClickListener) {
         tv_comment.text = if (post.commented == 0) "评论" else post.commented.toString()
         tv_praise.text = if (post.praised == 0) null else post.praised.toString()
         tv_praise.isSelected = post.isPraised
-        tv_share.setOnClickListener {
-            onItemClick.invoke(TYPE_SHARE, post)
-        }
-        tv_comment.setOnClickListener {
-            onItemClick.invoke(TYPE_COMMENT, post)
-        }
-        tv_praise.setOnClickListener {
-            onItemClick.invoke(TYPE_PRAISE, post)
-        }
+        tv_share.setOnClickListener(listener)
+        tv_comment.setOnClickListener(listener)
+        tv_praise.setOnClickListener(listener)
 
     }
 

@@ -27,7 +27,9 @@ import okhttp3.internal.waitMillis
  * @desc 多图item
  */
 open class PostMultiImageViewBinder(
-    private val onOperate: (type: Int, post: Post) -> Unit
+    private val pool: RecyclerView.RecycledViewPool? = null,
+    private val onOperate: (type: Int, post: Post) -> Unit,
+    private val onImageClick: (position: Int, data: List<String>) -> Unit
 ) :
     ItemViewBinder<Post, PostMultiImageViewBinder.ViewHolder>() {
     override fun onCreateViewHolder(
@@ -35,7 +37,7 @@ open class PostMultiImageViewBinder(
         parent: ViewGroup
     ): ViewHolder {
         return ViewHolder(
-            parent, onOperate
+            pool = pool, parent = parent, onOperate = onOperate, onImageClick = onImageClick
         )
     }
 
@@ -49,7 +51,9 @@ open class PostMultiImageViewBinder(
 
     class ViewHolder(
         parent: ViewGroup,
-        onOperate: (type: Int, post: Post) -> Unit
+        private val pool: RecyclerView.RecycledViewPool? = null,
+        onOperate: (type: Int, post: Post) -> Unit,
+        private val onImageClick: (position: Int, data: List<String>) -> Unit
     ) :
         BaseRemotePostViewHolder(parent, onOperate) {
 
@@ -62,10 +66,9 @@ open class PostMultiImageViewBinder(
 
         override fun setContent(post: Post) {
             val content = itemView.findViewById<PostItemMultiImage>(R.id.iv_post_item_content)
-            content.setOnClickListener {
-                onOperate.invoke(TYPE_CONTENT,post)
+            content.setData(pool, post.mediaContent) {
+                onImageClick(it, post.mediaContent)
             }
-            content.setData(post.mediaContent)
         }
 
 

@@ -1,7 +1,6 @@
 package com.youloft.senior.widgt
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +8,8 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.youloft.coolktx.dp2px
+import com.youloft.senior.R
 import com.youloft.senior.base.App
 import com.youloft.util.UiUtil
 
@@ -27,6 +23,7 @@ class PostItemMultiImage(context: Context, attributeSet: AttributeSet?) :
 
 
     init {
+
         layoutManager = GridLayoutManager(context, 3)
         addItemDecoration(
             GridSpaceItemDecoration(3, 5.dp2px, 5.dp2px)
@@ -34,13 +31,29 @@ class PostItemMultiImage(context: Context, attributeSet: AttributeSet?) :
     }
 
 
-    fun setData(path: List<String>) {
-        val multiImageAdapter = MultiImageAdapter(path)
+    fun setData(pool: RecycledViewPool?=null,path: List<String>, onImageClick: (position: Int) -> Unit) {
+        setRecycledViewPool(pool)
+        val multiImageAdapter = MultiImageAdapter(path, onImageClick)
         adapter = multiImageAdapter
     }
 
-    internal class MultiImageAdapter(private val items: List<String>) :
+    internal class OnClick(private val conImageClick: (position: Int) -> Unit) : OnClickListener {
+        var mPosition = 0
+        override fun onClick(v: View) {
+            conImageClick.invoke(mPosition)
+        }
+
+    }
+
+
+    internal class MultiImageAdapter(
+        private val items: List<String>,
+        private val onImageClick: (position: Int) -> Unit
+    ) :
         Adapter<MultiImageAdapter.MultiImageHolder>() {
+
+        private val onClick: OnClick = OnClick { onImageClick }
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MultiImageHolder {
             val imageView = ImageView(parent.context)
             val screenWidth = UiUtil.getScreenWidth(App.instance())
@@ -61,6 +74,9 @@ class PostItemMultiImage(context: Context, attributeSet: AttributeSet?) :
 
         override fun onBindViewHolder(holder: MultiImageHolder, position: Int) {
             val imageView = holder.itemView as ImageView
+            imageView.setOnClickListener(onClick.apply {
+                mPosition = holder.adapterPosition
+            })
             Glide.with(holder.itemView).load(items[position])
                 .into(imageView)
         }

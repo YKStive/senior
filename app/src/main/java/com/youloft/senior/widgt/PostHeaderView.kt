@@ -64,9 +64,9 @@ class PostHeaderView :
     }
 
 
-    fun onAvatarClick(click: () -> Unit) {
-        ivAvatar.setOnClickListener { click.invoke() }
-        tvTitle.setOnClickListener { click.invoke() }
+    fun onAvatarClick(listener:OnClickListener) {
+        ivAvatar.setOnClickListener(listener)
+        tvTitle.setOnClickListener(listener)
     }
 
     fun setAvatar(avatar: String?) {

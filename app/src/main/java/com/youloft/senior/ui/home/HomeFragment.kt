@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import cc.shinichi.library.ImagePreview
 import cc.shinichi.library.bean.ImageInfo
 import com.drakeet.multitype.MultiTypeAdapter
@@ -68,7 +69,8 @@ class HomeFragment : BaseVMFragment() {
 
 
 
-        rv_post.setItemViewCacheSize(10)
+        rv_post.setItemViewCacheSize(4)
+        rv_post.animation = null
         mAdapter.register(Post::class).to(
 
             //gif
@@ -81,9 +83,11 @@ class HomeFragment : BaseVMFragment() {
 
 
             //多图
-            PostMultiImageViewBinder { type, post ->
+            PostMultiImageViewBinder(RecyclerView.RecycledViewPool(), { type, post ->
 
-            },
+            }, { position, data ->
+                previewImage(data, position)
+            }),
 
             //视频
             PostVideoViewBinder { type, post ->
@@ -160,6 +164,27 @@ class HomeFragment : BaseVMFragment() {
     }
 
     /**
+     * 多图item预览
+     */
+    private fun previewImage(data: List<String>, position: Int) {
+        val result = mutableListOf<ImageInfo>()
+        data.forEach { path ->
+            result.add(ImageInfo().apply {
+                originUrl = path
+                thumbnailUrl = path
+            })
+        }
+        ImagePreview
+            .getInstance()
+            .setContext(context as FragmentActivity)
+            .setIndex(position)
+            .setImageInfoList(result)
+            .setShowDownButton(false)
+            .setZoomTransitionDuration(500)
+            .start()
+    }
+
+    /**
      * 处理item点击
      */
     private fun deal(type: Int, post: Post) {
@@ -169,21 +194,7 @@ class HomeFragment : BaseVMFragment() {
             }
 
             TYPE_CONTENT -> {
-                val result = mutableListOf<ImageInfo>()
-                post.mediaContent.forEach { path ->
-                    result.add(ImageInfo().apply {
-                        originUrl = path
-                        thumbnailUrl = path
-                    })
-                }
-                ImagePreview
-                    .getInstance()
-                    .setContext(context as FragmentActivity)
-                    .setIndex(0)
-                    .setImageInfoList(result)
-                    .setShowDownButton(false)
-                    .setZoomTransitionDuration(500)
-                    .start()
+
             }
 
             TYPE_HEADER -> {
